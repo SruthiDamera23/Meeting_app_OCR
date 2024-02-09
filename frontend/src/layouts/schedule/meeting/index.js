@@ -215,9 +215,48 @@ const Meeting = (props) => {
     setMeetingTasks(updatedMeetingTasks);
   }
 
+  function showError(elementId, errorMessage) {
+    const errorElement = document.getElementById(elementId);
+    errorElement.innerText = errorMessage;
+    errorElement.style.display = 'block';
+  }
+
   // Send the form data to the API using fetch or axios
   const handleSubmit = async (e) => {
     e.preventDefault();
+    var anyError = false;
+    const errorFields = document.querySelectorAll('.error-message');
+    errorFields.forEach(field => field.innerText = '');
+
+    if (!name) {
+        showError('nameError', 'Name field is required.');
+        anyError = true;
+    }
+    if (!type) {
+        showError('typeError', 'Type field is required.');
+        anyError = true;
+    }
+    if (!date) {
+      showError('dateError', 'Date field is required.');
+      anyError = true;
+    }
+  if (!time) {
+    showError('timeError', 'Time field is required.');
+    anyError = true;
+    }
+  if (!agenda) {
+    showError('agendaError', 'Agenda field is required.');
+    anyError = true;
+    }
+  if (!notes) {
+      showError('noteError', 'Meeting Notes field is required.');
+      anyError = true;
+      }
+  if(anyError) {
+        alert("Required fields are missing! Please check and try again!");
+        return;
+      }
+
     const meeting = {
       name: name,
       type: type,
@@ -525,23 +564,27 @@ const Meeting = (props) => {
                       <FormGroup>
                         <Label className="form-label" for="name">Meeting Name*</Label>
                         <Input className="form-input" type="text" name="name" id="name" value={name} onChange={handleNameChange} required />
+                        <div id="nameError" class="error-message"></div>
                       </FormGroup>
                       <FormGroup>
                         <Label className="form-label" for="agenda">Agenda*</Label>
                         <Input className="form-input" type="textarea" name="agenda" id="agenda" value={agenda} onChange={handleAgendaChange} required />
+                        <div id="agendaError" class="error-message"></div>
                       </FormGroup>
                       <FormGroup>
                         <Label className="form-label" for="date">Date*</Label>
                         <Input className="form-input" type="date" name="date" id="date" value={date} onChange={handleDateChange} required />
+                        <div id="dateError" class="error-message"></div>
                       </FormGroup>
                       <FormGroup>
                         <Label className="form-label" for="time">Time*</Label>
                         <Input className="form-input" type="time" name="time" id="time" value={time} onChange={handleTimeChange} required />
+                        <div id="timeError" class="error-message"></div>
                       </FormGroup>
                     </Col>
                     <Col>
                       <FormGroup>
-                        <Label className="form-label" for="type">Meeting Type</Label>
+                        <Label className="form-label" for="type">Meeting Type*</Label>
                         <Card className="my-card my-border">
                           <CardBody>
                             <Row>
@@ -661,6 +704,7 @@ const Meeting = (props) => {
                             </Row>
                           </CardBody>
                         </Card>
+                        <div id="typeError" class="error-message"></div>
                       </FormGroup>
                     </Col>
                   </Row>
@@ -705,8 +749,9 @@ const Meeting = (props) => {
                 <CardBody className="my-card-body">
                   <Row>
                     <FormGroup style={{width: "50%", position: "relative", left: "25%"}}>
-                      <Label className="form-label" for="notes">Meeting Notes</Label>
+                      <Label className="form-label" for="notes">Meeting Notes*</Label>
                       <Input className="form-input" type="textarea" name="notes" id="notes" value={notes} onChange={handleNotesChange} />
+                      <div id="noteError" class="error-message"></div>
                     </FormGroup>
                   </Row>
                 </CardBody>
@@ -896,4 +941,3 @@ const Meeting = (props) => {
 };
 
 export default Meeting;
-

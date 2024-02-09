@@ -499,9 +499,8 @@ body {
   height: 100vh;
 }
 
-.form-error {
-  color:#dc3545;
-  
-  font-size:medium;
+.error-message {
+  color: red;
+  display: none;
+  margin-top: 5px;
 }
-
