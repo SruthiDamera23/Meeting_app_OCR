@@ -148,7 +148,7 @@ const CreateTaskModal = ({ isOpen, toggle }) => {
               onChange={(event) => setEmployeeName(event.target.value)}
               invalid={!!errors.taskName}
               />
-              {errors.taskName && <div className="invalid-feedback">{errors.taskName}</div>}
+              {errors.taskName && <div className="invalid-feedback">{errors.employeeName}</div>}
           </FormGroup>
           <FormGroup>
             <Label for="startDate">Start Date</Label>
@@ -160,7 +160,7 @@ const CreateTaskModal = ({ isOpen, toggle }) => {
               onChange={(event) => setStartDate(event.target.value)}
               invalid={!!errors.taskName}
               />
-              {errors.taskName && <div className="invalid-feedback">{errors.taskName}</div>}
+              {errors.taskName && <div className="invalid-feedback">{errors.startDate}</div>}
           </FormGroup>
           <FormGroup>
             <Label for="endDate">End Date</Label>
@@ -172,7 +172,7 @@ const CreateTaskModal = ({ isOpen, toggle }) => {
               onChange={(event) => setEndDate(event.target.value)}
               invalid={!!errors.taskName}
               />
-              {errors.taskName && <div className="invalid-feedback">{errors.taskName}</div>}
+              {errors.taskName && <div className="invalid-feedback">{errors.endDate}</div>}
           </FormGroup>
           <FormGroup>
             <Label for="taskPriority">Task Priority</Label>
