@@ -6,7 +6,7 @@
  *
  */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Form,
@@ -33,6 +33,12 @@ const CreateTaskModal = ({ isOpen, toggle }) => {
   const [priority, setPriority] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showError, setShowError] = useState(false);
+
+
+  useEffect( () => {
+    setShowError(false);
+  }, [isOpen, toggle]);
 
   // Toggle the dropdown state
   const toggleDropdown = () => {
@@ -68,15 +74,16 @@ const CreateTaskModal = ({ isOpen, toggle }) => {
     }
 
     setErrors(errors);
+    setShowError(Object.keys(errors).length !== 0);
     return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!validate()) {
+      setShowError(true);
       return;
     }
-
 
     const formData = {
       task_name: taskName,
@@ -123,9 +130,9 @@ const CreateTaskModal = ({ isOpen, toggle }) => {
               id="taskName"
               value={taskName}
               onChange={(event) => setTaskName(event.target.value)}
-              invalid={!!errors.taskName}
+              invalid={showError}
             />
-            {errors.taskName && <div className="invalid-feedback">{errors.taskName}</div>}
+            <div className="invalid-feedback" style={{display: showError ? "block" : "none"}}>{errors.taskName}</div>
           </FormGroup>
           <FormGroup>
             <Label for="taskDescription">Task Description</Label>
@@ -146,9 +153,9 @@ const CreateTaskModal = ({ isOpen, toggle }) => {
               id="employeeName"
               value={employeeName}
               onChange={(event) => setEmployeeName(event.target.value)}
-              invalid={!!errors.taskName}
+              invalid={showError}
               />
-              {errors.taskName && <div className="invalid-feedback">{errors.employeeName}</div>}
+              <div className="invalid-feedback" style={{display: showError ? "block" : "none"}}>{errors.employeeName}</div>
           </FormGroup>
           <FormGroup>
             <Label for="startDate">Start Date*</Label>
@@ -158,9 +165,9 @@ const CreateTaskModal = ({ isOpen, toggle }) => {
               id="startDate"
               value={startDate}
               onChange={(event) => setStartDate(event.target.value)}
-              invalid={!!errors.taskName}
+              invalid={showError}
               />
-              {errors.taskName && <div className="invalid-feedback">{errors.startDate}</div>}
+              <div className="invalid-feedback" style={{display: showError ? "block" : "none"}}>{errors.startDate}</div>
           </FormGroup>
           <FormGroup>
             <Label for="endDate">End Date*</Label>
@@ -170,12 +177,12 @@ const CreateTaskModal = ({ isOpen, toggle }) => {
               id="endDate"
               value={endDate}
               onChange={(event) => setEndDate(event.target.value)}
-              invalid={!!errors.taskName}
+              invalid={showError}
               />
-              {errors.taskName && <div className="invalid-feedback">{errors.endDate}</div>}
+              <div className="invalid-feedback" style={{display: showError ? "block" : "none"}}>{errors.endDate}</div>
           </FormGroup>
           <FormGroup>
-            <Label for="taskPriority">Task Priority</Label>
+            <Label for="taskPriority">Task Priority*</Label>
             <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
               <DropdownToggle caret>
                 {priority ? priority : "Select priority"}
@@ -192,7 +199,10 @@ const CreateTaskModal = ({ isOpen, toggle }) => {
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
+            <div className="invalid-feedback" style={{display: showError ? "block" : "none"}}>{errors.priority}</div>
           </FormGroup>
+
+          <FormGroup></FormGroup>
         </ModalBody>
         <ModalFooter>
           <Button color="primary" type="submit">
