@@ -116,7 +116,7 @@ const CreateTaskModal = ({ isOpen, toggle }) => {
             />
           </FormGroup> */}
            <FormGroup>
-            <Label for="taskName">Task Name</Label>
+            <Label for="taskName">Task Name*</Label>
             <Input
               type="text"
               name="taskName"
@@ -139,7 +139,7 @@ const CreateTaskModal = ({ isOpen, toggle }) => {
             />
           </FormGroup>
           <FormGroup>
-            <Label for="employeeName">Employee Name</Label>
+            <Label for="employeeName">Employee Name*</Label>
             <Input
               type="text"
               name="employeeName"
@@ -151,7 +151,7 @@ const CreateTaskModal = ({ isOpen, toggle }) => {
               {errors.taskName && <div className="invalid-feedback">{errors.employeeName}</div>}
           </FormGroup>
           <FormGroup>
-            <Label for="startDate">Start Date</Label>
+            <Label for="startDate">Start Date*</Label>
             <Input
               type="date"
               name="startDate"
@@ -163,7 +163,7 @@ const CreateTaskModal = ({ isOpen, toggle }) => {
               {errors.taskName && <div className="invalid-feedback">{errors.startDate}</div>}
           </FormGroup>
           <FormGroup>
-            <Label for="endDate">End Date</Label>
+            <Label for="endDate">End Date*</Label>
             <Input
               type="date"
               name="endDate"
