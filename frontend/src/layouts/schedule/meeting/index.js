@@ -466,10 +466,12 @@ const Meeting = (props) => {
         .catch((error) => {
           console.log(error);
         });
-      console.log(response.data);
+
+      console.log(response);
       setName(response.data.name_date);
       setAgenda(response.data.agenda);
       setNotes(
+        
         response.data.questions.concat(
           "\n",
           response.data.objective,
