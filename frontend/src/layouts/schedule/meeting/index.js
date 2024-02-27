@@ -104,10 +104,12 @@ const Meeting = (props) => {
   const imageRef = useRef(null);
 
   useEffect(() => {
+    fetchPeople();
     if (state.clearForm) {
       setId('');
       handleClearForm();
     } else {
+  
       setId(state.meeting.id);
       setName(state.meeting.name);
       setAgenda(state.meeting.agenda);
@@ -173,7 +175,12 @@ const Meeting = (props) => {
         .catch((error) => {
           console.log(error);
         });
+
+        
     }
+
+
+    
   }, [state]);
 
   const handleNameChange = (e) => setName(e.target.value);
@@ -181,6 +188,7 @@ const Meeting = (props) => {
   const handleDateChange = (e) => setDate(e.target.value);
   const handleTimeChange = (e) => setTime(e.target.value);
   const handleTypeChange = (e) => {
+    
     const value = e.target.value;
     const updatedTypeSync = [
       false,
@@ -197,7 +205,13 @@ const Meeting = (props) => {
     setType(typeStrings[value]);
   }
   const handleTeamsChange = (e) => setTeams(e.target.value);
-  const handleNotesChange = (e) => setNotes(e.target.value);
+  const handleNotesChange = (e) => {
+    for (let i = 0; i < people.length; i++) {
+      console.log("people :"+people[i].id);
+    }
+    
+    setNotes(e.target.value);
+  }
   const handleMeetingTasksChange = (e) => {
     const meetingTaskIndex = Number(e.target.getAttribute("index"));
     const updatedMeetingTasks = meetingTasks.map(
@@ -378,19 +392,30 @@ const Meeting = (props) => {
       });
   }
 
+  const fetchPeople= async () => {
+    const response =
+      await person_view()
+      .then((res) => {
+        setPeople(res.data);
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  }
+
   /*
    * Closure to pass to InvitePeopleModal and
    * from there to NameCard.
    */
   const invitePerson = (person) => {
     if (!attendeeIds.includes(person.id)) {
-      const updatedAttendeeIds = [...attendeeIds];
-      const updatedAttendees = [...attendees];
-      updatedAttendeeIds.push(person.id);
-      updatedAttendees.push(person);
-      setAttendeeIds(updatedAttendeeIds);
-      setAttendees(updatedAttendees);
+      const updatedAttendeeIds = [person.id];
+    const updatedAttendees = [...attendees,person];
+    setAttendeeIds(updatedAttendeeIds);
+    setAttendees(updatedAttendees);
+    
     }
+
   }
 
   /*
@@ -433,11 +458,14 @@ const Meeting = (props) => {
    * OCR api. Currently logs response text in console.
    */
   const handleOCRRequest = () => {
+    
     const imgElem = document.getElementById("img-elem")
     const croppedImageCanvas = document.createElement("canvas");
     croppedImageCanvas.width = 0.01 * crop.width * imgElem.naturalWidth;
     croppedImageCanvas.height = 0.01 * crop.height * imgElem.naturalHeight;
     const croppedImageContext = croppedImageCanvas.getContext("2d");
+
+
 
     croppedImageContext.drawImage(
       imgElem,
@@ -467,9 +495,13 @@ const Meeting = (props) => {
           console.log(error);
         });
 
-      console.log(response);
       setName(response.data.name_date);
       setAgenda(response.data.agenda);
+      setDate(response.data.date);
+      if(!response.data.time){
+       setTime("10:00");
+      }
+      console.log(response);
       setNotes(
         
         response.data.questions.concat(
@@ -481,10 +513,58 @@ const Meeting = (props) => {
           response.data.action_steps
         )
       );
+
+      let peopleArray = response.data.people.split(',');
+      peopleArray = peopleArray.map(name => name.trim());
+      
+      let elementsToAdd = [];
+      let updatedAttendeeIds =[];
+      let updatedAttendees=[];
+      for (let i = 0; i < peopleArray.length; i++) {
+        let currentElement = peopleArray[i];
+        for (let j = 0; j < people.length; j++) {
+          let otherElement = people[j].name;
+
+          if (otherElement && otherElement.toLowerCase().includes(currentElement.toLowerCase()) ) {
+
+            if (!attendeeIds.includes(people[j].id)) {
+              updatedAttendeeIds.push(people[j].id);
+              updatedAttendees.push(people[j]);
+            }
+            }
+        }
+      }
+
+
+      let dupAttendees=[...attendees];
+      let dupAttendeeIds=[...attendeeIds];
+      dupAttendees.push(...updatedAttendees);
+      dupAttendeeIds.push(...updatedAttendeeIds);
+      setAttendeeIds(dupAttendeeIds);
+      setAttendees(dupAttendees);
+
+      const updatedTypeSync = [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ];
+      updatedTypeSync[response.data.meeting_type] = true;
+      setTypeSync(updatedTypeSync);
+      setType(typeStrings[response.data.meeting_type]);
+
     }
+    
     croppedImage.then(res => reader.readAsArrayBuffer(res));
     toggleScanState();
   }
+
+
+  
 
   /*
    * In first scan state (isInFirstScanState is true), display

@@ -50,9 +50,10 @@ VALUES
 INSERT INTO person_person
     (name, email, deleted)
 VALUES
-    ("Dianne Forest", "vivek.kamisetty001@umb.edu", 0),
-    ("Benjamin Weeks", "vamshikrishna1032000@gmail.com", 0),
-    ("Nathan E. Betteldou", "NEBetteldou@gmail.com", 0);
+    ("Taylor ", "sruthidamera23@gmail.com", 0),
+    ("Riccardo Brandon", "sruthidamera123@gmail.com", 0),
+    ("Moses", "sruthidamera223@gmail.com", 0),
+    ("KeN Burt", "sruthidamera323@gmail.com", 0);
 
 INSERT INTO tasks_task
     (task_name, employee_name, start_date, end_date, is_completed, is_delete, priority, task_description, meeting_id_id)

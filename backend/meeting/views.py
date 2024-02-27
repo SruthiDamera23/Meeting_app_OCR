@@ -11,6 +11,11 @@ from google.cloud import documentai
 from google.api_core.client_options import ClientOptions
 from PIL import Image
 import json
+from dateutil import parser
+from datetime import datetime
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
 
 @api_view(['GET', 'POST'])
 def schedule(request):
@@ -82,6 +87,8 @@ def _retrieve_data_document_ai(image_data):
                 case "Questions": questions = obj.mention_text
                 case "Objective": objective = obj.mention_text
                 case "Date_name": name_date = obj.mention_text
+
+        date_string=parse_date(name_date)
         response_dict = {
             'name_date': name_date,
             'agenda': agenda,
@@ -90,12 +97,35 @@ def _retrieve_data_document_ai(image_data):
             'objective': objective,
             'notes': notes,
             'action_steps': action_steps,
-            'date':date
+            'date':date_string
         }
+        meeting_type=extract_MeetingType(response_dict)
+        response_dict['meeting_type'] = meeting_type
+        
         return response_dict
     
     except:
         traceback.print_exc()
+
+def extract_MeetingType(response_dict):
+    Meeting_types=[
+    "1 on 1",
+    "Delegation",
+    "Leadership Pipeline",
+    "Personal Growth",
+    "Debrief",
+    "Goal Setting",
+    "Leadership Workshop",
+    "Problem Solving"]
+    data_text = ' '.join(response_dict.values())
+    tfidf_vectorizer = TfidfVectorizer()
+    data_tfidf = tfidf_vectorizer.fit_transform([data_text])
+    content_types_tfidf = tfidf_vectorizer.transform(Meeting_types)
+    similarity_scores = cosine_similarity(data_tfidf, content_types_tfidf)
+    closest_content_type_index = similarity_scores.argmax()
+    return closest_content_type_index
+
+    
     
 def _handwriting_to_text(image_data):
     """
@@ -226,6 +256,8 @@ def _handwriting_to_text(image_data):
                 "https://cloud.google.com/apis/design/errors".format(response.error.message)
             )
 
+
+        date_string=parse_date(name_date)
         response_dict = {
             'name_date': name_date,
             'agenda': agenda,
@@ -233,7 +265,8 @@ def _handwriting_to_text(image_data):
             'questions': questions,
             'objective': objective,
             'notes': notes,
-            'action_steps': action_steps
+            'action_steps': action_steps,
+            'date': date_string
         }
 
         return response_dict
@@ -242,6 +275,24 @@ def _handwriting_to_text(image_data):
     finally:
         return "na"
 
+
+
+def parse_date(date_str):
+    try:
+        # Attempt to parse the date string
+        parsed_date = parser.parse(date_str, fuzzy=True)
+        return parsed_date.strftime('%Y-%m-%d')
+    except ValueError:
+        # If parsing fails, try adding the next possible year
+        try:
+            # Add the current year to the date string and parse again
+            current_year = datetime.now().year
+            date_with_current_year = date_str + f', {current_year}'
+            parsed_date = parser.parse(date_with_current_year, fuzzy=True)
+            return parsed_date.strftime('%Y-%m-%d')
+        except ValueError:
+            # If parsing still fails, return None indicating failure
+            return None
 """
 Send notifications to emails of people
 invited to meeting.
