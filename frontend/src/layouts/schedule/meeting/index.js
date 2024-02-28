@@ -46,12 +46,15 @@ const Meeting = (props) => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [type, setType] = useState("");
+  const [objective,setObjective] = useState(""); //objective  is to store the object data
+  const [questions ,setQuestions]=useState("") ; //questions is to store the question data
   // attendeeIds is a list of person ids
   const [attendeeIds, setAttendeeIds] = useState([]);
   // attendees is a list of person objects
   const [attendees, setAttendees] = useState([]);
   const [teams, setTeams] = useState("");
   const [notes, setNotes] = useState("");
+  const [actionSteps,setActionSteps] = useState("");
   const [meetingTasks, setMeetingTasks] = useState([]);
   // imageSrc contains image data to be processed and sent
   // with meeting_ocr request.
@@ -204,6 +207,13 @@ const Meeting = (props) => {
     setTypeSync(updatedTypeSync);
     setType(typeStrings[value]);
   }
+const handleObjective = (e)=>{
+  setObjective(e.target.value);
+}
+
+const handleQuestions = (e) =>{
+  setQuestions(e.target.value)
+}
   const handleTeamsChange = (e) => setTeams(e.target.value);
   const handleNotesChange = (e) => {
     for (let i = 0; i < people.length; i++) {
@@ -212,6 +222,8 @@ const Meeting = (props) => {
     
     setNotes(e.target.value);
   }
+  //const handleNotesChange = (e) => setNotes(e.target.value);
+  const handleActionSteps = (e) => setActionSteps(e.target.value);
   const handleMeetingTasksChange = (e) => {
     const meetingTaskIndex = Number(e.target.getAttribute("index"));
     const updatedMeetingTasks = meetingTasks.map(
@@ -788,6 +800,16 @@ const Meeting = (props) => {
                         </Card>
                         <div id="typeError" class="error-message"></div>
                       </FormGroup>
+                      <FormGroup>
+                        <Label className="form-label" for="objective">Objective</Label>
+                        <Input className="form-input" type="textarea" name="objective" id="objective" value={objective} onChange={handleObjective} required />
+                        <div id="objectiveError" class="error-message"></div>
+                      </FormGroup>
+                      <FormGroup>
+                        <Label className="form-label" for="questions">Questions</Label>
+                        <Input className="form-input" type="textarea" name="questions" id="questions" value={questions} onChange={handleQuestions} required />
+                        <div id="questionError" class="error-message"></div>
+                      </FormGroup>
                     </Col>
                   </Row>
                 </CardBody>
@@ -830,11 +852,26 @@ const Meeting = (props) => {
               <Card className="my-card">
                 <CardBody className="my-card-body">
                   <Row>
-                    <FormGroup style={{width: "50%", position: "relative", left: "25%"}}>
+                  <Col>
+                  <FormGroup>
+                    {/* <FormGroup style={{width: "50%", position: "relative", left: "25%"}}> */}
                       <Label className="form-label" for="notes">Meeting Notes*</Label>
                       <Input className="form-input" type="textarea" name="notes" id="notes" value={notes} onChange={handleNotesChange} />
                       <div id="noteError" class="error-message"></div>
+                      <Col>
+                      <Input className="form-input mt-1" type='file' />
+                      </Col>
                     </FormGroup>
+                    </Col>
+                    <Col>
+                    <FormGroup>
+                    {/* <FormGroup style={{width: "50%", position: "relative", left: "25%"}}> */}
+                      <Label className="form-label" for="actionSteps">Action steps*</Label>
+                      <Input className="form-input" type="textarea" name="actionSteps" id="actionSteps" value={actionSteps} onChange={handleActionSteps} />
+                      <div id="actionError" class="error-message"></div>
+                    </FormGroup>
+                    </Col>
+                    
                   </Row>
                 </CardBody>
               </Card>
