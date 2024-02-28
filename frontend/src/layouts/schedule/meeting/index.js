@@ -514,17 +514,10 @@ const handleQuestions = (e) =>{
        setTime("10:00");
       }
       console.log(response);
-      setNotes(
-        
-        response.data.questions.concat(
-          "\n",
-          response.data.objective,
-          "\n",
-          response.data.notes,
-          "\n",
-          response.data.action_steps
-        )
-      );
+      setNotes(response.data.notes);
+      setObjective(response.data.objective);
+      setQuestions(response.data.questions);
+      setActionSteps(response.data.action_steps);
 
       let peopleArray = response.data.people.split(',');
       peopleArray = peopleArray.map(name => name.trim());
