@@ -67,4 +67,3 @@ INSERT INTO quickstart_user
     (password, email, first_name, last_name, is_active, is_admin)
 VALUES
     ("pbkdf2_sha256$600000$cvhsT13lWVScnb3irC2gPm$JsD4yXI/kcaFbAkJk/XdJHjtbbOP67pN2S1XuFPPs4M=", "rounakb@umb.edu", "Rounak", "Burman", 1, 0);
-

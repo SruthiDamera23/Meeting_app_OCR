@@ -22,4 +22,3 @@ class Meeting(models.Model):
     meeting_tasks = models.ManyToManyField('tasks.Task', blank=True)
     # Indicates if the meeting has been deleted.
     deleted = models.BooleanField(default=False)
-
