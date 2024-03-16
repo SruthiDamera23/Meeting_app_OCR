@@ -1,4 +1,6 @@
 from django.db import models
+from church.models import Church
+from quickstart.models import User
 
 # Represents a meeting entity for the 'meeting' app.
 class Meeting(models.Model):
@@ -22,3 +24,7 @@ class Meeting(models.Model):
     meeting_tasks = models.ManyToManyField('tasks.Task', blank=True)
     # Indicates if the meeting has been deleted.
     deleted = models.BooleanField(default=False)
+
+    created_by =models.ForeignKey(User, on_delete=models.CASCADE, related_name='meetinguser')
+
+    church=models.ForeignKey(Church, on_delete=models.CASCADE, related_name='meetingchurch')

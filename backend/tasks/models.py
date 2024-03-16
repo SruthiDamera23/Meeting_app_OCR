@@ -1,4 +1,6 @@
 from django.db import models
+from church.models import Church
+from quickstart.models import User
 from meeting.models import Meeting
 
 class Task(models.Model):
@@ -13,4 +15,6 @@ class Task(models.Model):
     task_description = models.CharField(max_length=500)
     meeting_id = models.ForeignKey(Meeting, on_delete=models.CASCADE, related_name='tasks')
     meetings = models.ManyToManyField('meeting.Meeting', blank=True)
+    created_by =models.ForeignKey(User, on_delete=models.CASCADE, related_name='taskuser')
+    church=models.ForeignKey(Church, on_delete=models.CASCADE, related_name='taskchurch')
 

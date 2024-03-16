@@ -3,9 +3,10 @@
 
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from church.models import Church
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, first_name, last_name, password=None):
+    def create_user(self, email, first_name, last_name, password=None,user_type=0,church=None):
         if not email:
             raise ValueError('Users must have an email address')
 
@@ -19,12 +20,39 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, first_name, last_name, password):
+    def create_superuser(self, email, first_name, last_name, password,user_type):
         user = self.create_user(
             email=self.normalize_email(email),
             first_name=first_name,
             last_name=last_name,
             password=password,
+            user_type=1
+        )
+        user.is_admin = True
+        user.save(using=self._db)
+        return user
+    
+    def create_admin(self, email, first_name, last_name, password,user_type,church):
+        user = self.create_user(
+            email=self.normalize_email(email),
+            first_name=first_name,
+            last_name=last_name,
+            password=password,
+            user_type=2,
+            church=church
+        )
+        user.is_admin = True
+        user.save(using=self._db)
+        return user
+    
+    def create_leader(self, email, first_name, last_name, password,user_type,church):
+        user = self.create_user(
+            email=self.normalize_email(email),
+            first_name=first_name,
+            last_name=last_name,
+            password=password,
+            user_type=3,
+            church=church
         )
         user.is_admin = True
         user.save(using=self._db)
@@ -35,7 +63,8 @@ class User(AbstractBaseUser):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
+    user_type = models.IntegerField(default=3)
+    church = models.ForeignKey(Church, on_delete=models.CASCADE, related_name='church')
 
     objects = UserManager()
 

@@ -35,7 +35,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-gn&3vuy(13h%x$qzky(wg9w))qbxo%2okrwt7*_nt5t)5wqe48'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -73,7 +73,9 @@ INSTALLED_APPS = [
     #'meeting2',
     'tasks',
     'corsheaders',
-    'drf_yasg'
+    'drf_yasg',
+    'church',
+    'group'
 ]
 
 MIDDLEWARE = [
