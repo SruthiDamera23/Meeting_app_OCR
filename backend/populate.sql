@@ -54,13 +54,13 @@ VALUES
     ("analysts",0);
 
 INSERT INTO quickstart_user
-    (password, email, first_name, last_name, is_active, user_type, church)
+    (password, email, first_name, last_name, is_active, user_type, church_id)
 VALUES
     ("pbkdf2_sha256$600000$cvhsT13lWVScnb3irC2gPm$JsD4yXI/kcaFbAkJk/XdJHjtbbOP67pN2S1XuFPPs4M=", "rounakb@umb.edu", "Rounak", "Burman", 1, 1,1);
 
 
 INSERT INTO meeting_meeting
-    (name, type, date, time, agenda, notes, deleted,created_by_id,church)
+    (name, type, date, time, agenda, notes, deleted,created_by_id,church_id)
 VALUES
     ("Project Review Meeting", "1 on 1", "2023-05-10", "15:00:00", "This meeting has no agenda", "Discussed progress on project deliverables", 0,1,1),
     ("Company Retreat", "Debrief", "2022-05-25", "08:00:00", "This meeting has no agenda", "Team building activities", 0,1,1),
@@ -76,7 +76,7 @@ VALUES
     ("KeN Burt", "sruthidamera323@gmail.com", 0);
 
 INSERT INTO tasks_task
-    (task_name, employee_name, start_date, end_date, is_completed, is_delete, priority, task_description, meeting_id_id,created_by,church)
+    (task_name, employee_name, start_date, end_date, is_completed, is_delete, priority, task_description, meeting_id_id,created_by_id,church)
 VALUES
     ("Task 1", "John Doe", "2023-04-05", "2023-04-15", 1, 0, "high", "This is task 1.", 1,1,1),
     ("Task 2", "Rishank Singh", "2023-04-03", "2023-04-22", 1, 0, "medium", "task 2 is the new task to complete task description.", 1,1,1),
