@@ -39,21 +39,21 @@
     3) The name of the database binary is db.sqlite3.
 */
 
-INSERT INTO church
+INSERT INTO church_church
     ( name, deleted)
 VALUES
     ("alpha",0),
     ("beta",0),
     ("gama",0);
 
-INSERT INTO group
+INSERT INTO group_group
     ( name, deleted)
 VALUES
     ("developers",0),
     ("testers",0),
     ("analysts",0);
 
-INSERT INTO user
+INSERT INTO quickstart_user
     (password, email, first_name, last_name, is_active, user_type, church)
 VALUES
     ("pbkdf2_sha256$600000$cvhsT13lWVScnb3irC2gPm$JsD4yXI/kcaFbAkJk/XdJHjtbbOP67pN2S1XuFPPs4M=", "rounakb@umb.edu", "Rounak", "Burman", 1, 1,1);
