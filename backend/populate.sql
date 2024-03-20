@@ -39,13 +39,33 @@
     3) The name of the database binary is db.sqlite3.
 */
 
-INSERT INTO meeting_meeting
-    (name, type, date, time, agenda, notes, deleted)
+INSERT INTO church
+    ( name, deleted)
 VALUES
-    ("Project Review Meeting", "1 on 1", "2023-05-10", "15:00:00", "This meeting has no agenda", "Discussed progress on project deliverables", 0),
-    ("Company Retreat", "Debrief", "2022-05-25", "08:00:00", "This meeting has no agenda", "Team building activities", 0),
-    ("Product Launch Meeting", "Problem Solving", "2022-05-20", "16:00:00", "This meeting has no agenda", "Discuss product launch strategy", 0),
-    ("Training Session", "Leadership Workshop", "2022-05-17", "09:00:00", "This meeting has no agenda", "Introduce company policies and procedures", 0);
+    ("alpha",0),
+    ("beta",0),
+    ("gama",0);
+
+INSERT INTO group
+    ( name, deleted)
+VALUES
+    ("developers",0),
+    ("testers",0),
+    ("analysts",0);
+
+INSERT INTO user
+    (password, email, first_name, last_name, is_active, user_type, church)
+VALUES
+    ("pbkdf2_sha256$600000$cvhsT13lWVScnb3irC2gPm$JsD4yXI/kcaFbAkJk/XdJHjtbbOP67pN2S1XuFPPs4M=", "rounakb@umb.edu", "Rounak", "Burman", 1, 1,1);
+
+
+INSERT INTO meeting_meeting
+    (name, type, date, time, agenda, notes, deleted,created_by_id,church)
+VALUES
+    ("Project Review Meeting", "1 on 1", "2023-05-10", "15:00:00", "This meeting has no agenda", "Discussed progress on project deliverables", 0,1,1),
+    ("Company Retreat", "Debrief", "2022-05-25", "08:00:00", "This meeting has no agenda", "Team building activities", 0,1,1),
+    ("Product Launch Meeting", "Problem Solving", "2022-05-20", "16:00:00", "This meeting has no agenda", "Discuss product launch strategy", 0,1,1),
+    ("Training Session", "Leadership Workshop", "2022-05-17", "09:00:00", "This meeting has no agenda", "Introduce company policies and procedures", 0,1,1);
 
 INSERT INTO person_person
     (name, email, deleted)
@@ -56,14 +76,10 @@ VALUES
     ("KeN Burt", "sruthidamera323@gmail.com", 0);
 
 INSERT INTO tasks_task
-    (task_name, employee_name, start_date, end_date, is_completed, is_delete, priority, task_description, meeting_id_id)
+    (task_name, employee_name, start_date, end_date, is_completed, is_delete, priority, task_description, meeting_id_id,created_by,church)
 VALUES
-    ("Task 1", "John Doe", "2023-04-05", "2023-04-15", 1, 0, "high", "This is task 1.", 1),
-    ("Task 2", "Rishank Singh", "2023-04-03", "2023-04-22", 1, 0, "medium", "task 2 is the new task to complete task description.", 1),
-    ("Task 3", "Sankalp Vaish", "2023-04-03", "2023-04-20", 0, 0, "Low", "Not available", 1),
-    ("Task 4", "Rounak Burman", "2023-04-22", "2023-04-25", 0, 0, "high", "Not available", 1);
+    ("Task 1", "John Doe", "2023-04-05", "2023-04-15", 1, 0, "high", "This is task 1.", 1,1,1),
+    ("Task 2", "Rishank Singh", "2023-04-03", "2023-04-22", 1, 0, "medium", "task 2 is the new task to complete task description.", 1,1,1),
+    ("Task 3", "Sankalp Vaish", "2023-04-03", "2023-04-20", 0, 0, "Low", "Not available", 1,1,1),
+    ("Task 4", "Rounak Burman", "2023-04-22", "2023-04-25", 0, 0, "high", "Not available", 1,1,1);
 
-INSERT INTO quickstart_user
-    (password, email, first_name, last_name, is_active, is_admin)
-VALUES
-    ("pbkdf2_sha256$600000$cvhsT13lWVScnb3irC2gPm$JsD4yXI/kcaFbAkJk/XdJHjtbbOP67pN2S1XuFPPs4M=", "rounakb@umb.edu", "Rounak", "Burman", 1, 0);

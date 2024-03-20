@@ -64,7 +64,7 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
     user_type = models.IntegerField(default=3)
-    church = models.ForeignKey(Church, on_delete=models.CASCADE, related_name='church')
+    church = models.ForeignKey(Church, on_delete=models.CASCADE,blank=True)
 
     objects = UserManager()
 

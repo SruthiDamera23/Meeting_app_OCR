@@ -217,7 +217,6 @@ CORS_ALLOW_HEADERS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'myapp.backends.CustomAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
