@@ -5,7 +5,8 @@
  *
  *
  */
-import React, { useState, useEffect} from "react";
+
+import React, { useState } from "react";
 import {
   Card,
   CardHeader,
@@ -21,25 +22,19 @@ import {
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { FaUserAlt, FaLock } from "react-icons/fa";
-import { login, getCookie } from "../../../api";
+import { login } from "../../../api";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function Login(props) {
-
-  useEffect(()=>{
-    
-    console.log(document.cookie);
-    if(getCookie("user")!="" && getCookie("priv")!="") {
-      console.log("not here");
-      navigate('/dashboard');
-    } 
-  },[])
   const navigate = useNavigate();
-  
+
   const handleSignUp = () => {
     navigate("/signup");
   };
-
+  const handleChurchChange=(e)=>{
+    return (
+    e.target.value)
+    }
   const history = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -49,12 +44,19 @@ function Login(props) {
       password: "",
       invalid:""
     },
+    churchList:[
+      { id: 1, name: 'Church1' },
+      { id: 2, name: 'Church2' },
+      { id: 3, name: 'Church3' }
+    ]
+
   });
 
   const [error, setError] = useState(null);
   const handleChange = (event) => {
   const { name, value } = event.target;
 
+  
   setFormData((prevState) => ({
     ...prevState,
     [name]: value,
@@ -92,17 +94,16 @@ function Login(props) {
       }));
       return;
     }
-   
-    login(formData).then(response => {
-      console.log(response.data)
-      document.cookie="user="+response.data.user;
-      document.cookie="priv="+response.data.priv;
-      console.log(document.cookie);
-      navigate('/dashboard');
+
+    login(formData)
+      .then(() => {
+        navigate('/dashboard');
+        // props.setAuthenticate(true);
       })
       .catch((error) => {
+        
         const errors = {};
-        errors.invalid = error.response.data.message; 
+        errors.invalid = error.response.data.message;
         setFormData((prevState) => ({
           ...prevState,
           errors: { ...errors },
@@ -123,8 +124,7 @@ function Login(props) {
                   <CardBody className="my-card-body">
                   {formData.errors.invalid && <div className="form-error">{formData.errors.invalid}</div>}
                     <Row>
-            
-                    
+                         
                       <FormGroup>
                       
                         <Label for="username" className="form-label">
@@ -159,7 +159,35 @@ function Login(props) {
                           placeholder="Enter your password"
                           invalid={!!formData.errors.password}
                         />
-                        {formData.errors.password && <div className="invalid-feedback">{formData.errors.password}</div>}
+                        {formData.errors.password && <div className="invalid-feedback">{formData.errors.password}</div>}                    
+                        {/* <div className="text-right mt-2">
+                          <a className="link-text" href="/forgot-password">
+                            Forgot password?
+                          </a>
+                        </div> */}
+                      </FormGroup>
+                    </Row>
+                    <Row>
+                      <FormGroup>
+                        <Label for="password" className="form-label">
+                          Church
+                        </Label>
+                        <Input
+                          type="select"
+                          className="form-input"
+                          name="church"
+                          value={formData.church}
+                          onChange={handleChange}
+                          invalid={!!formData.errors.church}
+                        >
+                          <option value="">Select Church</option>
+                          {formData.churchList.map((church) => (
+                            <option key={church.id} value={church.id}>
+                              {church.name}
+                            </option>
+                          ))}
+                        </Input>
+                        
                         <div className="text-right mt-2">
                           <a className="link-text" href="/forgot-password">
                             Forgot password?
@@ -193,4 +221,3 @@ function Login(props) {
 }
 
 export default Login;
-
