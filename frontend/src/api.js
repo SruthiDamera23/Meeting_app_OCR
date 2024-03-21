@@ -11,6 +11,8 @@ const api = axios.create({
     },
 });
 
+
+
 export const signup = (formData) => api.post('signup/', formData);
 export const login = (formData) => api.post('login/', formData);
 export const tasks_create = (formData) => api.post('tasks/', formData);
@@ -21,11 +23,13 @@ export const meeting_view = () => api.get('meeting/');
 export const meeting_read = (pk) => api.get(`meeting/${pk}`);
 export const meeting_update = (pk, formData) => api.put(`meeting/${pk}`, formData);
 export const person_view = () => api.get('person/');
-export const user_requests=()=>api.get('requests/')
+export const delete_request = (id) => api.delete(`deleterequest/${id}/`);
+
+export const user_requests=()=>api.get('requests/');
 // export const meeting_delete = (pk) => api.put(`api/meeting//${pk}`);
 export const task_view = (id) => api.get(`tasks/${id}`);
 export const tasks_delete = (id, formData) => api.delete(`tasks/${id}/`, formData);
-export const tasks_update = (id, formData) => api.put(`tasks/${id}/`, formData);
+export const tasks_update = (id, formData) => api.put(`tasks/${id}`, formData);
 // export const tasks_delete = () => api.post('tasks/');
 export const logout = () => api.post('logout/');
 

@@ -4,13 +4,13 @@ import {
   Card,
   Button
 } from 'reactstrap';
-import {user_requests} from '../../../src/api'
+import {user_requests,delete_request,signup} from '../../../src/api'
 
 import ReactDOM from 'react-dom';
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import AppSidebar from "../../components/appSidebar";
-import { tasks_view, approveUser, denyUser } from "../../api";
+
 
 const UserRequest = () => {
   const [users, setUsers] = useState([]);
@@ -19,30 +19,54 @@ const UserRequest = () => {
 
   useEffect(() => {
     if (mustGetUsers) {
-      user_requests()
-        .then((req) => {
-          const usersData = req.data;
-          console.log(usersData);
-          setUsers(req.data);
-          setIsLoading(false);
-          setMustGetUsers(false);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      get_requests();
     }
   }, [mustGetUsers]);
 
-  const handleApprove = (userId) => {
 
-    // approveUser(userId)
-    //   .then((response) => {
-    //     // If successful, refresh users data
-    //     setMustGetUsers(true);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+  const get_requests=()=>{
+    user_requests()
+    .then((req) => {
+      const usersData = req.data;
+      console.log(usersData);
+      setUsers(req.data);
+      setIsLoading(false);
+      setMustGetUsers(false);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+  const handleApprove = (userTemp) => {
+ 
+
+     const userData= {
+        'church_id': userTemp.church,
+        'email': userTemp.email,
+        'first_name': userTemp.first_name,
+        'is_active':userTemp.is_active,
+        'last_name': userTemp.last_name,
+        'user_type':userTemp.user_type,
+        'password':userTemp.password
+      }
+
+      console.log(userData);
+
+    //   delete_request(userTemp.id).then((req)=>{
+    //       console.log('deleted');
+    // })
+ 
+    signup(userData)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+
+
+
+ 
   };
 
   const handleDeny = (userId) => {
@@ -82,7 +106,7 @@ const UserRequest = () => {
                         <td style={{ padding: '8px' }}>{user.first_name+" "+user.last_name}</td>
                         <td style={{ padding: '8px' }}>{user.email}</td>
                         <td style={{ padding: '8px' }}>
-                          <Button onClick={() => handleApprove(user.id)} color="success">Approve</Button>{' '}
+                          <Button onClick={() => handleApprove(user)} color="success">Approve</Button>{' '}
                           <Button onClick={() => handleDeny(user.id)} color="danger">Deny</Button>
                         </td>
                       </tr>

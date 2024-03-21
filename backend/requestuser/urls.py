@@ -11,6 +11,8 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('requests/', get_requests, name='requests'),
+    path('deleterequest/<int:pk>/', get_requests, name='requests'),
+    
     # path('', include(router.urls)),
 
 ]

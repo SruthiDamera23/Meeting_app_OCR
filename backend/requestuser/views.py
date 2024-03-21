@@ -61,6 +61,7 @@ def logout_view(request):
 @api_view(['POST'])
 def signup(request):
     serializer = UserSerializer(data=request.data)
+    print(request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -76,3 +77,22 @@ def get_requests(request):
     users = RequestUser.objects.all()  # Retrieve all users
     serializer = UserSerializer(users, many=True)  # Serialize users data
     return Response(serializer.data)
+
+
+from django.shortcuts import get_object_or_404
+from rest_framework.decorators import api_view
+
+@api_view(['DELETE', 'POST'])
+def delete_user(request, user_id):
+    if request.method == 'POST' and request.POST.get('_method') == 'DELETE':
+        # Override method if _method=DELETE is provided in the request body
+        request.method = 'DELETE'
+
+    try:
+        user = RequestUser.objects.get(id=user_id)  # Get the user instance
+        user.delete()
+        return Response({'message': 'User deleted successfully'}, status=status.HTTP_200_OK)
+    except RequestUser.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

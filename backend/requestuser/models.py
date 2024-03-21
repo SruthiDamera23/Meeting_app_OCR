@@ -65,7 +65,6 @@ class RequestUser(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     user_type = models.IntegerField(default=3)
     church = models.ForeignKey(Church, on_delete=models.CASCADE,blank=True)
-
     objects = UserManager()
 
     USERNAME_FIELD = 'email'

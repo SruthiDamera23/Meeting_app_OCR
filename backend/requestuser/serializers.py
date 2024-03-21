@@ -8,8 +8,8 @@ from .models import RequestUser
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = RequestUser
-        fields = ['id', 'email', 'first_name', 'last_name', 'password']
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = ['id','email', 'first_name', 'last_name', 'password','user_type','is_active','church']
+
 
     def create(self, validated_data):
         user = RequestUser.objects.create_user(**validated_data)
