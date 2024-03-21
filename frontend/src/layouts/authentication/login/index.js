@@ -31,6 +31,10 @@ function Login(props) {
   const handleSignUp = () => {
     navigate("/signup");
   };
+  const handleChurchChange=(e)=>{
+    return (
+    e.target.value)
+    }
 
   const history = useNavigate();
   const [formData, setFormData] = useState({
@@ -41,11 +45,18 @@ function Login(props) {
       password: "",
       invalid:""
     },
+    churchList:[
+      { id: 1, name: 'Church1' },
+      { id: 2, name: 'Church2' },
+      { id: 3, name: 'Church3' }
+    ]
+
   });
 
   const [error, setError] = useState(null);
   const handleChange = (event) => {
   const { name, value } = event.target;
+
 
   setFormData((prevState) => ({
     ...prevState,
@@ -151,6 +162,35 @@ function Login(props) {
                           invalid={!!formData.errors.password}
                         />
                         {formData.errors.password && <div className="invalid-feedback">{formData.errors.password}</div>}
+  
+                        {/* <div className="text-right mt-2">
+                          <a className="link-text" href="/forgot-password">
+                            Forgot password?
+                          </a>
+                        </div> */}
+                      </FormGroup>
+                    </Row>
+                    <Row>
+                      <FormGroup>
+                        <Label for="password" className="form-label">
+                          Church
+                        </Label>
+                        <Input
+                          type="select"
+                          className="form-input"
+                          name="church"
+                          value={formData.church}
+                          onChange={handleChange}
+                          invalid={!!formData.errors.church}
+                        >
+                          <option value="">Select Church</option>
+                          {formData.churchList.map((church) => (
+                            <option key={church.id} value={church.id}>
+                              {church.name}
+                            </option>
+                          ))}
+                        </Input>
+                        
                         <div className="text-right mt-2">
                           <a className="link-text" href="/forgot-password">
                             Forgot password?
@@ -184,4 +224,3 @@ function Login(props) {
 }
 
 export default Login;
-
