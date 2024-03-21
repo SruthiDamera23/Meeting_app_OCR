@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Sidebar,
     Menu,
@@ -14,11 +14,19 @@ import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined"; // New icon for user requests
 import { useNavigate, Link } from "react-router-dom";
-import { logout, tasks_view, updateCookie } from "../../api";
+import { logout, tasks_view, getCookie, updateCookie } from "../../api";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const AppSidebar = () => {
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    
+    console.log(document.cookie);
+    if(getCookie("user")=="" && getCookie("priv")=="") {
+      navigate('/');
+    } 
+  },[])
 
   const handleLogout = async () => {
       logout()
@@ -31,6 +39,12 @@ const AppSidebar = () => {
           console.log(error.response.data);
         });
     };
+
+    const checkPriority=()=>{
+      console.log('priority :'+getCookie('priv'));
+      return getCookie('priv')==1;
+    }
+    
 
     return (
         <Sidebar
@@ -88,13 +102,10 @@ const AppSidebar = () => {
                         List
                     </MenuItem>
                 </SubMenu>
-
-                <MenuItem className="sidebar-menu-item" component={<Link to="/user-request" />}>
-                    <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" /> {/* Changed icon */}
-                    <br />
-                    Requests
-                </MenuItem>
-
+                {checkPriority() && <MenuItem className="sidebar-menu-item" component={<Link to="/user-request" />}>
+                  <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
+                   {/* Changed icon */}<br />Requests
+                   </MenuItem>}
                 <MenuItem className="sidebar-menu-item" component={<div onClick={handleLogout} />}>
                     <LogoutOutlinedIcon className="sidebar-menu-item-icon" />
                     <br />

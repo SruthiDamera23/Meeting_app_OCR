@@ -6,7 +6,7 @@
  *
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Card,
   CardHeader,
@@ -21,11 +21,16 @@ import {
   Col,
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
-import { signup } from '../../../api';
+import { signup_approve, get_church_data } from '../../../api';
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+
+
+
+
 const Signup = () => {
+  const [churchData,setChurchData]=useState([]);
   const history = useNavigate();
   const [formData, setFormData] = useState({
     first_name: "",
@@ -39,6 +44,18 @@ const Signup = () => {
       password: "",
     },
   });
+
+
+  useEffect(()=>{
+      get_church_data().then( response => {
+      let tcd = [];
+        for(let i=0;i<response.data.length;i++) {
+        tcd.push([response.data[i].id, response.data[i].name]);
+      }
+      setChurchData(tcd);
+      console.log(tcd);
+      })
+  },[])
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [signupMessage, setSignupMessage] = useState(null);
@@ -94,21 +111,23 @@ const Signup = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const errors = validateForm();
-    if (Object.keys(errors).length > 0) {
-      setFormData((prevState) => ({
-        ...prevState,
-        errors: { ...errors },
-      }));
-      return;
-    }
+    // const errors = validateForm();
+    // if (Object.keys(errors).length > 0) {
+    //   setFormData((prevState) => ({
+    //     ...prevState,
+    //     errors: { ...errors },
+    //   }));
+    //   console.log(FormData.errors);
+    //   return;
+    // }
 
-    signup(formData)
+    signup_approve(formData)
       .then((response) => {
+        console.log(response);
         console.log(response.data);
         setFormData(initialFormData);
         setIsSubmitted(true);
-        setSignupMessage("Signup successful!");
+        setSignupMessage("Signup Request Submitted!");
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -196,6 +215,43 @@ const Signup = () => {
                           />
                           {formData.errors.password && <div className="invalid-feedback">{formData.errors.password}</div>}
                       </FormGroup>
+                      <Row>
+  <FormGroup>
+    <Label for="user_type" className="form-label">
+      User Type
+    </Label>
+    <Input
+      type="select"
+      id="user_type"
+      name="user_type"
+      value={formData.user_type}
+      onChange={handleChange}
+    >
+      <option value="1">Superuser</option>
+      <option value="2">Admin</option>
+      <option value="3">Leader</option>
+    </Input>
+  </FormGroup>
+  <Row>
+  <FormGroup>
+    <Label for="church-id" className="form-label">
+      Church Name
+    </Label>
+    <Input
+      type="select"
+      id="church-id"
+      name="church_id"
+      value={formData.church_id}
+      onChange={handleChange}
+    >
+    {churchData.map((item) => (
+  <option key={item[0]} value={item[0]}>{item[1]}</option>
+))}
+      
+    </Input>
+  </FormGroup>
+</Row>
+</Row>
                       <div className="mt-2">
                         <a className="link-text" href="/">
                           Back to login
@@ -206,7 +262,7 @@ const Signup = () => {
                     <div style={{display: "flex", justifyContent: "center"}}>
                       <Card className="outer-card">
                         <CardBody>
-                          <Button type="submit" color="success">
+                          <Button type="submit" color="success" onClick={handleSubmit}>
                             Sign up
                           </Button>
                         </CardBody>
