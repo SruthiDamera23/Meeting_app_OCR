@@ -5,8 +5,7 @@
  *
  *
  */
-
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import {
   Card,
   CardHeader,
@@ -22,12 +21,21 @@ import {
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { FaUserAlt, FaLock } from "react-icons/fa";
-import { login } from "../../../api";
+import { login, getCookie } from "../../../api";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function Login(props) {
-  const navigate = useNavigate();
 
+  useEffect(()=>{
+    
+    console.log(document.cookie);
+    if(getCookie("user")!="" && getCookie("priv")!="") {
+      console.log("not here");
+      navigate('/dashboard');
+    } 
+  },[])
+  const navigate = useNavigate();
+  
   const handleSignUp = () => {
     navigate("/signup");
   };
@@ -84,16 +92,17 @@ function Login(props) {
       }));
       return;
     }
-
-    login(formData)
-      .then(() => {
-        navigate('/dashboard');
-        // props.setAuthenticate(true);
+   
+    login(formData).then(response => {
+      console.log(response.data)
+      document.cookie="user="+response.data.user;
+      document.cookie="priv="+response.data.priv;
+      console.log(document.cookie);
+      navigate('/dashboard');
       })
       .catch((error) => {
-        
         const errors = {};
-        errors.invalid = error.response.data.message;
+        errors.invalid = error.response.data.message; 
         setFormData((prevState) => ({
           ...prevState,
           errors: { ...errors },

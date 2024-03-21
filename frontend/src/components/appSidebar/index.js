@@ -30,7 +30,7 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import { useNavigate, Link } from "react-router-dom";
-import { logout, tasks_view } from "../../api";
+import { logout, tasks_view, updateCookie } from "../../api";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { AccessAlarm, ThreeDRotation } from "@mui/icons-material";
 
@@ -42,6 +42,8 @@ const AppSidebar = () => {
   const handleLogout = async () => {
       logout()
         .then(() => {
+          updateCookie('user','');
+          updateCookie('priv','');
           navigate("/");
         })
         .catch((error) => {
