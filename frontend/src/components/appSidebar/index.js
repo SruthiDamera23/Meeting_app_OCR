@@ -14,20 +14,22 @@ import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined"; // New icon for user requests
 import { useNavigate, Link } from "react-router-dom";
-import { logout } from "../../api";
+import { logout, tasks_view, updateCookie } from "../../api";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const AppSidebar = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleLogout = async () => {
-        logout()
-            .then(() => {
-                navigate("/");
-            })
-            .catch((error) => {
-                console.log(error.response.data);
-            });
+  const handleLogout = async () => {
+      logout()
+        .then(() => {
+          updateCookie('user','');
+          updateCookie('priv','');
+          navigate("/");
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
     };
 
     return (

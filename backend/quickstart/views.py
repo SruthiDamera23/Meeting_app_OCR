@@ -9,6 +9,7 @@ from .backend import CustomAuthBackend
 from django.http import HttpRequest
 from django.contrib.auth import logout
 from rest_framework import viewsets
+from .models import User
 # from .models import Task
 # from .serializers import TaskSerializer
 
@@ -44,7 +45,8 @@ def login_view(request):
     print("hello", user)
     if user is not None:
         login(django_request, user, backend='django.contrib.auth.backends.ModelBackend')
-        return Response({'message': 'Logged in successfully.'})
+        priv = fetch_user_and_prev(email)
+        return Response({'message': 'Logged in successfully.','user':email,'priv':int(priv)})
     return Response({'message': 'Invalid username or password.'}, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['POST'])
@@ -60,6 +62,9 @@ def signup(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+def fetch_user_and_prev(user):
+    return User.objects.get(email=user).user_type
+    
 
 # class TaskViewSet(viewsets.ModelViewSet):
 #     queryset = Task.objects.all()

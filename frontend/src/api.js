@@ -29,3 +29,17 @@ export const tasks_update = (id, formData) => api.put(`tasks/${id}/`, formData);
 // export const tasks_delete = () => api.post('tasks/');
 export const logout = () => api.post('logout/');
 
+export const getCookie = (name) => {
+    const cookies = document.cookie.split('; ');
+    for (let cookie of cookies) {
+        const [cookieName, cookieValue] = cookie.split('=');
+        if (cookieName === name) {
+            return decodeURIComponent(cookieValue);
+        }
+    }
+    return null;
+};
+
+export const updateCookie = (name, value) => {
+    document.cookie = `${name}=${encodeURIComponent(value)}; path=/;`;
+};
