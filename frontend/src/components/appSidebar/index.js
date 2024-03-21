@@ -40,6 +40,12 @@ const AppSidebar = () => {
         });
     };
 
+    const checkPriority=()=>{
+      console.log('priority :'+getCookie('priv'));
+      return getCookie('priv')==1;
+    }
+    
+
     return (
         <Sidebar
             className="sidebar"
@@ -96,13 +102,10 @@ const AppSidebar = () => {
                         List
                     </MenuItem>
                 </SubMenu>
-
-                <MenuItem className="sidebar-menu-item" component={<Link to="/user-request" />}>
-                    <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" /> {/* Changed icon */}
-                    <br />
-                    Requests
-                </MenuItem>
-
+                {checkPriority() && <MenuItem className="sidebar-menu-item" component={<Link to="/user-request" />}>
+                  <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
+                   {/* Changed icon */}<br />Requests
+                   </MenuItem>}
                 <MenuItem className="sidebar-menu-item" component={<div onClick={handleLogout} />}>
                     <LogoutOutlinedIcon className="sidebar-menu-item-icon" />
                     <br />
