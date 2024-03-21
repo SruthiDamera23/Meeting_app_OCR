@@ -76,7 +76,7 @@ VALUES
     ("KeN Burt", "sruthidamera323@gmail.com", 0);
 
 INSERT INTO tasks_task
-    (task_name, employee_name, start_date, end_date, is_completed, is_delete, priority, task_description, meeting_id_id,created_by_id,church)
+    (task_name, employee_name, start_date, end_date, is_completed, is_delete, priority, task_description, meeting_id_id,created_by_id,church_id)
 VALUES
     ("Task 1", "John Doe", "2023-04-05", "2023-04-15", 1, 0, "high", "This is task 1.", 1,1,1),
     ("Task 2", "Rishank Singh", "2023-04-03", "2023-04-22", 1, 0, "medium", "task 2 is the new task to complete task description.", 1,1,1),

@@ -75,7 +75,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_yasg',
     'church',
-    'group'
+    'group',
+    'requestuser'
 ]
 
 MIDDLEWARE = [

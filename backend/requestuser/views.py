@@ -1,9 +1,14 @@
+from django.shortcuts import render
+
+# Create your views here.
 # myapp/views.py
 
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.contrib.auth import login
+
+from requestuser.models import RequestUser
 from .serializers import UserSerializer
 from .backend import CustomAuthBackend
 from django.http import HttpRequest
@@ -64,3 +69,10 @@ def signup(request):
 # class TaskViewSet(viewsets.ModelViewSet):
 #     queryset = Task.objects.all()
 #     serializer_class = TaskSerializer
+
+
+@api_view(['GET'])
+def get_requests(request):
+    users = RequestUser.objects.all()  # Retrieve all users
+    serializer = UserSerializer(users, many=True)  # Serialize users data
+    return Response(serializer.data)

@@ -16,6 +16,7 @@ import Login from "./layouts/authentication/login";
 import Signup from "./layouts/authentication/signup/index"
 import ForgotPassword from './layouts/authentication/forgotPassword/index';
 import TaskCalendar from "./layouts/taskCalendar";
+import UserRequest from "./layouts/userRequest";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route exact path="/schedule/meeting" element={<Meeting />} />
         <Route exact path="/tasks" element={<TaskAssignment />} />
         <Route exact path="/task-calendar" element={<TaskCalendar />} />
+        <Route exact path="/user-request" element={<UserRequest />} />
       </Routes>
     </Router>
     // <div className="App">

@@ -87,7 +87,7 @@ function Login(props) {
 
     login(formData)
       .then(() => {
-        navigate('/dashboard');
+        navigate('/tasks');
         // props.setAuthenticate(true);
       })
       .catch((error) => {
