@@ -35,7 +35,6 @@ function Login(props) {
     return (
     e.target.value)
     }
-
   const history = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -57,6 +56,7 @@ function Login(props) {
   const handleChange = (event) => {
   const { name, value } = event.target;
 
+  
 
   setFormData((prevState) => ({
     ...prevState,
@@ -162,7 +162,7 @@ function Login(props) {
                           invalid={!!formData.errors.password}
                         />
                         {formData.errors.password && <div className="invalid-feedback">{formData.errors.password}</div>}
-  
+                        
                         {/* <div className="text-right mt-2">
                           <a className="link-text" href="/forgot-password">
                             Forgot password?
