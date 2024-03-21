@@ -19,7 +19,9 @@ import {
   FormText,
   Label,
   Input,
-  Button
+  Button,
+  ModalBody,
+  Modal
 } from 'reactstrap';
 import { useNavigate, useLocation } from "react-router-dom";
 import ReactCrop from 'react-image-crop';
@@ -40,6 +42,21 @@ import AppSidebar from "../../../components/appSidebar";
 import InvitePeopleModal from "../../../components/modals/InvitePeopleModal.js";
 
 const Meeting = (props) => {
+
+  //To handle the modal popup//
+  const [modalOpen, setModalOpen] = useState(false);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+
+  // Function to handle opening the modal and setting the uploaded image URL
+  const handleImageClick = (imageUrl) => {
+    setUploadedImageUrl(imageUrl);
+    setModalOpen(true);
+  };
+  // Function to handle closing the modal
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+  
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [agenda, setAgenda] = useState("");
@@ -59,6 +76,7 @@ const Meeting = (props) => {
   // imageSrc contains image data to be processed and sent
   // with meeting_ocr request.
   const [imageSrc, setImageSrc] = useState("");
+  console.log(imageSrc,"uploaded image")
   // crop is an object used in cropping image.
   const [crop, setCrop] = useState({
     unit: "%", // Can be 'px' or '%'
@@ -604,14 +622,25 @@ const handleQuestions = (e) =>{
                       <div>
                         <Card className="outer-card">
                           <CardBody>
+                          <div style={{ marginBottom: '10px' }}>
                             <Button
                               color="success"
                               onClick={handleScanFromPhotoClick}
                             >
                               Scan From Image
                             </Button>
+                            </div>
+                            <div>
+                            {imageSrc && <img src={imageSrc}  alt="Uploaded" style={{ width: '20%', height: 'auto',cursor: "pointer"}} onClick={() => handleImageClick(imageSrc)}  />}
+                            </div>
                           </CardBody>
                         </Card>
+                      {/* Modal to display the enlarged image */}
+                      <Modal isOpen={modalOpen} toggle={handleCloseModal}>
+                        <ModalBody>
+                          <img src={uploadedImageUrl} alt="Uploaded" style={{ width: "100%", height: "auto" }} />
+                        </ModalBody>
+                      </Modal>
                       </div>
                       :
                       <div>
