@@ -9,7 +9,7 @@ from rest_framework.decorators import api_view
 from django.contrib.auth import login
 
 from requestuser.models import RequestUser
-from .serializers import UserSerializer
+from .serializers import RequestUserSerializer
 from .backend import CustomAuthBackend
 from django.http import HttpRequest
 from django.contrib.auth import logout
@@ -20,7 +20,7 @@ from rest_framework import viewsets
 
 @api_view(['POST'])
 def signup(request):
-    serializer = UserSerializer(data=request.data)
+    serializer = RequestUserSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -60,7 +60,7 @@ def logout_view(request):
 
 @api_view(['POST'])
 def signup(request):
-    serializer = UserSerializer(data=request.data)
+    serializer = RequestUserSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -74,5 +74,5 @@ def signup(request):
 @api_view(['GET'])
 def get_requests(request):
     users = RequestUser.objects.all()  # Retrieve all users
-    serializer = UserSerializer(users, many=True)  # Serialize users data
+    serializer = RequestUserSerializer(users, many=True)  # Serialize users data
     return Response(serializer.data)

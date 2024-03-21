@@ -14,19 +14,21 @@ class UserManager(BaseUserManager):
             email=self.normalize_email(email),
             first_name=first_name,
             last_name=last_name,
+            church=church,
+            user_type=user_type
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, first_name, last_name, password,user_type):
+    def create_superuser(self, email, first_name, last_name, password,user_type,**extra_fields):
         user = self.create_user(
             email=self.normalize_email(email),
             first_name=first_name,
             last_name=last_name,
             password=password,
-            user_type=1
+            user_type=user_type
         )
         user.is_admin = True
         user.save(using=self._db)
@@ -39,7 +41,7 @@ class UserManager(BaseUserManager):
             last_name=last_name,
             password=password,
             user_type=2,
-            church=church
+            church_id=church
         )
         user.is_admin = True
         user.save(using=self._db)
