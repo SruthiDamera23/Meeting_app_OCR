@@ -8,9 +8,9 @@ from .models import RequestUser
 class RequestUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = RequestUser
-        fields = ['id','email', 'first_name', 'last_name', 'password','user_type','is_active','church']
+        fields = '__all__'
 
 
     def create(self, validated_data):
-        user = RequestUser.objects.create_superuser(**validated_data)
+        user = RequestUser.objects.create_user(**validated_data)
         return user

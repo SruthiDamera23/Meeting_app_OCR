@@ -41,20 +41,21 @@ const UserRequest = () => {
  
 
      const userData= {
-        'church_id': userTemp.church,
-        'email': userTemp.email,
+      'email': userTemp.email,
+        
         'first_name': userTemp.first_name,
-        'is_active':userTemp.is_active,
         'last_name': userTemp.last_name,
+        'is_active':userTemp.is_active,
         'user_type':userTemp.user_type,
+        'church': userTemp.church,
         'password':userTemp.password
       }
 
       console.log(userData);
 
-    //   delete_request(userTemp.id).then((req)=>{
-    //       console.log('deleted');
-    // })
+      delete_request(userTemp.id).then((req)=>{
+          console.log('deleted');
+    })
  
     signup(userData)
       .then((response) => {

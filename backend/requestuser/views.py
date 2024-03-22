@@ -20,7 +20,9 @@ from rest_framework import viewsets
 
 @api_view(['POST'])
 def signup(request):
+    print(request.data)
     serializer = RequestUserSerializer(data=request.data)
+    
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -75,7 +77,7 @@ def signup(request):
 @api_view(['GET'])
 def get_requests(request):
     users = RequestUser.objects.all()  # Retrieve all users
-    serializer = UserSerializer(users, many=True)  # Serialize users data
+    serializer = RequestUserSerializer(users, many=True)  # Serialize users data
     return Response(serializer.data)
 
 

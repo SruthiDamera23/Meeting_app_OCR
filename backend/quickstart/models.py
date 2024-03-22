@@ -20,13 +20,13 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, first_name, last_name, password,user_type):
+    def create_superuser(self, email, first_name, last_name, password,user_type,**extra_fields):
         user = self.create_user(
             email=self.normalize_email(email),
             first_name=first_name,
             last_name=last_name,
             password=password,
-            user_type=1
+            user_type=user_type
         )
         user.is_admin = True
         user.save(using=self._db)
@@ -39,7 +39,7 @@ class UserManager(BaseUserManager):
             last_name=last_name,
             password=password,
             user_type=2,
-            church=church
+            church_id=church
         )
         user.is_admin = True
         user.save(using=self._db)
@@ -51,7 +51,7 @@ class UserManager(BaseUserManager):
             first_name=first_name,
             last_name=last_name,
             password=password,
-            user_type=3,
+            user_type=user_type,
             church=church
         )
         user.is_admin = True
@@ -64,8 +64,8 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
     user_type = models.IntegerField(default=3)
-    church = models.ForeignKey(Church, on_delete=models.CASCADE,blank=True)
-
+    church = models.ForeignKey(Church, on_delete=models.CASCADE,blank=True,null=True)
+    password = models.CharField(max_length=200)
     objects = UserManager()
 
     USERNAME_FIELD = 'email'

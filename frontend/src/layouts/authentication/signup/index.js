@@ -37,6 +37,7 @@ const Signup = () => {
     last_name: "",
     email: "",
     password: "",
+
     errors: {
       first_name: "",
       last_name: "",
@@ -70,6 +71,7 @@ const Signup = () => {
   const validateForm = () => {
     const { first_name, last_name, email, password } = formData;
     const errors = {};
+    console.log(first_name, last_name, email, password);
 
     // Check for errors and update the errors object accordingly
     if (!first_name) {
@@ -109,6 +111,7 @@ const Signup = () => {
   };
 
   const handleSubmit = (event) => {
+    console.log(formData);
     event.preventDefault();
 
     // const errors = validateForm();
@@ -128,6 +131,7 @@ const Signup = () => {
         setFormData(initialFormData);
         setIsSubmitted(true);
         setSignupMessage("Signup Request Submitted!");
+        history('/');
       })
       .catch((error) => {
         console.log(error.response.data);
