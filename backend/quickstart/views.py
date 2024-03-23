@@ -57,7 +57,6 @@ def logout_view(request):
 
 @api_view(['POST'])
 def signup(request):
-    print("*********",request.data)
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()

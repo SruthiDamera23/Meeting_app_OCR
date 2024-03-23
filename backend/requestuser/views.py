@@ -63,8 +63,6 @@ def logout_view(request):
 @api_view(['POST'])
 def signup(request):
     serializer = RequestUserSerializer(data=request.data)
-    print("============")
-    print(request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)

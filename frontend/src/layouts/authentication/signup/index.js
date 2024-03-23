@@ -37,7 +37,9 @@ const Signup = () => {
     last_name: "",
     email: "",
     password: "",
-
+    church: "1",
+    user_type: "1",
+    
     errors: {
       first_name: "",
       last_name: "",
@@ -238,14 +240,14 @@ const Signup = () => {
   </FormGroup>
   <Row>
   <FormGroup>
-    <Label for="church-id" className="form-label">
+    <Label for="church" className="form-label">
       Church Name
     </Label>
     <Input
       type="select"
-      id="church-id"
-      name="church_id"
-      value={formData.church_id}
+      id="church"
+      name="church"
+      value={formData.church}
       onChange={handleChange}
     >
     {churchData.map((item) => (
