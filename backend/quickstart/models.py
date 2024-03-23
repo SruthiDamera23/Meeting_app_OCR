@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from church.models import Church
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, first_name, last_name, password=None,user_type=0,church=None):
+    def create_user(self, email, first_name, last_name,user_type, church, password=None):
         if not email:
             raise ValueError('Users must have an email address')
 
@@ -14,6 +14,8 @@ class UserManager(BaseUserManager):
             email=self.normalize_email(email),
             first_name=first_name,
             last_name=last_name,
+            user_type=user_type,
+            church=church
         )
 
         user.set_password(password)
