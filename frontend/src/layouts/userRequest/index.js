@@ -4,7 +4,7 @@ import {
   Card,
   Button
 } from 'reactstrap';
-import {user_requests,delete_request,signup} from '../../../src/api'
+import {user_requests,delete_request,signup, signup_approve} from '../../../src/api'
 
 import ReactDOM from 'react-dom';
 import 'react-calendar/dist/Calendar.css';

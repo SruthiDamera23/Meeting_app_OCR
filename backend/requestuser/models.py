@@ -5,7 +5,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from church.models import Church
 
-class RequestUserManager(BaseUserManager):
+class UserManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, password=None,user_type=0,church=None):
         if not email:
             raise ValueError('Users must have an email address')
@@ -15,10 +15,10 @@ class RequestUserManager(BaseUserManager):
             first_name=first_name,
             last_name=last_name,
             church=church,
-            user_type=user_type
+            user_type=user_type,
+            password=password
         )
 
-        user.set_password(password)
         user.save(using=self._db)
         return user
 
@@ -53,7 +53,7 @@ class RequestUserManager(BaseUserManager):
             first_name=first_name,
             last_name=last_name,
             password=password,
-            user_type=user_type,
+            user_type=3,
             church=church
         )
         user.is_admin = True
@@ -66,9 +66,9 @@ class RequestUser(AbstractBaseUser):
     last_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
     user_type = models.IntegerField(default=3)
-    church = models.ForeignKey(Church, on_delete=models.CASCADE, blank=True, null=True)
-    password = models.CharField(max_length=200)
-    objects = RequestUserManager()
+    church = models.ForeignKey(Church, on_delete=models.CASCADE,blank=True)
+
+    objects = UserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
