@@ -32,6 +32,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const Signup = () => {
   const [churchData,setChurchData]=useState([]);
   const history = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -60,8 +61,8 @@ const Signup = () => {
       })
   },[])
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [signupMessage, setSignupMessage] = useState(null);
+  const [isSubmitted, setIsSubmitted] = useState("");
+  const [signupMessage, setSignupMessage] = useState("");
 
   const initialFormData = {
     first_name: "",
@@ -115,6 +116,7 @@ const Signup = () => {
   const handleSubmit = (event) => {
     console.log(formData);
     event.preventDefault();
+    setIsLoading(true); 
 
     // const errors = validateForm();
     // if (Object.keys(errors).length > 0) {
@@ -132,7 +134,7 @@ const Signup = () => {
         console.log(response.data);
         setFormData(initialFormData);
         setIsSubmitted(true);
-        setSignupMessage("Signup Request Submitted!");
+        setSignupMessage(alert("Your request is being processed. You'll receive confirmation once approved"));
         history('/');
       })
       .catch((error) => {

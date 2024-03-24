@@ -44,6 +44,7 @@ function Login(props) {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
+    priv: null, // Initialize priv state
     errors: {
       username: "",
       password: "",
@@ -95,9 +96,15 @@ function Login(props) {
    
     login(formData).then(response => {
       console.log(response.data)
+      // Update formData state with priv value from response
+      setFormData((prevState) => ({
+        ...prevState,
+        priv: response.data.priv
+      }));
+
       document.cookie="user="+response.data.user;
       document.cookie="priv="+response.data.priv;
-      console.log(document.cookie);
+      console.log(document.cookie,"cokkiesss");
       navigate('/dashboard');
       })
       .catch((error) => {

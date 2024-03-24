@@ -23,11 +23,13 @@ import DateAndTodoList from "./components/DateAndTodoList";
 import TaskTable from "../taskAssignment/components/TaskTable";
 import AppSidebar from "../../components/appSidebar";
 import { ArrowDownward } from '@mui/icons-material';
+import { login, getCookie } from "../../api";
 // import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 // import { Pie } from 'react-chartjs-2';
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [priv, setPriv] = useState(null); // State to store priv use
   const [tasks, getTasks] = useState("");
   const [meeting, getMeeting] = useState("");
   const [activeTasks, setActiveTasks] = useState("");
@@ -41,6 +43,9 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    // Get priv user from cookies or wherever you're storing it
+    const privUser = getCookie("priv");
+    setPriv(privUser);
     const viewAllTasks = async () => {
       console.log("Yeah its here");
       await tasks_view()
@@ -161,6 +166,13 @@ const Dashboard = () => {
             <Container style={{position: "relative", left: "15%"}} className="my-4">
               <Card className="my-card schedule-card">
               {showButton && (<Button className="scrollButton" color="primary" onClick={scrollToBottom}><ArrowDownward /></Button>)}
+              <div className="ml-auto p-2 card-head-small">
+              {priv && (
+    <h1 style={{ fontSize: "20px" }}>
+      {priv === "1" ? "Logged in as Superuser!!" : priv === "2" ? "Logged in as Admin!!" : priv === "3" ? "Logged in as Leader!!" : "Unknown Privilege"}
+    </h1>
+  )}
+        </div>
               <Row className="fixed-height-dashboard-upper-cards">
                 <Col md={6}>
                   <Card className="my-card my-card-height">
