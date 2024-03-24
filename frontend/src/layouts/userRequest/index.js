@@ -23,7 +23,6 @@ const UserRequest = () => {
   const [modal, setModal] = useState(false);
   const [approvalStatus, setApprovalStatus] = useState('');
   const [UserNameOfRequest, UserNameOfRequesr] = useState('');
-
   useEffect(() => {
     if (mustGetUsers) {
       get_requests();
@@ -31,6 +30,11 @@ const UserRequest = () => {
   }, [mustGetUsers]);
 
 
+  const priorityLabels = {
+    1: "Super-user",
+    2: "Admin",
+    3: "Leader"
+  };
   const get_requests=()=>{
     user_requests()
     .then((req) => {
@@ -97,6 +101,9 @@ const UserRequest = () => {
         'password':userTemp.password
       }
 
+      
+      
+
       console.log(userData);
 
       delete_request(userTemp.id).then((req)=>{
@@ -126,7 +133,10 @@ const UserRequest = () => {
                     <tr style={{ borderBottom: '1px solid black' }}>
                       <th style={{ borderBottom: '1px solid black', padding: '8px' }}>name</th>
                       <th style={{ borderBottom: '1px solid black', padding: '8px' }}>Email</th>
+                      <th style={{ borderBottom: '1px solid black', padding: '8px' }}>Privilege</th>
+                      <th style={{ borderBottom: '1px solid black', padding: '8px' }}>Church</th>
                       <th style={{ borderBottom: '1px solid black', padding: '8px' }}>Actions</th>
+                      
                     </tr>
                   </thead>
                   <tbody>
@@ -134,6 +144,8 @@ const UserRequest = () => {
                       <tr key={index}>
                         <td style={{ padding: '8px' }}>{user.first_name+" "+user.last_name}</td>
                         <td style={{ padding: '8px' }}>{user.email}</td>
+                        <td style={{ padding: '8px' }}>{priorityLabels[user.user_type]}</td>
+                        <td style={{ padding: '8px' }}>{user.church}</td>
                         <td style={{ padding: '8px' }}>
                           <Button onClick={() => handleApprove(user)} color="success">Approve</Button>{' '}
                           <Button onClick={() => handleDeny(user)} color="danger">Deny</Button>
