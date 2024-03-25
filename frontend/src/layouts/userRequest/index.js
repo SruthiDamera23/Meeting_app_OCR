@@ -8,12 +8,13 @@ import {
   ModalBody,
   ModalFooter
 } from 'reactstrap';
-import {user_requests,delete_request,signup, signup_approve} from '../../../src/api'
+import {user_requests,delete_request,signup, signup_approve, get_church_data} from '../../../src/api'
 
 import ReactDOM from 'react-dom';
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import AppSidebar from "../../components/appSidebar";
+let churchData = [];
 
 
 const UserRequest = () => {
@@ -28,6 +29,16 @@ const UserRequest = () => {
       get_requests();
     }
   }, [mustGetUsers]);
+
+  useEffect(()=>{
+    get_church_data().then( response => {
+      churchData = [];
+      for(let i=0;i<response.data.length;i++) {
+      churchData[response.data[i].id] = response.data[i].name;
+    }
+    console.log(churchData);
+    })
+},[])
 
 
   const priorityLabels = {
@@ -145,7 +156,7 @@ const UserRequest = () => {
                         <td style={{ padding: '8px' }}>{user.first_name+" "+user.last_name}</td>
                         <td style={{ padding: '8px' }}>{user.email}</td>
                         <td style={{ padding: '8px' }}>{priorityLabels[user.user_type]}</td>
-                        <td style={{ padding: '8px' }}>{user.church}</td>
+                        <td style={{ padding: '8px' }}>{churchData[user.church]}</td>
                         <td style={{ padding: '8px' }}>
                           <Button onClick={() => handleApprove(user)} color="success">Approve</Button>{' '}
                           <Button onClick={() => handleDeny(user)} color="danger">Deny</Button>
