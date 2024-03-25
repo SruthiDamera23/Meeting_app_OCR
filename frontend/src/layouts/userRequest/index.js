@@ -156,7 +156,7 @@ const UserRequest = () => {
                         <td style={{ padding: '8px' }}>{user.first_name+" "+user.last_name}</td>
                         <td style={{ padding: '8px' }}>{user.email}</td>
                         <td style={{ padding: '8px' }}>{priorityLabels[user.user_type]}</td>
-                        <td style={{ padding: '8px' }}>{churchData[user.church]}</td>
+                        <td style={{ padding: '8px' }}>{priorityLabels[user.user_type]=='Super-user' ?'-': churchData[user.church]}</td>
                         <td style={{ padding: '8px' }}>
                           <Button onClick={() => handleApprove(user)} color="success">Approve</Button>{' '}
                           <Button onClick={() => handleDeny(user)} color="danger">Deny</Button>
