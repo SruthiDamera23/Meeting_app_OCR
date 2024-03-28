@@ -143,7 +143,7 @@ const UserRequest = () => {
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                   <thead>
                     <tr style={{ borderBottom: '1px solid black' }}>
-                      <th style={{ borderBottom: '1px solid black', padding: '8px' }}>name</th>
+                      <th style={{ borderBottom: '1px solid black', padding: '8px' }}>Name</th>
                       <th style={{ borderBottom: '1px solid black', padding: '8px' }}>Email</th>
                       <th style={{ borderBottom: '1px solid black', padding: '8px' }}>Privilege</th>
                       <th style={{ borderBottom: '1px solid black', padding: '8px' }}>Church</th>
