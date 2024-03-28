@@ -106,11 +106,20 @@ const AppSidebar = () => {
                   <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
                    {/* Changed icon */}<br />Requests
                    </MenuItem>}
-                <MenuItem className="sidebar-menu-item" component={<div onClick={handleLogout} />}>
+
+                   <MenuItem className="sidebar-menu-item" component={<Link to="/users" />}>
+                    <SpeedOutlinedIcon className="sidebar-menu-item-icon" />
+                    <br />
+                    Users
+                </MenuItem>
+
+                   <MenuItem className="sidebar-menu-item" component={<div onClick={handleLogout} />}>
                     <LogoutOutlinedIcon className="sidebar-menu-item-icon" />
                     <br />
                     Logout
                 </MenuItem>
+
+                
             </Menu>
         </Sidebar>
     );
