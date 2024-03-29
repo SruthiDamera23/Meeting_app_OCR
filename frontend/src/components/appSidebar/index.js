@@ -133,11 +133,14 @@ const AppSidebar = () => {
                         </MenuItem>
                     </SubMenu>     
                    }
-                <MenuItem className="sidebar-menu-item" component={<div onClick={handleLogout} />}>
+
+                   <MenuItem className="sidebar-menu-item" component={<div onClick={handleLogout} />}>
                     <LogoutOutlinedIcon className="sidebar-menu-item-icon" />
                     <br />
                     Logout
                 </MenuItem>
+
+                
             </Menu>
         </Sidebar>
     );

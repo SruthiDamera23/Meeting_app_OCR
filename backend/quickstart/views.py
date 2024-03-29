@@ -67,6 +67,29 @@ def signup(request):
 def fetch_user_and_prev(user):
     return User.objects.get(email=user).user_type
     
+@api_view(['GET'])
+def get_users(request):
+    users = User.objects.all()
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['DELETE', 'POST'])
+def delete_user(request, user_id):
+    if request.method == 'POST' and request.POST.get('_method') == 'DELETE':
+        # Override method if _method=DELETE is provided in the request body
+        request.method = 'DELETE'
+
+    try:
+        user = User.objects.get(id=user_id)  # Get the user instance
+        user.delete()
+        return Response({'message': 'User deleted successfully'}, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    serializer = RequestUserSerializer(users, many=True)  # Serialize users data
+    return Response(serializer.data)
 
 # class TaskViewSet(viewsets.ModelViewSet):
 #     queryset = Task.objects.all()

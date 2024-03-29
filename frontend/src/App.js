@@ -19,6 +19,7 @@ import TaskCalendar from "./layouts/taskCalendar";
 import UserRequest from "./layouts/userRequest";
 import AddChurch from "./layouts/addChurch";
 import EditChurch from "./layouts/editChurch";
+import Users from './layouts/users';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route exact path="/user-request" element={<UserRequest />} />
         {<Route exact path="/add-church" element={<AddChurch />}/> }
         <Route exact path="/edit-church" element={<EditChurch />}/>
+        <Route exact path="/users" element={<Users />} />
       </Routes>
     </Router>
     // <div className="App">
