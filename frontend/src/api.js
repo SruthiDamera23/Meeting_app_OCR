@@ -27,6 +27,7 @@ export const person_view = () => api.get('person/');
 export const delete_request = (id) => api.delete(`deleterequest/${id}/`);
 export const addChurch = (formData) => api.post('church/', formData);
 export const update_church_data = (id,formdata) => api.put(`edit-church/${id}`,formdata);
+export const delete_church_data = (id) => api.delete(`edit-church/${id}`);
 export const delete_user = (id) => api.delete(`deleteuser/${id}/`);
 export const get_users=()=>api.get('users/');
 

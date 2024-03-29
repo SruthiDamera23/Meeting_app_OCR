@@ -22,17 +22,25 @@ def church(request):
             return Response({'message': 'Church added.'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['PUT'])
+@api_view(['PUT','DELETE'])
 def edit_church(request,id):
-    try:
-        print(id)
-        print(request.data)
-        church_id = id
-        church = Church.objects.get(id=church_id, deleted=False)
-    except Church.DoesNotExist:
-        return Response({'message': 'Church not found.'}, status=status.HTTP_404_NOT_FOUND)
-    serializer = ChurchSerializer(church, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response({'message': 'Church updated successfully.'}, status=status.HTTP_200_OK)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'PUT':
+        try:
+            church_id = id
+            church = Church.objects.get(id=church_id, deleted=False)
+        except Church.DoesNotExist:
+            return Response({'message': 'Church not found.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = ChurchSerializer(church, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Church updated successfully.'}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        try:
+            church_id = id
+            church = Church.objects.get(id=church_id, deleted=False)
+        except Church.DoesNotExist:
+            return Response({'message': 'Church not found.'}, status=status.HTTP_404_NOT_FOUND)
+        church.deleted = True
+        church.save()
+        return Response({'message': 'Church deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { get_church_data, update_church_data } from '../../../src/api';
+import { get_church_data, update_church_data, delete_church_data } from '../../../src/api';
 import AppSidebar from "../../components/appSidebar";
 
 const ChurchList = () => {
@@ -9,6 +9,10 @@ const ChurchList = () => {
     const [initialChurchData, setInitialChurchData] = useState({});
 
     useEffect(() => {
+        fetchChurchData();
+    }, []);
+
+    const fetchChurchData = () => {
         get_church_data()
             .then(response => {
                 setChurches(response.data);
@@ -16,7 +20,7 @@ const ChurchList = () => {
             .catch(error => {
                 console.error('Error fetching church data:', error);
             });
-    }, []);
+    };
 
     const handleEdit = (index, church) => {
         setEditIndex(index);
@@ -31,14 +35,7 @@ const ChurchList = () => {
                 setEditIndex(-1);
                 setEditedChurch({});
                 alert('Church data updated successfully');
-                get_church_data()
-            .then(response => {
-                setChurches(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching church data:', error);
-            });
-
+                fetchChurchData();
             })
             .catch(error => {
                 console.error('Error updating church data:', error);
@@ -48,6 +45,19 @@ const ChurchList = () => {
     const handleCancel = () => {
         setEditIndex(-1);
         setEditedChurch({});
+    };
+
+    const handleDelete = (churchId) => {
+        if (window.confirm("Are you sure you want to delete this church?")) {
+            delete_church_data(churchId)
+                .then(response => {
+                    console.log('Church deleted successfully:', response);
+                    fetchChurchData();
+                })
+                .catch(error => {
+                    console.error('Error deleting church:', error);
+                });
+        }
     };
 
     const handleInputChange = (e, key) => {
@@ -89,7 +99,10 @@ const ChurchList = () => {
                                             <button style={{ backgroundColor: 'red', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px' }} onClick={handleCancel}>Cancel</button>
                                         </div>
                                     ) : (
-                                        <button style={{ backgroundColor: 'blue', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px' }} onClick={() => handleEdit(index, church)}>Edit</button>
+                                        <div>
+                                            <button style={{ backgroundColor: 'blue', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px' }} onClick={() => handleEdit(index, church)}>Edit</button>
+                                            <button style={{ backgroundColor: 'red', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px', marginLeft: '5px' }} onClick={() => handleDelete(church.id)}>Delete</button>
+                                        </div>
                                     )}
                                 </td>
                             </tr>
