@@ -12,10 +12,12 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined"; // New icon for user requests
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined"; 
+import ChurchIcon from '@mui/icons-material/Church';
 import { useNavigate, Link } from "react-router-dom";
 import { logout, tasks_view, getCookie, updateCookie } from "../../api";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Edit from "@mui/icons-material/Edit";
 
 const AppSidebar = () => {
   const navigate = useNavigate();
@@ -106,6 +108,31 @@ const AppSidebar = () => {
                   <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
                    {/* Changed icon */}<br />Requests
                    </MenuItem>}
+
+                   {checkPriority() && 
+                        <SubMenu
+                        className="sidebar-menu-item"
+                        label={
+                            <div>
+                                <ChurchIcon className="sidebar-menu-item-icon" />
+                                <br />
+                                Church
+                            </div>
+                        }
+                    >
+                        { <MenuItem className="sidebar-menu-item" component={<Link to="/add-church" />}>
+                            <AddCircleOutlineOutlinedIcon />
+                            <br />
+                            <div style={{ overflow: "visible" }}>Add</div>
+                        </MenuItem>}
+    
+                        <MenuItem className="sidebar-menu-item" component={<Link to="/edit-church" />}>
+                            <Edit/>
+                            <br />
+                            Edit
+                        </MenuItem>
+                    </SubMenu>     
+                   }
                 <MenuItem className="sidebar-menu-item" component={<div onClick={handleLogout} />}>
                     <LogoutOutlinedIcon className="sidebar-menu-item-icon" />
                     <br />

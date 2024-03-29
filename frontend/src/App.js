@@ -17,6 +17,8 @@ import Signup from "./layouts/authentication/signup/index"
 import ForgotPassword from './layouts/authentication/forgotPassword/index';
 import TaskCalendar from "./layouts/taskCalendar";
 import UserRequest from "./layouts/userRequest";
+import AddChurch from "./layouts/addChurch";
+import EditChurch from "./layouts/editChurch";
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
         <Route exact path="/tasks" element={<TaskAssignment />} />
         <Route exact path="/task-calendar" element={<TaskCalendar />} />
         <Route exact path="/user-request" element={<UserRequest />} />
+        {<Route exact path="/add-church" element={<AddChurch />}/> }
+        <Route exact path="/edit-church" element={<EditChurch />}/>
       </Routes>
     </Router>
     // <div className="App">
