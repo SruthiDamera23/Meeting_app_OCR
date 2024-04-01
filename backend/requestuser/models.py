@@ -68,6 +68,9 @@ class RequestUser(AbstractBaseUser):
     user_type = models.IntegerField(default=3)
     church = models.ForeignKey(Church, on_delete=models.CASCADE,blank=True)
 
+    Approval_superuser = models.BooleanField(default=False)
+    deny_status = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True,blank=True, null = True)
     objects = UserManager()
 
     USERNAME_FIELD = 'email'

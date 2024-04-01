@@ -91,11 +91,59 @@ def delete_user(request, user_id):
 
     try:
         user = RequestUser.objects.get(id=user_id)  # Get the user instance
+        # user.deny_status = True
+        # user.Approval_superuser = False
+        # user.save() 
         user.delete()
         return Response({'message': 'User deleted successfully'}, status=status.HTTP_200_OK)
     except RequestUser.DoesNotExist:
         return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    serializer = RequestUserSerializer(users, many=True)  # Serialize users data
+    serializer = RequestUserSerializer(users, many=True) 
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def approve_status_on_deny(request, user_id):
+    try:
+        user = RequestUser.objects.get(id=user_id) 
+        user.deny_status = True
+        user.Approval_superuser = False
+        user.save() 
+        return Response({'message': 'User deny status updated successfully'}, status=status.HTTP_200_OK)
+    except RequestUser.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    serializer = RequestUserSerializer(users, many=True)  
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def approve_status_on_approve(request, user_id):
+    try:
+        user = RequestUser.objects.get(id=user_id)  
+        user.deny_status = False 
+        user.Approval_superuser = True
+        user.save() 
+        return Response({'message': 'User approve status updated successfully'}, status=status.HTTP_200_OK)
+    except RequestUser.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    serializer = RequestUserSerializer(users, many=True) 
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def restore_status(request, user_id):
+    try:
+        user = RequestUser.objects.get(id=user_id)  
+        user.deny_status = False 
+        user.save() 
+        return Response({'message': 'User approve status updated successfully'}, status=status.HTTP_200_OK)
+    except RequestUser.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    serializer = RequestUserSerializer(users, many=True) 
     return Response(serializer.data)
