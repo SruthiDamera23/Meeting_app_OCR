@@ -33,14 +33,9 @@ const UserRequest = () => {
     }
   }, [mustGetUsers]);
 
-<<<<<<< HEAD
-  useEffect(() => {
-    get_church_data().then(response => {
-=======
   
   useEffect(()=>{
     get_church_data().then( response => {
->>>>>>> 74ac2249da2d4f3eb1ae14e6247322c93225acb1
       churchData = [];
       for (let i = 0; i < response.data.length; i++) {
         churchData[response.data[i].id] = response.data[i].name;

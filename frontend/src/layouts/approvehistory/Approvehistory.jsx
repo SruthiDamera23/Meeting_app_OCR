@@ -8,7 +8,7 @@ import {
     ModalBody,
     ModalFooter
 } from 'reactstrap';
-import { user_requests, delete_request, signup, deny_restore, signup_approve, get_church_data } from '../../api'
+import { user_requests, delete_request, signup, deny_restore, get_church_data } from '../../api'
 
 import ReactDOM from 'react-dom';
 import 'react-calendar/dist/Calendar.css';

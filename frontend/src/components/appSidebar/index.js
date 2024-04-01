@@ -12,7 +12,7 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined"; 
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ChurchIcon from '@mui/icons-material/Church';
 import { useNavigate, Link } from "react-router-dom";
 import { logout, tasks_view, getCookie, updateCookie } from "../../api";
@@ -104,7 +104,6 @@ const AppSidebar = () => {
                         List
                     </MenuItem>
                 </SubMenu>
-<<<<<<< HEAD
                 {/* {checkPriority() && } */}
 
                 <SubMenu
@@ -116,29 +115,29 @@ const AppSidebar = () => {
                             Request
                         </div>
                     }
-                >    
-                <MenuItem className="sidebar-menu-item" component={<Link to="/user-request" />}>
-                    <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
-                    {/* Changed icon */}<br />Requests
-                </MenuItem>
-                <MenuItem className="sidebar-menu-item" component={<Link to="/deny-history" />}>
-                    <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
-                    {/* Changed icon */}<br />Deny Requests
-                </MenuItem>
-                <MenuItem className="sidebar-menu-item" component={<Link to="/approve-history" />}>
-                    <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
-                    {/* Changed icon */}<br />Approve Requests
-                </MenuItem>
+                >
+                    <MenuItem className="sidebar-menu-item" component={<Link to="/user-request" />}>
+                        <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
+                        {/* Changed icon */}<br />Requests
+                    </MenuItem>
+                    <MenuItem className="sidebar-menu-item" component={<Link to="/deny-history" />}>
+                        <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
+                        {/* Changed icon */}<br />Deny Requests
+                    </MenuItem>
+                    <MenuItem className="sidebar-menu-item" component={<Link to="/approve-history" />}>
+                        <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
+                        {/* Changed icon */}<br />Approve Requests
+                    </MenuItem>
                 </SubMenu>
-                <MenuItem className="sidebar-menu-item" component={<div onClick={handleLogout} />}>
-=======
-                {checkPriority() && <MenuItem className="sidebar-menu-item" component={<Link to="/user-request" />}>
-                  <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
-                   {/* Changed icon */}<br />Requests
-                   </MenuItem>}
+                {/* <MenuItem className="sidebar-menu-item" component={<div onClick={handleLogout} />}>
+                    {checkPriority() && <MenuItem className="sidebar-menu-item" component={<Link to="/user-request" />}>
+                        <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
+                       <br />Requests
+                    </MenuItem>}
+                </MenuItem> */}
 
-                   {checkPriority() && 
-                        <SubMenu
+                {checkPriority() &&
+                    <SubMenu
                         className="sidebar-menu-item"
                         label={
                             <div>
@@ -148,28 +147,27 @@ const AppSidebar = () => {
                             </div>
                         }
                     >
-                        { <MenuItem className="sidebar-menu-item" component={<Link to="/add-church" />}>
+                        {<MenuItem className="sidebar-menu-item" component={<Link to="/add-church" />}>
                             <AddCircleOutlineOutlinedIcon />
                             <br />
                             <div style={{ overflow: "visible" }}>Add</div>
                         </MenuItem>}
-    
+
                         <MenuItem className="sidebar-menu-item" component={<Link to="/edit-church" />}>
-                            <Edit/>
+                            <Edit />
                             <br />
                             Edit
                         </MenuItem>
-                    </SubMenu>     
-                   }
+                    </SubMenu>
+                }
 
-                   <MenuItem className="sidebar-menu-item" component={<div onClick={handleLogout} />}>
->>>>>>> 74ac2249da2d4f3eb1ae14e6247322c93225acb1
+                <MenuItem className="sidebar-menu-item" component={<div onClick={handleLogout} />}>
                     <LogoutOutlinedIcon className="sidebar-menu-item-icon" />
                     <br />
                     Logout
                 </MenuItem>
 
-                
+
             </Menu>
         </Sidebar>
     );

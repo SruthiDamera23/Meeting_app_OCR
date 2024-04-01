@@ -25,18 +25,15 @@ export const meeting_read = (pk) => api.get(`meeting/${pk}`);
 export const meeting_update = (pk, formData) => api.put(`meeting/${pk}`, formData);
 export const person_view = () => api.get('person/');
 export const delete_request = (id) => api.delete(`deleterequest/${id}/`);
-<<<<<<< HEAD
 export const deny_request = (id) => api.get(`approve_status_on_deny/${id}/`);
 export const deny_restore = (id) => api.get(`restore_status/${id}/`);
 export const approve_status_on_approve = (id) => api.get(`approve_status_on_approve/${id}/`);
 
-=======
 export const addChurch = (formData) => api.post('church/', formData);
 export const update_church_data = (id,formdata) => api.put(`edit-church/${id}`,formdata);
 export const delete_church_data = (id) => api.delete(`edit-church/${id}`);
 export const delete_user = (id) => api.delete(`deleteuser/${id}/`);
 export const get_users=()=>api.get('users/');
->>>>>>> 74ac2249da2d4f3eb1ae14e6247322c93225acb1
 
 export const user_requests=()=>api.get('requests/');
 export const get_church_data=()=>api.get('church/');
