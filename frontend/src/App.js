@@ -17,6 +17,10 @@ import Signup from "./layouts/authentication/signup/index"
 import ForgotPassword from './layouts/authentication/forgotPassword/index';
 import TaskCalendar from "./layouts/taskCalendar";
 import UserRequest from "./layouts/userRequest";
+import DenyHistory from './layouts/denyhistory/DenyHistory';
+import Approvehistory from './layouts/approvehistory/Approvehistory';
+
+
 import AddChurch from "./layouts/addChurch";
 import EditChurch from "./layouts/editChurch";
 import Users from './layouts/users';
@@ -34,7 +38,9 @@ function App() {
         <Route exact path="/tasks" element={<TaskAssignment />} />
         <Route exact path="/task-calendar" element={<TaskCalendar />} />
         <Route exact path="/user-request" element={<UserRequest />} />
-        {<Route exact path="/add-church" element={<AddChurch />}/> }
+        <Route exact path="/deny-history" element={<DenyHistory />} />
+        <Route exact path="/approve-history" element={<Approvehistory />} />
+        <Route exact path="/add-church" element={<AddChurch />}/>
         <Route exact path="/edit-church" element={<EditChurch />}/>
         <Route exact path="/users" element={<Users />} />
       </Routes>
