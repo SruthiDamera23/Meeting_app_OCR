@@ -104,7 +104,7 @@ const AppSidebar = () => {
                         List
                     </MenuItem>
                 </SubMenu>
-                {/* {checkPriority() && } */}
+                {checkPriority() && 
 
                 <SubMenu
                     className="sidebar-menu-item"
@@ -128,7 +128,7 @@ const AppSidebar = () => {
                         <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
                         {/* Changed icon */}<br />Approve Requests
                     </MenuItem>
-                </SubMenu>
+                </SubMenu>}
                 {/* <MenuItem className="sidebar-menu-item" component={<div onClick={handleLogout} />}>
                     {checkPriority() && <MenuItem className="sidebar-menu-item" component={<Link to="/user-request" />}>
                         <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
