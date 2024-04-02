@@ -8,7 +8,7 @@ import {
   ModalBody,
   ModalFooter
 } from 'reactstrap';
-import { get_users ,delete_user, get_church_data} from '../../../src/api'; 
+import { get_users ,delete_user, get_church_data, getCookie} from '../../../src/api'; 
 import AppSidebar from "../../components/appSidebar";
 
 const Users = () => {
@@ -18,8 +18,8 @@ const Users = () => {
   const [approvalStatus, setApprovalStatus] = useState('');
   const [churchData,setChurchData] = useState([]);
   useEffect(() => {
-    
-    get_users()
+    console.log("cid====",getCookie('church'))
+    get_users(getCookie('church'))
       .then((response) => {
         get_church_data().then( response => {
           let tempChurchData=[];

@@ -8,7 +8,7 @@ import {
   ModalBody,
   ModalFooter
 } from 'reactstrap';
-import { user_requests, approve_status_on_approve, signup, deny_request, signup_approve, get_church_data } from '../../../src/api'
+import { user_requests, approve_status_on_approve, signup, deny_request, signup_approve, get_church_data, getCookie } from '../../../src/api'
 
 import ReactDOM from 'react-dom';
 import 'react-calendar/dist/Calendar.css';
@@ -51,8 +51,8 @@ const UserRequest = () => {
     3: "Leader"
   };
   const get_requests = () => {
-    user_requests()
-      .then((req) => {
+    user_requests(getCookie('church')) 
+    .then((req) => {
         const usersData = req.data;
         console.log(usersData);
         setUsers(req.data);

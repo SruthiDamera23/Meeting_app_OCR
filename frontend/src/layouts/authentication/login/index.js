@@ -104,6 +104,7 @@ function Login(props) {
 
       document.cookie="user="+response.data.user;
       document.cookie="priv="+response.data.priv;
+      document.cookie="church="+response.data.church;
       console.log(document.cookie,"cokkiesss");
       navigate('/dashboard');
       })

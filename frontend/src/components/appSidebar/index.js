@@ -13,11 +13,13 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import PeopleIcon from '@mui/icons-material/People';
 import ChurchIcon from '@mui/icons-material/Church';
 import { useNavigate, Link } from "react-router-dom";
-import { logout, tasks_view, getCookie, updateCookie } from "../../api";
+import { logout, tasks_view, getCookie, updateCookie, isSuperUser, isAdmin } from "../../api";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Edit from "@mui/icons-material/Edit";
+import { People } from "@mui/icons-material";
 
 const AppSidebar = () => {
     const navigate = useNavigate();
@@ -42,10 +44,7 @@ const AppSidebar = () => {
             });
     };
 
-    const checkPriority = () => {
-        console.log('priority :' + getCookie('priv'));
-        return getCookie('priv') == 1;
-    }
+   
 
 
     return (
@@ -104,7 +103,7 @@ const AppSidebar = () => {
                         List
                     </MenuItem>
                 </SubMenu>
-                {checkPriority() && 
+                {(isSuperUser() || isAdmin() )&& 
 
                 <SubMenu
                     className="sidebar-menu-item"
@@ -129,14 +128,14 @@ const AppSidebar = () => {
                         {/* Changed icon */}<br />Approve Requests
                     </MenuItem>
                 </SubMenu>}
-                {/* <MenuItem className="sidebar-menu-item" component={<div onClick={handleLogout} />}>
-                    {checkPriority() && <MenuItem className="sidebar-menu-item" component={<Link to="/user-request" />}>
-                        <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
-                       <br />Requests
-                    </MenuItem>}
-                </MenuItem> */}
 
-                {checkPriority() &&
+               { (isSuperUser() || isAdmin() ) && <MenuItem className="sidebar-menu-item" component={<Link to="/users" />}>
+                    <People className="sidebar-menu-item-icon" />
+                    <br />
+                    Users
+                </MenuItem>}
+
+                {isSuperUser() &&
                     <SubMenu
                         className="sidebar-menu-item"
                         label={

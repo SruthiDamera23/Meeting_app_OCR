@@ -74,8 +74,12 @@ def signup(request):
 
 
 @api_view(['GET'])
-def get_requests(request):
-    users = RequestUser.objects.all()  # Retrieve all users
+def get_requests(request, cid):
+    if(cid>0):
+        users = RequestUser.objects.filter(church=cid)
+    else:
+        users = RequestUser.objects.all()
+      # Retrieve all users
     serializer = RequestUserSerializer(users, many=True)  # Serialize users data
     return Response(serializer.data)
 

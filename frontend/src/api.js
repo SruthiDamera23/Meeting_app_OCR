@@ -33,9 +33,9 @@ export const addChurch = (formData) => api.post('church/', formData);
 export const update_church_data = (id,formdata) => api.put(`edit-church/${id}`,formdata);
 export const delete_church_data = (id) => api.delete(`edit-church/${id}`);
 export const delete_user = (id) => api.delete(`deleteuser/${id}/`);
-export const get_users=()=>api.get('users/');
+export const get_users=(cid)=>api.get(`users/${cid}`);
 
-export const user_requests=()=>api.get('requests/');
+export const user_requests=(cid)=>api.get(`requests/${cid}`);
 export const get_church_data=()=>api.get('church/');
 // export const meeting_delete = (pk) => api.put(`api/meeting//${pk}`);
 export const task_view = (id) => api.get(`tasks/${id}`);
@@ -58,3 +58,11 @@ export const getCookie = (name) => {
 export const updateCookie = (name, value) => {
     document.cookie = `${name}=${encodeURIComponent(value)}; path=/;`;
 };
+
+export const isSuperUser = () => {
+    return getCookie('priv') == 1 ;
+}
+
+export const isAdmin = () => {
+    return getCookie('priv') == 2 ;
+}

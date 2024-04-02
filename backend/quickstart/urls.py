@@ -7,7 +7,7 @@ router = routers.DefaultRouter()
 # router.register('tasks', TaskViewSet)
 
 urlpatterns = [
-    path('users/', get_users, name='users'),
+    path('users/<int:cid>', get_users, name='users'),
     path('deleteuser/<int:user_id>/', delete_user, name='deleteuser'),
     path('signup/', signup, name='signup'),
     path('login/', login_view, name='login'),

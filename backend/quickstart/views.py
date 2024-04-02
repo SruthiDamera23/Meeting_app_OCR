@@ -46,8 +46,13 @@ def login_view(request):
     print("hello", user)
     if user is not None:
         login(django_request, user, backend='django.contrib.auth.backends.ModelBackend')
-        priv = fetch_user_and_prev(email)
-        return Response({'message': 'Logged in successfully.','user':email,'priv':int(priv)})
+        temp_data = fetch_user_and_prev(email)
+        priv = temp_data.user_type
+        church = temp_data.church
+        church_id = 0
+        if priv>1 :
+            church_id = church.id
+        return Response({'message': 'Logged in successfully.','user':email,'priv':int(priv),'church':int(church_id)})
     return Response({'message': 'Invalid username or password.'}, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['POST'])
@@ -65,11 +70,14 @@ def signup(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def fetch_user_and_prev(user):
-    return User.objects.get(email=user).user_type
+    return User.objects.get(email=user)
     
 @api_view(['GET'])
-def get_users(request):
-    users = User.objects.all()
+def get_users(request,cid):
+    if(cid>0):
+        users = User.objects.filter(church=cid)
+    else:
+        users = User.objects.all()
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
 
