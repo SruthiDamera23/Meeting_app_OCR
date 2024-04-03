@@ -76,7 +76,7 @@ def signup(request):
 @api_view(['GET'])
 def get_requests(request, cid):
     if(cid>0):
-        users = RequestUser.objects.filter(church=cid)
+        users = RequestUser.objects.filter(church=cid).exclude(user_type=1)
     else:
         users = RequestUser.objects.all()
       # Retrieve all users

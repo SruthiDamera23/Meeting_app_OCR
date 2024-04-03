@@ -38,7 +38,7 @@ const Signup = () => {
     last_name: "",
     email: "",
     password: "",
-    church: "1",
+    church: "",
     user_type: "1",
     
     errors: {
@@ -52,12 +52,18 @@ const Signup = () => {
 
   useEffect(()=>{
       get_church_data().then( response => {
+      let church_1 = 0;
       let tcd = [];
         for(let i=0;i<response.data.length;i++) {
+          if(i==0){
+            church_1 = response.data[i].id;
+          }
         tcd.push([response.data[i].id, response.data[i].name]);
       }
       setChurchData(tcd);
       console.log(tcd);
+      console.log("======"+church_1)
+      formData.church = church_1;
       })
   },[])
 
