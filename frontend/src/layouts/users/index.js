@@ -29,7 +29,7 @@ const Users = () => {
         console.log(tempChurchData);
         setChurchData(tempChurchData);
         })
-        let tempUsersData = response.data.filter(item => item.email !== getCookie('user'))
+        let tempUsersData = response.data;
         setUsers(tempUsersData);
         setIsLoading(false);
       })
@@ -87,7 +87,7 @@ const Users = () => {
                         <td style={{ padding: '8px' }}>{priorityLabels[user.user_type]=='Super-user' ?'-':churchData[user.church]}</td>
                         
                         <td style={{ padding: '8px' }}>
-                          <Button onClick={() => handleDeleteUser(user.id)} color="danger">Delete</Button>
+                          {user.email!==getCookie('user') && <Button onClick={() => handleDeleteUser(user.id)} color="danger">Delete</Button>}
                         </td>
                       </tr>
                     ))}
