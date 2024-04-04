@@ -93,7 +93,7 @@ const UserRequest = () => {
       });
 
       approve_status_on_approve(userTemp.id).then((req) => {
-        setApprovalStatus('denied');
+        setApprovalStatus('approved');
         toggleModal();
         setTimeout(() => {
           window.location.reload();
