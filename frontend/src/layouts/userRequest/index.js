@@ -77,7 +77,7 @@ const UserRequest = () => {
       'is_active': userTemp.is_active,
       'user_type': userTemp.user_type,
       'church': userTemp.church,
-      'password': userTemp.password
+      'password': userTemp.passwords
     }
 
     console.log(userData);
@@ -93,7 +93,7 @@ const UserRequest = () => {
       });
 
       approve_status_on_approve(userTemp.id).then((req) => {
-        setApprovalStatus('denied');
+        setApprovalStatus('approved');
         toggleModal();
         setTimeout(() => {
           window.location.reload();
