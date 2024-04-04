@@ -29,7 +29,8 @@ const Users = () => {
         console.log(tempChurchData);
         setChurchData(tempChurchData);
         })
-        setUsers(response.data);
+        let tempUsersData = response.data.filter(item => item.email !== getCookie('user'))
+        setUsers(tempUsersData);
         setIsLoading(false);
       })
       .catch((error) => {
