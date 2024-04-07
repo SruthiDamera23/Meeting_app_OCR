@@ -22,3 +22,13 @@ def person(request):
             return Response({'message': 'Person added.'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['DELETE'])
+def delete_person(request, pid):
+    try:
+        person = Person.objects.get(id=pid)
+        person.delete()
+        return Response({'message': 'Person deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
+    except Person.DoesNotExist:
+        return Response({'message': 'Person not found.'}, status=status.HTTP_404_NOT_FOUND)        
+
+

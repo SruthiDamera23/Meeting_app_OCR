@@ -14,6 +14,8 @@ import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import PeopleIcon from '@mui/icons-material/People';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import ChurchIcon from '@mui/icons-material/Church';
 import { useNavigate, Link } from "react-router-dom";
 import { logout, tasks_view, getCookie, updateCookie, isSuperUser, isAdmin } from "../../api";
@@ -160,6 +162,18 @@ const AppSidebar = () => {
                         </MenuItem>
                     </SubMenu>
                 }
+
+                        {<MenuItem className="sidebar-menu-item" component={<Link to="/people" />}>
+                            <EmojiPeopleIcon/>
+                            <br />
+                            <div style={{ overflow: "visible" }}>People</div>
+                        </MenuItem>}
+
+                        {isSuperUser() && <MenuItem className="sidebar-menu-item" component={<Link to="/subscriptions" />}>
+                            <AttachMoneyIcon/>
+                            <br />
+                            <div style={{ overflow: "visible" }}>Subscriptions</div>
+                        </MenuItem>}     
 
                 <MenuItem className="sidebar-menu-item" component={<div onClick={handleLogout} />}>
                     <LogoutOutlinedIcon className="sidebar-menu-item-icon" />
