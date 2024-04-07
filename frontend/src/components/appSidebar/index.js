@@ -103,7 +103,8 @@ const AppSidebar = () => {
                         List
                     </MenuItem>
                 </SubMenu>
-                {(isSuperUser() || isAdmin() )&& 
+                
+                {/*(isSuperUser() || isAdmin() )&& 
 
                 <SubMenu
                     className="sidebar-menu-item"
@@ -117,17 +118,17 @@ const AppSidebar = () => {
                 >
                     <MenuItem className="sidebar-menu-item" component={<Link to="/user-request" />}>
                         <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
-                        {/* Changed icon */}<br />Requests
+                        <br />Requests
                     </MenuItem>
                     <MenuItem className="sidebar-menu-item" component={<Link to="/deny-history" />}>
                         <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
-                        {/* Changed icon */}<br />Deny Requests
+                        <br />Deny Requests
                     </MenuItem>
                     <MenuItem className="sidebar-menu-item" component={<Link to="/approve-history" />}>
                         <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
-                        {/* Changed icon */}<br />Approve Requests
+                       <br />Approve Requests
                     </MenuItem>
-                </SubMenu>}
+                </SubMenu> */}
 
                { (isSuperUser() || isAdmin() ) && <MenuItem className="sidebar-menu-item" component={<Link to="/users" />}>
                     <People className="sidebar-menu-item-icon" />

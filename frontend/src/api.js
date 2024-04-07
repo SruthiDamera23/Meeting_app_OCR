@@ -34,6 +34,7 @@ export const update_church_data = (id,formdata) => api.put(`edit-church/${id}`,f
 export const delete_church_data = (id) => api.delete(`edit-church/${id}`);
 export const delete_user = (id) => api.delete(`deleteuser/${id}/`);
 export const get_users=(cid)=>api.get(`users/${cid}`);
+export const update_user =(formData) => api.post("updateuser/", formData);
 
 export const user_requests=(cid)=>api.get(`requests/${cid}`);
 export const get_church_data=()=>api.get('church/');

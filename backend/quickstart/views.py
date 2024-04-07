@@ -103,6 +103,28 @@ def delete_user(request, user_id):
     serializer = RequestUserSerializer(users, many=True)  # Serialize users data
     return Response(serializer.data)
 
+@api_view(['POST'])
+def update_user(request):
+    try:
+        user_id = request.data.get('id')
+        updated_data = {
+            'first_name': request.data.get('first_name'),
+            'last_name': request.data.get('last_name'),
+            'email': request.data.get('email'),
+            'user_type': request.data.get('user_type'),
+            'church': request.data.get('church'),
+        }
+        user = User.objects.get(id=user_id)
+        serializer = UserSerializer(user, data=updated_data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 # class TaskViewSet(viewsets.ModelViewSet):
 #     queryset = Task.objects.all()
 #     serializer_class = TaskSerializer
