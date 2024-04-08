@@ -100,7 +100,10 @@ const Users = () => {
   };
 
   const handleAddUser = () => {
-    signup(newUser).then(() => {
+    signup(newUser).then((response) => {
+      if(response.status === 226) {
+        alert(response.data.message);
+      }
       toggleAddModal();
       setTimeout(() => {
         window.location.reload();

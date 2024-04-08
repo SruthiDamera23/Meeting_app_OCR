@@ -1,4 +1,5 @@
 from django.db import models
+from subscription.models import Subscription
 
 class ChurchManager(models.Manager):
     def createChurch(self, **kwargs):
@@ -11,6 +12,7 @@ class Church(models.Model):
     ph_no = models.CharField(max_length=10)
     email = models.CharField(max_length=20, blank=True, null=True)
     website = models.CharField(max_length=30, blank=True, null=True)
+    subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE, related_name='churchSubscription', blank=True, null=True)
     deleted = models.BooleanField(default=False)
 
     objects = ChurchManager()

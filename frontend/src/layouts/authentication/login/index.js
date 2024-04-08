@@ -185,9 +185,9 @@ function Login(props) {
                       <Button className="my-button" color="success" onClick={handleSubmit}>
                         Sign In
                       </Button>{" "}
-                      {/*< Button className="my-button" color="success" onClick={handleSignUp}>
+                      {< Button className="my-button" color="success" onClick={handleSignUp}>
                         Subscribe
-  </Button>*/}
+  </Button>}
                     </CardBody>
                   </Card>
                 </div>

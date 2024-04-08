@@ -10,6 +10,8 @@ from django.http import HttpRequest
 from django.contrib.auth import logout
 from rest_framework import viewsets
 from .models import User
+from subscription.models import Subscription
+from church.models import Church
 # from .models import Task
 # from .serializers import TaskSerializer
 
@@ -64,10 +66,16 @@ def logout_view(request):
 @api_view(['POST'])
 def signup(request):
     data = request.data
-    print(data)
     if data['user_type']==1:
         data['church']=None
     serializer = UserSerializer(data=data)
+    cid = data['church']
+    church = Church.objects.get(id=cid)
+    subscription_id = church.subscription.id
+    church_user_count = User.objects.filter(church=cid).count()
+    subscription_limit = Subscription.objects.filter(id=subscription_id).values_list('count', flat=True).first()
+    if church_user_count >= subscription_limit :
+        return Response({'message': 'User Limit Exceeded!!'}, status=status.HTTP_226_IM_USED)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)

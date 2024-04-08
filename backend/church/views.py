@@ -18,8 +18,8 @@ def church(request):
     elif request.method == 'POST':
         serializer = ChurchSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response({'message': 'Church added.'}, status=status.HTTP_201_CREATED)
+            church = serializer.save()
+            return Response({'message': 'Church added.','id':int(church.id)}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT','DELETE'])
