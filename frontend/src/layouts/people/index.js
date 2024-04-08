@@ -11,7 +11,7 @@ import {
   Label,
   Input
 } from 'reactstrap';
-import { person_view, add_person, delete_person } from '../../../src/api';
+import { person_view, add_person, delete_person, getCookie } from '../../../src/api';
 import AppSidebar from '../../components/appSidebar';
 
 const PersonPage = () => {
@@ -21,7 +21,8 @@ const PersonPage = () => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
-    email: ''
+    email: '',
+    church: getCookie('church')
   });
   const [deleteId, setDeleteId] = useState(null);
 
