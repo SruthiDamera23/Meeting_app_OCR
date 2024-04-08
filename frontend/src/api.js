@@ -23,7 +23,7 @@ export const meeting_ocr = (image) => api.post('meeting/ocr', image);
 export const meeting_view = () => api.get('meeting/');
 export const meeting_read = (pk) => api.get(`meeting/${pk}`);
 export const meeting_update = (pk, formData) => api.put(`meeting/${pk}`, formData);
-export const person_view = () => api.get('person/');
+export const person_view = (id) => api.get(`get_person/${id}`);
 export const add_person= (formData) => api.post('person/', formData);
 export const delete_person= (id) => api.delete(`person/${id}`);
 

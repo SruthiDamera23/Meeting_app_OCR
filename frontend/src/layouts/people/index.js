@@ -31,7 +31,7 @@ const PersonPage = () => {
   }, []);
 
   const fetchPersons = () => {
-    person_view()
+    person_view(getCookie('church'))
       .then((response) => {
         setPersons(response.data);
         setIsLoading(false);
