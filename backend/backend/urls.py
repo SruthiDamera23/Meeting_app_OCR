@@ -27,6 +27,7 @@ urlpatterns = [
   path('',include('church.urls')),
   path('',include('group.urls')),
   path('',include('requestuser.urls')),
+  path('',include('subscription.urls')),
   path('api-token-auth', views.obtain_auth_token),
   path('openapi-schema/', schema_view.with_ui('swagger', cache_timeout=0), name='openapi-schema'),
   path('swagger/', TemplateView.as_view(

@@ -23,7 +23,10 @@ export const meeting_ocr = (image) => api.post('meeting/ocr', image);
 export const meeting_view = () => api.get('meeting/');
 export const meeting_read = (pk) => api.get(`meeting/${pk}`);
 export const meeting_update = (pk, formData) => api.put(`meeting/${pk}`, formData);
-export const person_view = () => api.get('person/');
+export const person_view = (id) => api.get(`get_person/${id}`);
+export const add_person= (formData) => api.post('person/', formData);
+export const delete_person= (id) => api.delete(`person/${id}`);
+
 export const delete_request = (id) => api.delete(`deleterequest/${id}/`);
 export const deny_request = (id) => api.get(`approve_status_on_deny/${id}/`);
 export const deny_restore = (id) => api.get(`restore_status/${id}/`);
@@ -34,6 +37,13 @@ export const update_church_data = (id,formdata) => api.put(`edit-church/${id}`,f
 export const delete_church_data = (id) => api.delete(`edit-church/${id}`);
 export const delete_user = (id) => api.delete(`deleteuser/${id}/`);
 export const get_users=(cid)=>api.get(`users/${cid}`);
+export const update_user =(formData) => api.post("updateuser/", formData);
+
+export const delete_subscription = (id) => api.delete(`subscription/${id}`);
+export const get_subscriptions = () => api.get('subscription/');
+export const add_subscription = (formData) => api.post('subscription/', formData);
+export const update_subscription = (id,formData) => api.put(`subscription/${id}/`, formData);
+
 
 export const user_requests=(cid)=>api.get(`requests/${cid}`);
 export const get_church_data=()=>api.get('church/');

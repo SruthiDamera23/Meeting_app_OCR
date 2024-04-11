@@ -19,12 +19,11 @@ import TaskCalendar from "./layouts/taskCalendar";
 import UserRequest from "./layouts/userRequest";
 import DenyHistory from './layouts/denyhistory/DenyHistory';
 import Approvehistory from './layouts/approvehistory/Approvehistory';
-
-
+import People from "./layouts/people"
 import AddChurch from "./layouts/addChurch";
 import EditChurch from "./layouts/editChurch";
 import Users from './layouts/users';
-
+import Subscriptions from './layouts/subscriptions';
 function App() {
   return (
     <Router>
@@ -43,6 +42,8 @@ function App() {
         <Route exact path="/add-church" element={<AddChurch />}/>
         <Route exact path="/edit-church" element={<EditChurch />}/>
         <Route exact path="/users" element={<Users />} />
+        <Route exact path="people" element={<People/>} />
+        <Route exact path='/subscriptions' element={<Subscriptions/>} />
       </Routes>
     </Router>
     // <div className="App">

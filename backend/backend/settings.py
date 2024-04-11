@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_yasg',
     'church',
+    'subscription',
     'group',
     'requestuser'
 ]
