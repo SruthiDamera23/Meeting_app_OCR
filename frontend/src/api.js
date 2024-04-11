@@ -41,6 +41,7 @@ export const update_user =(formData) => api.post("updateuser/", formData);
 
 export const delete_subscription = (id) => api.delete(`subscription/${id}`);
 export const get_subscriptions = () => api.get('subscription/');
+export const subscription_view = (id) => api.get(`subscription/${id}`);
 export const add_subscription = (formData) => api.post('subscription/', formData);
 export const update_subscription = (id,formData) => api.put(`subscription/${id}/`, formData);
 

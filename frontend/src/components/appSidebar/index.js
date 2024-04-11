@@ -17,6 +17,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import ChurchIcon from '@mui/icons-material/Church';
+import GroupIcon from '@mui/icons-material/Group';
 import { useNavigate, Link } from "react-router-dom";
 import { logout, tasks_view, getCookie, updateCookie, isSuperUser, isAdmin } from "../../api";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -52,7 +53,7 @@ const AppSidebar = () => {
     return (
         <Sidebar
             className="sidebar"
-            width="8%"
+            width="10%"
             backgroundColor="rgba(200, 250, 200, 0.2)"
             rootStyles={{ position: "fixed", borderRightColor: "rgb(160, 200, 160)" }}
         >
@@ -136,6 +137,12 @@ const AppSidebar = () => {
                     <People className="sidebar-menu-item-icon" />
                     <br />
                     Users
+                </MenuItem>}
+
+                { (isSuperUser() ) && <MenuItem className="sidebar-menu-item" component={<Link to="/subscribers" />}>
+                    <GroupIcon className="sidebar-menu-item-icon" />
+                    <br />
+                    Subscribers
                 </MenuItem>}
 
                 {isSuperUser() &&

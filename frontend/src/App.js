@@ -24,6 +24,7 @@ import AddChurch from "./layouts/addChurch";
 import EditChurch from "./layouts/editChurch";
 import Users from './layouts/users';
 import Subscriptions from './layouts/subscriptions';
+import Subscribers from './layouts/subscribers';
 function App() {
   return (
     <Router>
@@ -44,6 +45,7 @@ function App() {
         <Route exact path="/users" element={<Users />} />
         <Route exact path="people" element={<People/>} />
         <Route exact path='/subscriptions' element={<Subscriptions/>} />
+        <Route exact path='/subscribers' element={<Subscribers/>} />
       </Routes>
     </Router>
     // <div className="App">
