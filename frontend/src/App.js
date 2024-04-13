@@ -25,6 +25,7 @@ import EditChurch from "./layouts/editChurch";
 import Users from './layouts/users';
 import Subscriptions from './layouts/subscriptions';
 import Subscribers from './layouts/subscribers';
+import Pricing_plan from './components/pricing/Pricing_plan';
 function App() {
   return (
     <Router>
@@ -46,6 +47,7 @@ function App() {
         <Route exact path="people" element={<People/>} />
         <Route exact path='/subscriptions' element={<Subscriptions/>} />
         <Route exact path='/subscribers' element={<Subscribers/>} />
+        <Route exact path='/pricing_plan' element={<Pricing_plan/>} />
       </Routes>
     </Router>
     // <div className="App">

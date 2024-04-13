@@ -37,7 +37,7 @@ function Login(props) {
   const navigate = useNavigate();
   
   const handleSignUp = () => {
-    navigate("/signup");
+    navigate("/pricing_plan");
   };
 
   const history = useNavigate();
