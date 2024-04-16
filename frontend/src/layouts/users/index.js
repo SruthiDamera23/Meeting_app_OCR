@@ -32,7 +32,7 @@ const Users = () => {
     first_name: '',
     last_name: '',
     email: '',
-    user_type: '',
+    user_type: '2',
     church: getCookie('church'),
     password: ''
   });
