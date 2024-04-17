@@ -45,6 +45,8 @@ export const subscription_view = (id) => api.get(`subscription/${id}`);
 export const add_subscription = (formData) => api.post('subscription/', formData);
 export const update_subscription = (id,formData) => api.put(`subscription/${id}/`, formData);
 
+export const chargeCard = (formData) => api.post("charge/",formData);
+
 
 export const user_requests=(cid)=>api.get(`requests/${cid}`);
 export const get_church_data=()=>api.get('church/');
