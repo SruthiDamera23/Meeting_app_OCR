@@ -12,13 +12,14 @@ import {
   ModalBody,
   ModalFooter,
 } from 'reactstrap';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { signup, addChurch as create_church, get_subscriptions, chargeCard } from '../../../api';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 
 const Signup = () => {
   const [subscriptions, setSubscriptions] = useState([]);
   const history = useNavigate();
+  const { state } = useLocation()
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [signupMessage, setSignupMessage] = useState('');
@@ -47,10 +48,11 @@ const Signup = () => {
     churchEmail: '',
     website: '',
     user_type: '2',
-    subscription: '',
+    subscription: state.id,
     church: 'new',
   });
 
+  
   const handleChange = event => {
     const { name, value } = event.target;
     setFormData(prevState => ({
@@ -65,7 +67,11 @@ const Signup = () => {
     const selectedSub = subscriptions.find(sub => sub.id === subscriptionId);
     console.log('Selected Subscription:', selectedSub);
     setSelectedSubscription(selectedSub);
-    formData.subscription = subscriptionId;
+    // formData.subscription = subscriptionId;
+    setFormData(prevState => ({
+      ...prevState,
+      subscription: subscriptionId,
+    }));
   };
 
   const handleSubmit = async event => {
@@ -78,28 +84,28 @@ const Signup = () => {
 
     try {
       const cardElement = elements.getElement(CardElement);
-      
+
       if (!stripe || !cardElement) {
         throw new Error('Stripe.js has not loaded properly.');
       }
-      
+
       const { paymentMethod, error } = await stripe.createPaymentMethod({
         type: 'card',
         card: cardElement,
       });
-  
+
       if (error) {
         throw new Error(error.message);
       }
-  
+
       await chargeCard({
         payment_method: paymentMethod.id,
         amount: subscriptions.find(sub => sub.id === parseInt(formData.subscription))?.price
       });
 
-    } catch(error) {
-        alert(error);
-        return;
+    } catch (error) {
+      alert(error);
+      return;
     }
     alert("Payment Successful!!. Redirecting to login...")
     try {
@@ -279,10 +285,10 @@ const Signup = () => {
               type="text"
               id="subscriptionAmount"
               name="subscriptionAmount"
-              value={"$"+subscriptions.find(sub => sub.id === parseInt(formData.subscription))?.price}
+              value={"$" + subscriptions.find(sub => sub.id === parseInt(formData.subscription))?.price}
               disabled
             />
-          </FormGroup> }
+          </FormGroup>}
           <FormGroup>
             <Label>Card details</Label>
             <CardElement />
