@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { get_subscriptions } from '../../api'; 
+import { get_subscriptions } from '../../api';
 const Pricing_plan = () => {
   const [plans, setPlans] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     get_subscriptions().then(response => {
-      setPlans(response.data); 
+      setPlans(response.data);
     }).catch(error => {
       console.error("Failed to fetch plans:", error);
     });
   }, []);
 
-  const handleNavigate = () => {
-    navigate("/signup");
+  const handleNavigate = (plan) => {
+    navigate("/signup", { state: plan });
   };
 
   return (
@@ -29,7 +29,7 @@ const Pricing_plan = () => {
                 <b className="b">${plan.price}</b> / month
               </h5>
               <p>{plan.description}</p>
-              <button onClick={handleNavigate}>Choose</button>
+              <button onClick={() => handleNavigate(plan)}>Choose</button>
               <p>
                 {plan.name} <b>{plan.count}</b> Users
               </p>

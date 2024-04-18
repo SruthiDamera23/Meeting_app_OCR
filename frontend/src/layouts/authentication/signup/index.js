@@ -7,14 +7,36 @@ import {
   FormGroup,
   Label,
   Input,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
 } from 'reactstrap';
-import { useNavigate } from 'react-router-dom';
-import { signup, addChurch as create_church, get_subscriptions } from '../../../api';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { signup, addChurch as create_church, get_subscriptions, chargeCard } from '../../../api';
+import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 
 const Signup = () => {
   const [subscriptions, setSubscriptions] = useState([]);
   const history = useNavigate();
+  const { state } = useLocation()
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [signupMessage, setSignupMessage] = useState('');
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const stripe = useStripe();
+  const elements = useElements();
+  const [selectedSubscription, setSelectedSubscription] = useState();
+
+  useEffect(() => {
+    get_subscriptions()
+      .then(response => {
+        setSubscriptions(response.data);
+        console.log('Subscriptions:', response.data);
+      })
+      .catch(error => console.error('Error fetching subscriptions:', error));
+  }, []);
+
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -26,34 +48,66 @@ const Signup = () => {
     churchEmail: '',
     website: '',
     user_type: '2',
-    subscription :'',
-    church: 'new', // Default to creating a new church
+    subscription: state.id,
+    church: 'new',
   });
 
-  useEffect(() => {
-    get_subscriptions()
-      .then(response => {
-        setSubscriptions(response.data);
-      })
-      .catch(error => console.error('Error fetching subscriptions:', error));
-  }, []);
-
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [signupMessage, setSignupMessage] = useState('');
-
+  
   const handleChange = event => {
     const { name, value } = event.target;
-
     setFormData(prevState => ({
       ...prevState,
       [name]: value,
     }));
   };
 
+  const handleSubscriptionChange = event => {
+    const subscriptionId = event.target.value;
+    console.log('Selected Subscription ID:', subscriptionId);
+    const selectedSub = subscriptions.find(sub => sub.id === subscriptionId);
+    console.log('Selected Subscription:', selectedSub);
+    setSelectedSubscription(selectedSub);
+    // formData.subscription = subscriptionId;
+    setFormData(prevState => ({
+      ...prevState,
+      subscription: subscriptionId,
+    }));
+  };
+
   const handleSubmit = async event => {
     event.preventDefault();
+    setShowPaymentModal(true);
+  };
+
+  const handlePaymentSuccess = async () => {
     setIsLoading(true);
 
+    try {
+      const cardElement = elements.getElement(CardElement);
+
+      if (!stripe || !cardElement) {
+        throw new Error('Stripe.js has not loaded properly.');
+      }
+
+      const { paymentMethod, error } = await stripe.createPaymentMethod({
+        type: 'card',
+        card: cardElement,
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      await chargeCard({
+        payment_method: paymentMethod.id,
+        amount: subscriptions.find(sub => sub.id === parseInt(formData.subscription))?.price
+      });
+
+    } catch (error) {
+      alert(error);
+      return;
+    }
+    alert("Payment Successful!!. Redirecting to login...")
     try {
       let churchId;
       if (formData.church === 'new') {
@@ -91,6 +145,7 @@ const Signup = () => {
       setSignupMessage('Signup failed.');
     } finally {
       setIsLoading(false);
+      setShowPaymentModal(false);
     }
   };
 
@@ -107,7 +162,6 @@ const Signup = () => {
                 name="first_name"
                 value={formData.first_name}
                 onChange={handleChange}
-                placeholder="Enter your first name"
                 required
               />
             </FormGroup>
@@ -119,7 +173,6 @@ const Signup = () => {
                 name="last_name"
                 value={formData.last_name}
                 onChange={handleChange}
-                placeholder="Enter your last name"
                 required
               />
             </FormGroup>
@@ -131,7 +184,6 @@ const Signup = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="Enter your email"
                 required
               />
             </FormGroup>
@@ -143,7 +195,6 @@ const Signup = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                placeholder="Enter your password"
                 required
               />
             </FormGroup>
@@ -154,7 +205,7 @@ const Signup = () => {
                 id="subscription"
                 name="subscription"
                 value={formData.subscription}
-                onChange={handleChange}
+                onChange={handleSubscriptionChange}
                 required
               >
                 <option value="">Select Subscription</option>
@@ -173,7 +224,6 @@ const Signup = () => {
                 name="churchName"
                 value={formData.churchName}
                 onChange={handleChange}
-                placeholder="Enter church name"
                 required
               />
             </FormGroup>
@@ -185,7 +235,6 @@ const Signup = () => {
                 name="address"
                 value={formData.address}
                 onChange={handleChange}
-                placeholder="Enter church address"
                 required
               />
             </FormGroup>
@@ -197,7 +246,6 @@ const Signup = () => {
                 name="ph_no"
                 value={formData.ph_no}
                 onChange={handleChange}
-                placeholder="Enter church phone number"
                 required
               />
             </FormGroup>
@@ -209,7 +257,6 @@ const Signup = () => {
                 name="churchEmail"
                 value={formData.churchEmail}
                 onChange={handleChange}
-                placeholder="Enter church email"
               />
             </FormGroup>
             <FormGroup>
@@ -220,7 +267,6 @@ const Signup = () => {
                 name="website"
                 value={formData.website}
                 onChange={handleChange}
-                placeholder="Enter church website"
               />
             </FormGroup>
             <Button type="submit" color="success" disabled={isLoading}>
@@ -230,6 +276,29 @@ const Signup = () => {
           {isSubmitted && <p>{signupMessage}</p>}
         </CardBody>
       </Card>
+      <Modal isOpen={showPaymentModal} toggle={() => setShowPaymentModal(false)}>
+        <ModalHeader toggle={() => setShowPaymentModal(false)}>Payment</ModalHeader>
+        <ModalBody>
+          {subscriptions.length > 0 && <FormGroup>
+            <Label for="subscriptionAmount">Subscription Amount</Label>
+            <Input
+              type="text"
+              id="subscriptionAmount"
+              name="subscriptionAmount"
+              value={"$" + subscriptions.find(sub => sub.id === parseInt(formData.subscription))?.price}
+              disabled
+            />
+          </FormGroup>}
+          <FormGroup>
+            <Label>Card details</Label>
+            <CardElement />
+          </FormGroup>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={handlePaymentSuccess}>Pay</Button>{' '}
+          <Button color="secondary" onClick={() => setShowPaymentModal(false)}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 };

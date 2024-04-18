@@ -26,8 +26,15 @@ import Users from './layouts/users';
 import Subscriptions from './layouts/subscriptions';
 import Subscribers from './layouts/subscribers';
 import Pricing_plan from './components/pricing/Pricing_plan';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe('pk_test_51P6bIrEt10Rr6G1LifUC8t8FYMlpqHhR9sHLmzzbSS06ymg5FBX4YAYptfsroM8bx3jXHEfY7YEzmpHbacu8RX0C00Gs6xRHZy');
+
 function App() {
   return (
+    <Elements stripe={stripePromise}>
+
     <Router>
       <Routes>
         <Route exact path="/" element={<Login />} />
@@ -50,6 +57,9 @@ function App() {
         <Route exact path='/pricing_plan' element={<Pricing_plan/>} />
       </Routes>
     </Router>
+
+    </Elements>
+
     // <div className="App">
     //   <header className="App-header">
     //     <img src={logo} className="App-logo" alt="logo" />
