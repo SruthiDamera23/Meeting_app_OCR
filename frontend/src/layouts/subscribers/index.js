@@ -34,11 +34,11 @@ const Subscribers = () => {
                 church_ph_no: church.ph_no,
                 subscription: church.subscription,
                 website: church.website,
-                count: subscriptionRes.data[0].count,
-                subscription_name: subscriptionRes.data[0].name,
+                count: subscriptionRes.data.find(item => item.id === church.subscription)?.count,
+                subscription_name: subscriptionRes.data.find(item => item.id === church.subscription)?.name,
                 admin_name: usersRes.data[0].first_name + " " + usersRes.data[0].last_name,
                 admin_email: usersRes.data[0].email,
-                existin_user_count:usersRes.data.length-1
+                existin_user_count:usersRes.data.length
             }));
         }))
         .then(churches => {
