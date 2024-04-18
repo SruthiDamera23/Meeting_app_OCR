@@ -27,6 +27,7 @@ const Subscribers = () => {
                 get_users(church.id)
             ])
             .then(([subscriptionRes, usersRes]) => ({
+              
                 address: church.address,
                 church_email: church.address,
                 church_id: church.id,
@@ -38,7 +39,7 @@ const Subscribers = () => {
                 subscription_name: subscriptionRes.data[0].name,
                 admin_name: usersRes.data[0].first_name + " " + usersRes.data[0].last_name,
                 admin_email: usersRes.data[0].email,
-                existin_user_count:usersRes.data.length-1
+                existin_user_count:usersRes.data.length
             }));
         }))
         .then(churches => {

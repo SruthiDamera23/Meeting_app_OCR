@@ -103,9 +103,12 @@ function Login(props) {
       }));
 
       document.cookie="user="+response.data.user;
+      
       document.cookie="priv="+response.data.priv;
       document.cookie="church="+response.data.church;
+     document.cookie="user-id="+response.data.user_id;
       console.log(document.cookie,"cokkiesss");
+      console.log(response.data);
       navigate('/dashboard');
       })
       .catch((error) => {

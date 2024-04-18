@@ -9,11 +9,14 @@ import {
   Button
 } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { meeting_view } from "../../api";
+import { getCookie, meeting_view, get_church_data } from "../../api";
 import AppSidebar from "../../components/appSidebar";
 import MeetingCard from "./components/MeetingCard";
 
@@ -22,7 +25,10 @@ import MeetingCard from "./components/MeetingCard";
  */
 const Schedule = () => {
   const [meetings, setMeetings] = useState("");
+  const [allMeetings, setAllMeetings] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [churchDropdownOptions,setChurchDropdownOptions] = useState(['other']);
+  const [selectedChurchDropdownOption,setSelectedChurchDropdownOption] = useState();
   /*
    * mustGetMeetings is a boolean useEffect() trigger - useful to
    * have a single trigger for the API call to avoid filling
@@ -40,7 +46,45 @@ const Schedule = () => {
         .catch((error) => {
           console.log(error)
         });
-      setMeetings(response.data);
+        setAllMeetings(response.data);
+      const privilege=getCookie("priv");
+      if(privilege ==1){
+        // if(selectedChurchDropdownOption==null){
+        let church=selectedChurchDropdownOption;
+        let wantedMeetingData=[];
+        let tempMeetingsData=response.data;
+        for (let i = 0; i < tempMeetingsData.length; i++) {
+          console.log(tempMeetingsData[i].church,church);
+          if (tempMeetingsData[i].church+"" === church) {
+              wantedMeetingData.push(tempMeetingsData[i]);
+          }
+      } 
+      setMeetings(wantedMeetingData)
+        
+    // }
+      } else if(privilege ==2){
+        const church =getCookie("church");
+        let wantedMeetingData=[];
+        let tempMeetingsData=response.data;
+        for (let i = 0; i < tempMeetingsData.length; i++) {
+          if (tempMeetingsData[i].church+"" === church) {
+              wantedMeetingData.push(tempMeetingsData[i]);
+          }
+      } 
+      setMeetings(wantedMeetingData)
+      }else if(privilege ==3){
+        const church =getCookie("church");
+        const id =getCookie("user-id");
+        let wantedMeetingData=[];
+        let tempMeetingsData=response.data;
+        for (let i = 0; i < tempMeetingsData.length; i++) {
+          if (tempMeetingsData[i].created_by+"" === id+"") {
+              wantedMeetingData.push(tempMeetingsData[i]);
+          }
+      } 
+      setMeetings(wantedMeetingData)
+      }
+
       setMustGetMeetings(false);
       setIsLoading(false);
     }
@@ -48,8 +92,35 @@ const Schedule = () => {
     if (mustGetMeetings) {
       fetchMeetings();
     }
-  }, [mustGetMeetings]);
 
+    fetchChurchDropdownData();
+
+    
+
+  }, [mustGetMeetings, selectedChurchDropdownOption]);
+
+
+  const fetchChurchDropdownData=()=>{
+
+    get_church_data()
+            .then((req) => {
+                const churchData = req.data;
+                
+                
+                let tempDropdownData=[];
+                churchData.forEach(x => {
+                  tempDropdownData.push({
+                    "id":x.id,
+                    "name":x.name
+                  })
+                  });
+                setChurchDropdownOptions(tempDropdownData);
+                
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+  }
 
   const newMeeting = () => {
     navigate(
@@ -63,17 +134,43 @@ const Schedule = () => {
     );
   }
 
+  const OnChurchDropdownOptionChange=(selectedIndex)=>{
+      let wantedMeetingData=[];
+        for (let i = 0; i < allMeetings.length; i++) {
+          console.log(allMeetings[i].church,selectedIndex);
+          if (allMeetings[i].church+"" === selectedIndex+"") {
+              wantedMeetingData.push(allMeetings[i]);
+          }
+      } 
+      setMeetings(wantedMeetingData)
+  }
+
   return (
     <div style={{display: 'flex'}}>
       <AppSidebar />
       <Container className="my-4">
         <Card className="my-card schedule-card">
-          <CardTitle tag="h5" className="p-3 card-head">
+          <CardTitle tag="h5" className=" p-3 card-head" style={{ display: "flex", justifyContent: "space-between" }}>
+          {getCookie("priv")==="1" &&<Dropdown
+                className="custom-dropdown" 
+                  options={churchDropdownOptions.map((x)=>x.name)} 
+                  onChange={
+                    (selectedValue) => {
+                      const selectedIndex = churchDropdownOptions.findIndex(option => option.name === selectedValue.value);
+                      setSelectedChurchDropdownOption(churchDropdownOptions[selectedIndex].id);
+                      OnChurchDropdownOptionChange(churchDropdownOptions[selectedIndex].id);
+
+                    }}
+                   placeholder="Select an church" 
+                   
+                   />}
             <Row>
+            
               <IconButton onClick={newMeeting}>
                 <AddCircleOutlineOutlinedIcon />
               </IconButton>
             </Row>
+            <div></div>
           </CardTitle>
           <CardText className="p-3 schedule-card-body">
             {

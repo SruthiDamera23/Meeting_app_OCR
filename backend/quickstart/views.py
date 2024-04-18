@@ -50,11 +50,12 @@ def login_view(request):
         login(django_request, user, backend='django.contrib.auth.backends.ModelBackend')
         temp_data = fetch_user_and_prev(email)
         priv = temp_data.user_type
+        user_id=temp_data.id
         church = temp_data.church
         church_id = 0
         if priv>1 :
             church_id = church.id
-        return Response({'message': 'Logged in successfully.','user':email,'priv':int(priv),'church':int(church_id)})
+        return Response({'message': 'Logged in successfully.','user':email,'priv':int(priv),'church':int(church_id),'user_id':int(user_id)})
     return Response({'message': 'Invalid username or password.'}, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['POST'])

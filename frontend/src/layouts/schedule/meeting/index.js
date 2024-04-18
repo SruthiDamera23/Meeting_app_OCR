@@ -36,7 +36,8 @@ import {
   meeting_update,
   person_view,
   tasks_create,
-  tasks_view
+  tasks_view,
+  getCookie
 } from '../../../api';
 import AppSidebar from "../../../components/appSidebar";
 import InvitePeopleModal from "../../../components/modals/InvitePeopleModal.js";
@@ -313,8 +314,12 @@ const handleQuestions = (e) =>{
     };
 
     const submitMeeting = () => {
+      
+      let updatedMeeting=meeting;
+      updatedMeeting["created_by"]=getCookie("user-id");
+      updatedMeeting["church"]=getCookie("church");
       if (id === "") {
-        meeting_create(meeting)
+        meeting_create(updatedMeeting)
           .then(() => {
             navigate("/schedule");
           })
@@ -322,7 +327,7 @@ const handleQuestions = (e) =>{
             console.error("Error creating meeting:", error);
           });
       } else {
-        meeting_update(state.meeting.id, meeting)
+        meeting_update(state.meeting.id, updatedMeeting)
           .then(() => {
             navigate("/schedule");
           })
