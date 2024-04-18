@@ -17,10 +17,25 @@ import { signup, addChurch as create_church, get_subscriptions, chargeCard } fro
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 
 const Signup = () => {
-  const [subscriptionMap, setSubscriptionMap] = useState([]);
   const [subscriptions, setSubscriptions] = useState([]);
   const history = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [signupMessage, setSignupMessage] = useState('');
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const stripe = useStripe();
+  const elements = useElements();
+  const [selectedSubscription, setSelectedSubscription] = useState();
+
+  useEffect(() => {
+    get_subscriptions()
+      .then(response => {
+        setSubscriptions(response.data);
+        console.log('Subscriptions:', response.data);
+      })
+      .catch(error => console.error('Error fetching subscriptions:', error));
+  }, []);
+
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -36,26 +51,6 @@ const Signup = () => {
     church: 'new',
   });
 
-  useEffect(() => {
-    get_subscriptions()
-      .then(response => {
-        setSubscriptions(response.data);
-        const subscriptionMap = subscriptions.reduce((acc, sub) => {
-          acc[sub.id] = sub.price;
-          return acc;
-        }, {});
-        setSubscriptionMap(subscriptionMap);
-      })
-      .catch(error => console.error('Error fetching subscriptions:', error));
-  }, []);
-
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [signupMessage, setSignupMessage] = useState('');
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const stripe = useStripe();
-  const elements = useElements();
-  const [selectedSubscription, setSelectedSubscription] = useState(null);
-
   const handleChange = event => {
     const { name, value } = event.target;
     setFormData(prevState => ({
@@ -66,12 +61,11 @@ const Signup = () => {
 
   const handleSubscriptionChange = event => {
     const subscriptionId = event.target.value;
+    console.log('Selected Subscription ID:', subscriptionId);
     const selectedSub = subscriptions.find(sub => sub.id === subscriptionId);
+    console.log('Selected Subscription:', selectedSub);
     setSelectedSubscription(selectedSub);
-    setFormData(prevState => ({
-      ...prevState,
-      subscription: subscriptionId,
-    }));
+    formData.subscription = subscriptionId;
   };
 
   const handleSubmit = async event => {
@@ -100,7 +94,7 @@ const Signup = () => {
   
       await chargeCard({
         payment_method: paymentMethod.id,
-        amount: subscriptionMap[formData.subscription]
+        amount: subscriptions.find(sub => sub.id === parseInt(formData.subscription))?.price
       });
 
     } catch(error) {
@@ -279,16 +273,16 @@ const Signup = () => {
       <Modal isOpen={showPaymentModal} toggle={() => setShowPaymentModal(false)}>
         <ModalHeader toggle={() => setShowPaymentModal(false)}>Payment</ModalHeader>
         <ModalBody>
-          <FormGroup>
+          {subscriptions.length > 0 && <FormGroup>
             <Label for="subscriptionAmount">Subscription Amount</Label>
             <Input
               type="text"
               id="subscriptionAmount"
               name="subscriptionAmount"
-              value={"$"+subscriptionMap[formData.subscription]}
+              value={"$"+subscriptions.find(sub => sub.id === parseInt(formData.subscription))?.price}
               disabled
             />
-          </FormGroup>
+          </FormGroup> }
           <FormGroup>
             <Label>Card details</Label>
             <CardElement />
