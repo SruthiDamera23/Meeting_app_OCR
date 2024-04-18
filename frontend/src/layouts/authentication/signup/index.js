@@ -269,9 +269,14 @@ const Signup = () => {
                 onChange={handleChange}
               />
             </FormGroup>
-            <Button type="submit" color="success" disabled={isLoading}>
-              Sign up
-            </Button>
+            <div className="d-flex justify-content-between">
+              <Button type="submit" color="success" disabled={isLoading}>
+                Sign up
+              </Button>
+              <Button className="link-text" color="danger" onClick={() => window.location.href = '/Pricing_plan'}>
+                Back
+              </Button>
+            </div>
           </Form>
           {isSubmitted && <p>{signupMessage}</p>}
         </CardBody>
