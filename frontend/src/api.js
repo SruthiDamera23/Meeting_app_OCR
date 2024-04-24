@@ -38,6 +38,8 @@ export const delete_church_data = (id) => api.delete(`edit-church/${id}`);
 export const delete_user = (id) => api.delete(`deleteuser/${id}/`);
 export const get_users=(cid)=>api.get(`users/${cid}`);
 export const update_user =(formData) => api.post("updateuser/", formData);
+export const edit_church =(formData) => api.put(`edit-church/${formData.church_id}`, formData);
+export const delete_church =(id) => api.delete(`edit-church/${id}`);
 
 export const delete_subscription = (id) => api.delete(`subscription/${id}`);
 export const get_subscriptions = () => api.get('subscription/');

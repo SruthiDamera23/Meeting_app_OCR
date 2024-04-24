@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { get_subscriptions } from '../../api';
+
 const Pricing_plan = () => {
   const [plans, setPlans] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    get_subscriptions().then(response => {
-      setPlans(response.data);
-    }).catch(error => {
-      console.error("Failed to fetch plans:", error);
-    });
+    get_subscriptions()
+      .then(response => {
+        setPlans(response.data);
+      })
+      .catch(error => {
+        console.error("Failed to fetch plans:", error);
+      });
   }, []);
 
   const handleNavigate = (plan) => {
     navigate("/signup", { state: plan });
+  };
+
+  const handleGoBack = () => {
+    navigate("/"); // Navigate back one step in the history
   };
 
   return (
@@ -36,6 +43,9 @@ const Pricing_plan = () => {
             </div>
           ))}
         </div>
+        <a className="link-text" href="/">
+                Back to login
+        </a>
       </div>
     </>
   );
