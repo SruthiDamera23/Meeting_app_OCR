@@ -101,14 +101,35 @@ const Subscribers = () => {
     }));
   };
 
-  const handleDeleteUser = (userId) => {
-    delete_church(userId).then(() => {
-      toggleModal();
-      setTimeout(() => {
-        window.location.reload();
-      }, 4000);
-    });
+  const handleDeleteUser = (churchId) => {
+    get_users(churchId)
+      .then((response) => {
+        response.data.forEach((user) => {
+          delete_user(user.id)
+            .then(() => {
+              console.log(`User ${user.id} deleted successfully.`);
+            })
+            .catch((error) => {
+              console.error(`Error deleting user ${user.id}:`, error);
+            });
+        });
+        delete_church(churchId)
+          .then(() => {
+            console.log(`Church ${churchId} deleted successfully.`);
+            toggleModal(); 
+            setTimeout(() => {
+              window.location.reload();
+            }, 4000);
+          })
+          .catch((error) => {
+            console.error(`Error deleting church ${churchId}:`, error);
+          });
+      })
+      .catch((error) => {
+        console.error(`Error fetching users for church ${churchId}:`, error);
+      });
   };
+  
 
 
   return (
@@ -143,7 +164,7 @@ const Subscribers = () => {
                       <th style={{ borderBottom: '1px solid black', padding: '8px' }}>Subscription type</th>
                       <th style={{ borderBottom: '1px solid black', padding: '8px' }}>Existing User count</th>
                       <th style={{ borderBottom: '1px solid black', padding: '8px' }}>Total User limit</th>
-                      <th style={{ borderBottom: '1px solid black', padding: '8px' }}>Acitions</th>
+                      <th style={{ borderBottom: '1px solid black', padding: '8px' }}>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
