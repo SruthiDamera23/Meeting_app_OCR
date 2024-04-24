@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from .models import Task
 from .serializers import TaskSerializer
 from rest_framework.decorators import api_view
+from rest_framework import status
 from django.http import HttpResponse
 
 from rest_framework.pagination import PageNumberPagination
@@ -30,29 +31,21 @@ class TaskViewSet(viewsets.ModelViewSet):
         return response
 
 class EditTasks:
-    @api_view(['PUT'])
-    def edit_tasks(request, pk):
+    @api_view(['PUT', 'DELETE'])
+    def edit_or_delete_task(request, pk):
         try:
-            task = Task.objects.get(id=pk)
+            task = Task.objects.get(task_id=pk)
         except Task.DoesNotExist:
-            return Response({'message': 'Task not found'}, status=status.HTTP_404_NOT_FOUND)
-            
-        serializer = TaskSerializer(task, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            print("safe serialization")
-            return Response({'message': 'Task edited.'}, status=status.HTTP_200_OK)
-        print("you fucked up")
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return HttpResponse({'message': 'Task not found'}, status=status.HTTP_404_NOT_FOUND)
 
-    @api_view(['DELETE'])  # Use DELETE method
-    def delete_task(request, pk):
-        try:
-            task = Task.objects.get(id=pk)
-        except Task.DoesNotExist:
-            return Response({'message': 'Task not found'}, status=status.HTTP_404_NOT_FOUND)
+        if request.method == 'PUT':  # Handle PUT request for editing
+            serializer = TaskSerializer(task, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                print("safe serialization")
+                return HttpResponse({'message': 'Task edited.'}, status=status.HTTP_200_OK)
+            return HttpResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        task.delete()  # Delete the task
-
-        return Response({'message': 'Task deleted.'}, status=status.HTTP_204_NO_CONTENT)  # Use 204 status for successful deletion
-
+        elif request.method == 'DELETE':  # Handle DELETE request for deletion
+            task.delete()  # Delete the task
+            return HttpResponse({'message': 'Task deleted.'}, status=status.HTTP_204_NO_CONTENT)  # Use 204 status for successful deletion
