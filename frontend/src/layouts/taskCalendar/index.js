@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import AppSidebar from "../../components/appSidebar";
-import { tasks_view } from "../../api";
+import { tasks_view, getCookie, get_church_data} from "../../api";
 
 
 
@@ -16,22 +16,65 @@ const TaskCalendar = () => {
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [mustGetTasks, setMustGetTasks] = useState(true);
+  const [churchData,setChurchData] = useState([]);
 
   useEffect(() => {
-      if (mustGetTasks) {
-          tasks_view()
-              .then((req) => {
-                  const task = req.data.results;
-                  setTasks(task);
-                  console.log(task);
-                  setIsLoading(false);
-                  setMustGetTasks(false);
-              })
-              .catch((error) => {
-                  console.log(error);
-              });
-      }
+    get_church_data()
+            .then((req) => {
+                const Data = req.data;
+                
+                let tempData=[];
+                Data.forEach(x => {
+                  tempData.push({
+                    "id":x.id,
+                    "name":x.name
+                  })
+                  });
+                setChurchData(tempData);
+                
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    viewAllTasks();
   }, [mustGetTasks]);
+
+
+  const viewAllTasks = async () => {
+    const response =
+      await tasks_view()
+      .catch((error) => {
+        console.log(error)
+      });
+      console.log(response.data.results);
+      setIsLoading(false);
+    const privilege=getCookie("priv");
+    if(privilege ==1){
+      setTasks(response.data.results)
+    } else if(privilege ==2){
+      const church =getCookie("church");
+      let wantedTaskData=[];
+      let tempTasksData=response.data.results;
+      for (let i = 0; i < tempTasksData.length; i++) {
+        if (tempTasksData[i].church+"" === church) {
+          wantedTaskData.push(tempTasksData[i]);
+        }
+    } 
+    setTasks(wantedTaskData)
+    }else if(privilege ==3){
+      const church =getCookie("church");
+      const id =getCookie("user-id");
+      let wantedTaskData=[];
+      let tempTasksData=response.data.results;
+      for (let i = 0; i < tempTasksData.length; i++) {
+        if (tempTasksData[i].created_by+"" === id+"") {
+          wantedTaskData.push(tempTasksData[i]);
+        }
+    } 
+    setTasks(wantedTaskData)
+    }
+  }
+  
 
 
 const tileContent = ({ date, view }) => {
@@ -76,6 +119,16 @@ const tileContent = ({ date, view }) => {
 
   const selectedTasks = getTasksForDate(selectedDate, tasks);
 
+
+  const getChurchName = (churchId) => {
+    for (const church of churchData) {
+        if (church.id === churchId) {
+            return church.name;
+        }
+    }
+    return "Unknown";
+}
+
   return (
       <div style={{display: "flex"}}>
         <AppSidebar />
@@ -101,6 +154,7 @@ const tileContent = ({ date, view }) => {
                                 <tr style={{ borderBottom: '1px solid black' }}>
                                     <th style={{ borderBottom: '1px solid black', padding: '8px' }}>Task Name</th>
                                     <th style={{ borderBottom: '1px solid black', padding: '8px' }}>Employee Name</th>
+                                    {getCookie("priv") &&<th style={{ borderBottom: '1px solid black', padding: '8px' }}>Church</th>}
                                 </tr>
                             </thead>
                             <tbody>
@@ -108,6 +162,7 @@ const tileContent = ({ date, view }) => {
                                     <tr key={index}>
                                         <td style={{ padding: '8px' }}>{task.task_name}</td>
                                         <td style={{ padding: '8px' }}>{task.employee_name}</td>
+                                        {getCookie("priv")&&<td style={{ padding: '8px' }}>{getChurchName(task.church)}</td>}
                                     </tr>
                                     
                                 ))}

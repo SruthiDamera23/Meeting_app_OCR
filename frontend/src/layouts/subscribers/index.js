@@ -26,23 +26,32 @@ const Subscribers = () => {
                 subscription_view(church.subscription),
                 get_users(church.id)
             ])
-            .then(([subscriptionRes, usersRes]) => ({
-              
-                address: church.address,
-                church_email: church.address,
-                church_id: church.id,
-                church_name: church.name,
-                church_ph_no: church.ph_no,
-                subscription: church.subscription,
-                website: church.website,
-                count: subscriptionRes.data.find(item => item.id === church.subscription)?.count,
-                subscription_name: subscriptionRes.data.find(item => item.id === church.subscription)?.name,
-                admin_name: usersRes.data[0].first_name + " " + usersRes.data[0].last_name,
-                admin_email: usersRes.data[0].email,
-                existin_user_count:usersRes.data.length
-            }));
+            .then(([subscriptionRes, usersRes]) => {
+                // Check if usersRes.data has length greater than zero
+                if (usersRes.data.length > 0) {
+                    return {
+                        address: church.address,
+                        church_email: church.address,
+                        church_id: church.id,
+                        church_name: church.name,
+                        church_ph_no: church.ph_no,
+                        subscription: church.subscription,
+                        website: church.website,
+                        count: subscriptionRes.data.find(item => item.id === church.subscription)?.count,
+                        subscription_name: subscriptionRes.data.find(item => item.id === church.subscription)?.name,
+                        admin_name: usersRes.data[0].first_name + " " + usersRes.data[0].last_name,
+                        admin_email: usersRes.data[0].email,
+                        existin_user_count: usersRes.data.length
+                    };
+                } else {
+                    // Return null if usersRes.data has zero length
+                    return null;
+                }
+            });
         }))
         .then(churches => {
+            // Filter out null values from the list
+            churches = churches.filter(church => church !== null);
             console.log(churches)
             setChurchData(churches);
             setIsLoading(false);
@@ -52,6 +61,7 @@ const Subscribers = () => {
         console.log(error);
     });
 }, []);
+
 
 
 

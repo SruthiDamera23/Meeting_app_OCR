@@ -22,7 +22,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import { tasks_create } from "../../api";
+import { tasks_create, getCookie } from "../../api";
 
 const CreateTaskModal = ({ isOpen, toggle }) => {
   const [taskName, setTaskName] = useState("");
@@ -92,7 +92,9 @@ const CreateTaskModal = ({ isOpen, toggle }) => {
       end_date: endDate,
       task_description: taskDescription,
       priority: priority,
-      meeting_id: 1,
+      meeting_id: null,
+      created_by:getCookie("user-id"),
+      church:getCookie("church")
     };
 
     // Send the form data to the API using fetch or axios

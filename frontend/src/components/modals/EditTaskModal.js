@@ -117,6 +117,10 @@ const EditTaskModal = ({ isOpen, toggle, id }) => {
           priority: id.priority,
           meeting_id: id.meeting_id,
           is_completed: id.is_completed,
+          created_by:id.created_by,
+          church:id.church,
+          is_delete:id.is_delete,
+          meetings:id.meetings
         });
 
       // })
@@ -152,9 +156,7 @@ const EditTaskModal = ({ isOpen, toggle, id }) => {
   const handleSubmit = async(event) => {
     event.preventDefault();
     console.log("formData:")
-    console.log(formData.taskId)
-    console.log("taskid")
-    console.log(formData.meetingId)
+    console.log(formData)
     const response = await tasks_update( formData.task_id, formData)
       .catch((error) => {
         console.error("Error updating tasks: ", error);
