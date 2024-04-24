@@ -38,7 +38,7 @@ const Users = () => {
   });
   const [approvalStatus, setApprovalStatus] = useState('');
   const [churchData, setChurchData] = useState([]);
-  
+
   useEffect(() => {
     get_users(getCookie('church'))
       .then((response) => {
@@ -101,7 +101,7 @@ const Users = () => {
 
   const handleAddUser = () => {
     signup(newUser).then((response) => {
-      if(response.status === 226) {
+      if (response.status === 226) {
         alert(response.data.message);
       }
       toggleAddModal();
@@ -125,12 +125,12 @@ const Users = () => {
       <Container className="my-4">
         <Card className="my-card schedule-card">
           <div className="full-screen-calendar">
-          <div style={{ textAlign: 'center' }}>
-  <h1 style={{ textAlign: 'left', display: 'inline-block' }}>Existing Users</h1>
-  {!isSuperUser() && (
-    <Button onClick={toggleAddModal} color="success" style={{ marginLeft: '20px' }}>Add New User</Button>
-  )}
-</div>
+            <div style={{ textAlign: 'center' }}>
+              <h1 style={{ textAlign: 'left', display: 'inline-block' }}>Existing Users</h1>
+              {!isSuperUser() && (
+                <Button onClick={toggleAddModal} color="success" style={{ marginLeft: '20px' }}>Add New User</Button>
+              )}
+            </div>
             {isLoading ? (
               <p>Loading...</p>
             ) : (
@@ -153,11 +153,11 @@ const Users = () => {
                         <td style={{ padding: '8px' }}>{priorityLabels[user.user_type]}</td>
                         <td style={{ padding: '8px' }}>{priorityLabels[user.user_type] === 'Super-user' ? '-' : churchData[user.church]}</td>
                         <td style={{ padding: '8px' }}>
-  <Button onClick={() => handleEdit(index)} color="info" style={{ marginRight: '5px' }}>Edit</Button>
-  {user.email !== getCookie('user') && (
-    <Button onClick={() => handleDeleteUser(user.id)} color="danger" style={{ marginRight: '5px' }}>Delete</Button>
-  )}
-</td>
+                          <Button onClick={() => handleEdit(index)} color="info" style={{ marginRight: '5px' }}>Edit</Button>
+                          {user.email !== getCookie('user') && (
+                            <Button onClick={() => handleDeleteUser(user.id)} color="danger" style={{ marginRight: '5px' }}>Delete</Button>
+                          )}
+                        </td>
 
                       </tr>
                     ))}
@@ -196,7 +196,7 @@ const Users = () => {
             <FormGroup>
               <Label for="newUserType">Privilege</Label>
               <Input type="select" name="user_type" id="newUserType" value={newUser.user_type} onChange={handleAddInputChange}>
-              {  isSuperUser() && <option value="1">Super-user</option>}
+                {isSuperUser() && <option value="1">Super-user</option>}
                 <option value="2">Admin</option>
                 <option value="3">Leader</option>
               </Input>
@@ -230,7 +230,7 @@ const Users = () => {
             <FormGroup>
               <Label for="userType">Privilege</Label>
               <Input type="select" name="user_type" id="userType" value={editedUser.user_type} onChange={handleInputChange}>
-              {  isSuperUser() && <option value="1">Super-user</option>}
+                {isSuperUser() && <option value="1">Super-user</option>}
                 <option value="2">Admin</option>
                 <option value="3">Leader</option>
               </Input>
