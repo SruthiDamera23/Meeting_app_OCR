@@ -15,5 +15,5 @@ urlpatterns = [
     path('', include(router.urls)),
         # path('tasks/', schedule, name='edit'),
     # path('tasks/<int:pk>', EditTasks.edit_tasks, name='edit'),
-    path('tasks/<int:pk>', EditTasks.delete_task, name='delete'),
+    path('tasks/<int:pk>', EditTasks.edit_or_delete_task, name='delete'),
 ]
