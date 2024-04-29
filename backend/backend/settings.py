@@ -77,7 +77,8 @@ INSTALLED_APPS = [
     'church',
     'subscription',
     'group',
-    'requestuser'
+    'requestuser',
+    'payment'
 ]
 
 MIDDLEWARE = [
