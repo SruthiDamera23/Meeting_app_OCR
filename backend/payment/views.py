@@ -5,6 +5,9 @@ from church.models import Church
 from payment.models import Payment
 from stripe import Price
 import stripe
+from datetime import datetime
+import pytz
+
 
 # Set your Stripe API key
 stripe.api_key = "sk_test_51P6bIrEt10Rr6G1LhHWNXcgXnFQBqZ6qHRwmbpSNA7ulggueRpGxLaoEWphYcrOrZImptljEhcCpPjCPoe7OX2lg00HOY33fjq"
@@ -17,60 +20,102 @@ def charge_card(request):
             payment_method_id = data.get('payment_method')
             amount = data.get('amount')
             church_id = data.get('church_id')
-            subscription_id = data.get('subscription_id')
             email = data.get('email')
-            if not all([payment_method_id, amount, church_id, subscription_id]):
-                print("bp1")
+            if not all([payment_method_id, amount, church_id, email]):
                 return JsonResponse({'error': 'Missing required fields'}, status=400)
 
-
+            # Retrieve or create customer on Stripe
             try:
                 customer = stripe.Customer.retrieve(church_id)
-            except stripe.error.InvalidRequestError as e:
+            except stripe.error.InvalidRequestError:
                 customer = stripe.Customer.create(
                     payment_method=payment_method_id,
                     email=email,
                     invoice_settings={'default_payment_method': payment_method_id}, 
                 )
-            product_data = {
-                'name': 'Church Subscription',
-                'type': 'service',
-            }
 
-            monthly_price = stripe.Price.create(
-                unit_amount=amount,
-                currency='usd',
-                recurring={'interval': 'month'},
-                product_data=product_data,
-            )
-
-            subscription = stripe.Subscription.create(
+            # Charge the customer
+            stripe.PaymentIntent.create(
                 customer=customer.id,
-                items=[{'price': monthly_price.id}],
-                expand=['latest_invoice.payment_intent']
+                payment_method=payment_method_id,
+                amount=amount*100,
+                currency='usd',
+                confirm=True,
+                off_session=True,
             )
 
-            return JsonResponse({'message': 'Payment and subscription created successfully', 'subscription_id': subscription.id}, status=200)
+            # Create a Payment object in your database
+            Payment.objects.create(
+                payment_id=payment_method_id,
+                amount=amount,
+                email=email,
+                date=datetime.now(pytz.utc),
+                success=True
+            )
+
+            return JsonResponse({'message': 'Payment successful','payment_id':payment_method_id}, status=200)
         except stripe.error.CardError as e:
-            print(str(e))
+            Payment.objects.create(
+                payment_id=payment_method_id,
+                amount=amount,
+                email=email,
+                date=datetime.now(pytz.utc),
+                success=False
+            )
             return JsonResponse({'error': e.user_message}, status=400)
-        except stripe.error.InvalidRequestError as e:
-            print(str(e))
-            return JsonResponse({'error': 'Invalid request to Stripe'}, status=400)
         except stripe.error.StripeError as e:
-            print(str(e))
+            Payment.objects.create(
+                payment_id=payment_method_id,
+                amount=amount,
+                email=email,
+                date=datetime.now(pytz.utc),
+                success=False
+            )
             return JsonResponse({'error': 'Stripe error occurred'}, status=500)
-        except Exception as e:
-            print(str(e))
+        except Exception:
             return JsonResponse({'error': 'An unexpected error occurred'}, status=500)
     else:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
     
-def cancel_stripe_subscription(subscription_id):
+
+def fetch_card_details(payment_id):
     try:
-        subscription = stripe.Subscription.retrieve(subscription_id)
-        subscription.delete()
-        return True, "Subscription canceled successfully."
-    except stripe.error.InvalidRequestError as e:
-        error_message = e.error.message
-        return False, error_message
+      
+        payment_method = stripe.PaymentMethod.retrieve(payment_id)
+        if payment_method.card:
+            card_details = {
+                "brand": payment_method.card.brand,
+                "last4": payment_method.card.last4,
+                "exp_month": payment_method.card.exp_month,
+                "exp_year": payment_method.card.exp_year
+            }
+            return card_details
+        else:
+            return None
+    except stripe.error.StripeError as e:
+        print(str(e))
+        return None
+
+
+def get_all_payments(request):
+    try:
+        payments = Payment.objects.all()
+        payment_list = []
+        for payment in payments:
+            payment_details = {
+                'payment_id': payment.payment_id,
+                'church_id': payment.church.id,
+                'church_name': payment.church.name,
+                'email': payment.email,
+                'date': payment.date,
+                'amount': payment.amount,
+                'is_success': payment.success,
+            }
+            card_details = fetch_card_details(payment.payment_id)
+            if card_details:
+                payment_details.update(card_details)
+            payment_list.append(payment_details)
+        return JsonResponse({'payments': payment_list}, status=200)
+    except Exception as e:
+        print(str(e))
+        return JsonResponse({'error': str(e)}, status=500)

@@ -1,4 +1,3 @@
-// Import necessary modules from React and Reactstrap
 import React, { useState, useEffect } from 'react';
 import { Card, CardBody, Button, Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -88,15 +87,14 @@ const Signup = () => {
   
           const payment_data = await chargeCard({
               payment_method: paymentMethod.id,
-              amount: selectedSub.price * 100,
+              amount: selectedSub.price,
               church_id: formData.church,
               subscription_id: formData.subscription,
               email: formData.email,
           });
           console.log(payment_data.data)
           alert("Payment Successful!!. Redirecting to login...");
-  
-          
+
               let churchId;
               if (formData.church === 'new') {
                   const newChurchData = await create_church({
@@ -106,7 +104,7 @@ const Signup = () => {
                       email: formData.churchEmail,
                       website: formData.website,
                       subscription: formData.subscription,
-                      stripe_sub_id : payment_data.data.subscription_id
+                      payment_id : payment_data.data.payment_id
                   });
                   churchId = newChurchData.data.id;
               } else {

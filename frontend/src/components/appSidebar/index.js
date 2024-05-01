@@ -14,6 +14,7 @@ import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import PeopleIcon from '@mui/icons-material/People';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import ChurchIcon from '@mui/icons-material/Church';
@@ -107,32 +108,6 @@ const AppSidebar = () => {
                     </MenuItem>
                 </SubMenu>
                 
-                {/*(isSuperUser() || isAdmin() )&& 
-
-                <SubMenu
-                    className="sidebar-menu-item"
-                    label={
-                        <div>
-                            <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
-                            <br />
-                            Request
-                        </div>
-                    }
-                >
-                    <MenuItem className="sidebar-menu-item" component={<Link to="/user-request" />}>
-                        <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
-                        <br />Requests
-                    </MenuItem>
-                    <MenuItem className="sidebar-menu-item" component={<Link to="/deny-history" />}>
-                        <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
-                        <br />Deny Requests
-                    </MenuItem>
-                    <MenuItem className="sidebar-menu-item" component={<Link to="/approve-history" />}>
-                        <AccountCircleOutlinedIcon className="sidebar-menu-item-icon" />
-                       <br />Approve Requests
-                    </MenuItem>
-                </SubMenu> */}
-
                { (isSuperUser() || isAdmin() ) && <MenuItem className="sidebar-menu-item" component={<Link to="/users" />}>
                     <People className="sidebar-menu-item-icon" />
                     <br />
@@ -176,11 +151,23 @@ const AppSidebar = () => {
                             <div style={{ overflow: "visible" }}>People</div>
                         </MenuItem>}
 
-                        {isSuperUser() && <MenuItem className="sidebar-menu-item" component={<Link to="/subscriptions" />}>
+                        {(isSuperUser() || isAdmin()) && <MenuItem className="sidebar-menu-item" component={<Link to="/subscriptions" />}>
                             <AttachMoneyIcon/>
                             <br />
                             <div style={{ overflow: "visible" }}>Subscriptions</div>
                         </MenuItem>}     
+
+                        {isSuperUser() && <MenuItem className="sidebar-menu-item" component={<Link to="/paymenthistory" />}>
+                            <ReceiptIcon/>
+                            <br />
+                            <div style={{ overflow: "visible" }}>Payments</div>
+                        </MenuItem>}
+
+                        {isAdmin() && <MenuItem className="sidebar-menu-item" component={<Link to="/paymenthistorya" />}>
+                            <ReceiptIcon/>
+                            <br />
+                            <div style={{ overflow: "visible" }}>Payments</div>
+                        </MenuItem>}
 
                 <MenuItem className="sidebar-menu-item" component={<div onClick={handleLogout} />}>
                     <LogoutOutlinedIcon className="sidebar-menu-item-icon" />

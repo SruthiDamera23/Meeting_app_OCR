@@ -26,6 +26,8 @@ import Users from './layouts/users';
 import Subscriptions from './layouts/subscriptions';
 import Subscribers from './layouts/subscribers';
 import Pricing_plan from './components/pricing/Pricing_plan';
+import PaymentHistory from './layouts/paymentHistory';
+import PaymentHistoryA from './layouts/paymentHistoryA';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -55,6 +57,8 @@ function App() {
         <Route exact path='/subscriptions' element={<Subscriptions/>} />
         <Route exact path='/subscribers' element={<Subscribers/>} />
         <Route exact path='/pricing_plan' element={<Pricing_plan/>} />
+        <Route exact path='/paymenthistory' element={<PaymentHistory/>} />
+        <Route exact path='/paymenthistorya' element={<PaymentHistoryA/>} />
       </Routes>
     </Router>
 

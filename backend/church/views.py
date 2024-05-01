@@ -22,11 +22,10 @@ def church(request):
         if serializer.is_valid():
             church = serializer.save()
             print(request.data)
-            sub_id = sub_id = request.data.get('stripe_sub_id')
-            payment = Payment.objects.create(
-                payment_id=sub_id,
-                church=church
-            )
+            payment_id =  request.data.get('payment_id')
+            payment = Payment.objects.get(payment_id=payment_id)
+            payment.church = church
+            payment.save()
             return Response({'message': 'Church added.','id':int(church.id)}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -47,13 +46,9 @@ def edit_church(request,id):
         try:
             church_id = id
             church = Church.objects.get(id=church_id, deleted=False)
+            church.deleted = True
+            church.save()
+            return Response({'message': 'Church deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
         except Church.DoesNotExist:
             return Response({'message': 'Church not found.'}, status=status.HTTP_404_NOT_FOUND)
-        payment_obj = Payment.objects.filter(church=church).first()
-        if payment_obj:
-                pv.cancel_stripe_subscription(payment_obj.payment_id)
-                print("Stripe Subscription cancelled")
-                church.deleted = True
-                church.save()
-                return Response({'message': 'Church deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
-        return Response({'message': 'Church deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
+        
