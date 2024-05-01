@@ -10,13 +10,15 @@ const PaymentHistory = () => {
   useEffect(() => {
     get_all_payments()
       .then((response) => {
-        setPayments(response.data.payments);
+        const filteredPayments = response.data.payments;
+        filteredPayments.sort((a, b) => new Date(b.date) - new Date(a.date));
+        setPayments(filteredPayments);
         setIsLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching payments:', error);
       });
-  }, []);
+  });
 
   const formatDateTime = (dateTimeString) => {
     const optionsDate = { 
@@ -49,7 +51,7 @@ const PaymentHistory = () => {
                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                   <thead>
                     <tr>
-                      <th style={{ width: "10%" }}>Payment ID</th>
+                      <th style={{ width: "10%" }}>Transaction ID</th>
                       <th style={{ width: "15%" }}>Church Name</th>
                       <th style={{ width: "15%" }}>Email</th>
                       <th style={{ width: "15%" }}>Date</th>
@@ -60,11 +62,11 @@ const PaymentHistory = () => {
                   <tbody>
                     {payments.map((payment, index) => (
                       <tr key={index}>
-                        <td>{payment.payment_id}</td>
+                        <td>{payment.transaction_id}</td>
                         <td>{payment.church_name}</td>
                         <td>{payment.email}</td>
                         <td>{formatDateTime(payment.date)}</td>
-                        <td>{payment.amount}</td>
+                        <td>{'$'+payment.amount}</td>
                         <td>{payment.is_success ? 'Success' : 'Failed'}</td>
                       </tr>
                     ))}

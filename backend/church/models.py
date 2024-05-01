@@ -14,5 +14,7 @@ class Church(models.Model):
     website = models.CharField(max_length=30, blank=True, null=True)
     subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE, related_name='churchSubscription', blank=True, null=True)
     deleted = models.BooleanField(default=False)
+    date_created = models.DateTimeField(auto_now_add=True)
+
 
     objects = ChurchManager()

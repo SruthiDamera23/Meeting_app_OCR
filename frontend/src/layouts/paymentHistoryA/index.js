@@ -1,30 +1,84 @@
 import React, { useEffect, useState } from "react";
-import { Container, Card, Button, Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { get_all_payments, getCookie } from '../../../src/api';
+import { Container, Card, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
+import { get_all_payments, getCookie, update_payment } from '../../../src/api'; // Assuming you have an API function to update payment method
 import AppSidebar from "../../components/appSidebar";
+import { useNavigate } from 'react-router-dom';
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js'; // Import useElements hook
+import { loadStripe } from '@stripe/stripe-js';
 
 const PaymentHistory = () => {
+const history = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [payments, setPayments] = useState([]);
   const [showCardDetailsModal, setShowCardDetailsModal] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState(null);
-  const churchId = getCookie("church");
+  const [showCreatePaymentForm, setShowCreatePaymentForm] = useState(false);
+  const stripe = useStripe();
+  const elements = useElements();
+  const [cardDetails, setCardDetails] = useState({
+    email: getCookie('user'),
+    church: getCookie('church')
+  });
 
+  
   useEffect(() => {
     get_all_payments()
       .then((response) => {
-        const filteredPayments = response.data.payments.filter(payment => payment.church_id === parseInt(churchId));
-        filteredPayments.sort((a, b) => new Date(b.date) - new Date(a.date));
+        console.log(response.data.payments);
+        const sortedPayments = response.data.payments.sort((a, b) => new Date(b.date) - new Date(a.date));
+        const filteredPayments = sortedPayments.filter(payment => parseInt(payment.church_id) === parseInt(getCookie('church')));
         setPayments(filteredPayments);
         setIsLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching payments:', error);
       });
-  }, [churchId]);
+  }, []);
 
   const toggleCardDetailsModal = () => {
     setShowCardDetailsModal(!showCardDetailsModal);
+  };
+
+  const toggleCreatePaymentForm = () => {
+    setShowCreatePaymentForm(!showCreatePaymentForm);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCardDetails({ ...cardDetails, [name]: value });
+  };
+
+  const handleCreatePayment = async (event) => {
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+        return;
+    }
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+        type: 'card',
+        card: elements.getElement(CardElement),
+    });
+
+    if (error) {
+        console.error('Error creating payment method:', error);
+    } else {
+        console.log('PaymentMethod', paymentMethod);
+        updateCard(paymentMethod.id, cardDetails.email, cardDetails.church);
+        setShowCreatePaymentForm(false);
+    }
+};
+
+  const updateCard = (paymentMethodId, email, church) => {
+    const cardDetails = { payment_method: paymentMethodId, email, church };
+    update_payment(cardDetails)
+      .then((response) => {
+        console.log("Payment method updated successfully:", response);
+        history('/paymenthistorya');
+      })
+      .catch((error) => {
+        console.error('Error updating payment method:', error);
+      });
   };
 
   const formatDateTime = (dateTimeString) => {
@@ -61,10 +115,13 @@ const PaymentHistory = () => {
               <div>
                 <h3>Payment History</h3>
                 <br></br>
+                <Button color="primary" onClick={toggleCreatePaymentForm}>Update Payment Method</Button>
+                <br></br>
+                <br></br>
                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                   <thead>
                     <tr>
-                      <th style={{ width: "10%" }}>Payment ID</th>
+                      <th style={{ width: "10%" }}>Transaction ID</th>
                       <th style={{ width: "15%" }}>Church Name</th>
                       <th style={{ width: "15%" }}>Email</th>
                       <th style={{ width: "15%" }}>Date</th>
@@ -76,11 +133,11 @@ const PaymentHistory = () => {
                   <tbody>
                     {payments.map((payment, index) => (
                       <tr key={index}>
-                        <td>{payment.payment_id}</td>
+                        <td>{payment.transaction_id}</td>
                         <td>{payment.church_name}</td>
                         <td>{payment.email}</td>
                         <td>{formatDateTime(payment.date)}</td>
-                        <td>{payment.amount}</td>
+                        <td>{'$'+payment.amount}</td>
                         <td>{payment.is_success ? 'Success' : 'Failed'}</td>
                         <td>
                           <Button color="primary" onClick={() => handlePaymentSelect(payment)}>Show Card Details</Button>
@@ -95,7 +152,19 @@ const PaymentHistory = () => {
         </Card>
       </Container>
 
-      {/* Card Details Modal */}
+      <Modal isOpen={showCreatePaymentForm} toggle={toggleCreatePaymentForm}>
+        <ModalHeader toggle={toggleCreatePaymentForm}>Update Payment Method</ModalHeader>
+        <ModalBody>
+            <Form onSubmit={handleCreatePayment}>
+              <FormGroup>
+                <Label for="card_number">Card Details:</Label>
+                <CardElement id="card_number" options={{ style: { base: { fontSize: '16px' } } }} />
+              </FormGroup>
+              <Button type="submit" color="primary">Update Payment Method</Button>
+            </Form>
+        </ModalBody>
+      </Modal>
+
       <Modal isOpen={showCardDetailsModal} toggle={toggleCardDetailsModal}>
         <ModalHeader toggle={toggleCardDetailsModal}>Card Details</ModalHeader>
         <ModalBody>

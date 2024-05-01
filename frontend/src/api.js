@@ -49,7 +49,7 @@ export const update_subscription = (id,formData) => api.put(`subscription/${id}/
 
 export const chargeCard = (formData) => api.post("charge/",formData);
 export const get_all_payments = () => api.get("payments/");
-export const add_card = (formData) => api.get("addcard")
+export const update_payment = (formData) => api.post("updatepayment/",formData)
 
 
 export const user_requests=(cid)=>api.get(`requests/${cid}`);

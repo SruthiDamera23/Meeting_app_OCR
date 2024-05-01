@@ -35,7 +35,7 @@ def charge_card(request):
                 )
 
             # Charge the customer
-            stripe.PaymentIntent.create(
+            transaction = stripe.PaymentIntent.create(
                 customer=customer.id,
                 payment_method=payment_method_id,
                 amount=amount*100,
@@ -46,6 +46,7 @@ def charge_card(request):
 
             # Create a Payment object in your database
             Payment.objects.create(
+                transaction=transaction.stripe_id,
                 payment_id=payment_method_id,
                 amount=amount,
                 email=email,
@@ -57,6 +58,7 @@ def charge_card(request):
         except stripe.error.CardError as e:
             Payment.objects.create(
                 payment_id=payment_method_id,
+                transaction=transaction.stripe_id,
                 amount=amount,
                 email=email,
                 date=datetime.now(pytz.utc),
@@ -66,6 +68,7 @@ def charge_card(request):
         except stripe.error.StripeError as e:
             Payment.objects.create(
                 payment_id=payment_method_id,
+                transaction=transaction.stripe_id,
                 amount=amount,
                 email=email,
                 date=datetime.now(pytz.utc),
@@ -104,6 +107,7 @@ def get_all_payments(request):
         for payment in payments:
             payment_details = {
                 'payment_id': payment.payment_id,
+                'transaction_id': payment.transaction_id,
                 'church_id': payment.church.id,
                 'church_name': payment.church.name,
                 'email': payment.email,
@@ -119,3 +123,81 @@ def get_all_payments(request):
     except Exception as e:
         print(str(e))
         return JsonResponse({'error': str(e)}, status=500)
+    
+@csrf_exempt
+def create_payment_method(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        print(data)
+        payment_id = data.get("payment_method")
+        church_id = int(data.get('church'))
+        church = Church.objects.get(id=church_id)
+        email = data.get("email")
+
+        try:
+            Payment.objects.create(
+                payment_id=payment_id,
+                transaction_id="Card Update",
+                amount=church.subscription.price,
+                email=email,
+                date=datetime.now(pytz.utc),
+                success=True,
+                church = church
+            )
+
+            return JsonResponse({"payment_method_id": payment_id})
+        except stripe.error.StripeError as e:
+            print(str(e))
+            return JsonResponse({"error": str(e)}, status=400)
+
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+def repeat_payment_in_stripe(payment_id, email, amount, church):
+    transaction_id = None
+    customer_id = None
+    try:
+        customer = stripe.Customer.list(email=email, limit=1)
+
+        if customer.data:
+            customer_id = customer.data[0].id
+        else:
+            customer = stripe.Customer.create(email=email)
+            customer_id = customer.id
+        
+        stripe.PaymentMethod.attach(
+            payment_id,
+            customer=customer_id
+        )
+        
+        payment = stripe.PaymentMethod.retrieve(payment_id)
+        new_payment_intent = stripe.PaymentIntent.create(
+            amount=int(amount),
+            payment_method=payment_id,
+            currency='usd',
+            customer=customer_id,
+            return_url="http://localhost:3000",
+            confirm=True
+        )
+        transaction_id = new_payment_intent.stripe_id
+        Payment.objects.create(
+                payment_id=payment_id,
+                transaction_id=transaction_id,
+                amount=amount/100,
+                email=email,
+                date=datetime.now(pytz.utc),
+                success=True,
+                church = church
+            )
+        print("Repeated payment in Stripe. New payment ID:", new_payment_intent.id)
+    except Exception as e:
+        Payment.objects.create(
+                payment_id=payment_id,
+                transaction_id=transaction_id if transaction_id is not None else "-",
+                amount=amount/100,
+                email=email,
+                date=datetime.now(pytz.utc),
+                success=False,
+                church = church
+            )
+        print("Error repeating payment in Stripe:", str(e))

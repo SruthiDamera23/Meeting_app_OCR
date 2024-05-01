@@ -78,7 +78,8 @@ INSTALLED_APPS = [
     'subscription',
     'group',
     'requestuser',
-    'payment'
+    'payment',
+    'django_apscheduler'
 ]
 
 MIDDLEWARE = [
