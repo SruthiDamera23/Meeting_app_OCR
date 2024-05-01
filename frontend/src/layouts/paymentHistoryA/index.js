@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Container, Card, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
-import { get_all_payments, getCookie, update_payment } from '../../../src/api'; // Assuming you have an API function to update payment method
+import { get_all_payments, getCookie, get_payment_card_details, update_payment } from '../../../src/api'; // Assuming you have API functions to update payment method and get payment card details
 import AppSidebar from "../../components/appSidebar";
 import { useNavigate } from 'react-router-dom';
-import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js'; // Import useElements hook
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
 const PaymentHistory = () => {
-const history = useNavigate();
+  const history = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [payments, setPayments] = useState([]);
   const [showCardDetailsModal, setShowCardDetailsModal] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [showCreatePaymentForm, setShowCreatePaymentForm] = useState(false);
-  const stripe = useStripe();
-  const elements = useElements();
   const [cardDetails, setCardDetails] = useState({
     email: getCookie('user'),
     church: getCookie('church')
   });
+  const stripe = useStripe();
+  const elements = useElements();
 
-  
   useEffect(() => {
     get_all_payments()
       .then((response) => {
@@ -52,22 +51,22 @@ const history = useNavigate();
     event.preventDefault();
 
     if (!stripe || !elements) {
-        return;
+      return;
     }
 
     const { error, paymentMethod } = await stripe.createPaymentMethod({
-        type: 'card',
-        card: elements.getElement(CardElement),
+      type: 'card',
+      card: elements.getElement(CardElement),
     });
 
     if (error) {
-        console.error('Error creating payment method:', error);
+      console.error('Error creating payment method:', error);
     } else {
-        console.log('PaymentMethod', paymentMethod);
-        updateCard(paymentMethod.id, cardDetails.email, cardDetails.church);
-        setShowCreatePaymentForm(false);
+      console.log('PaymentMethod', paymentMethod);
+      updateCard(paymentMethod.id, cardDetails.email, cardDetails.church);
+      setShowCreatePaymentForm(false);
     }
-};
+  };
 
   const updateCard = (paymentMethodId, email, church) => {
     const cardDetails = { payment_method: paymentMethodId, email, church };
@@ -82,25 +81,32 @@ const history = useNavigate();
   };
 
   const formatDateTime = (dateTimeString) => {
-    const optionsDate = { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    const optionsDate = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
     };
     const optionsTime = {
-      hour: 'numeric', 
-      minute: 'numeric', 
+      hour: 'numeric',
+      minute: 'numeric',
       second: 'numeric',
-      hour12: true 
+      hour12: true
     };
     const formattedDate = new Date(dateTimeString).toLocaleString(undefined, optionsDate);
     const formattedTime = new Date(dateTimeString).toLocaleString(undefined, optionsTime);
-    return [formattedDate,formattedTime];
+    return [formattedDate, formattedTime];
   };
 
   const handlePaymentSelect = (payment) => {
-    setSelectedPayment(payment);
-    toggleCardDetailsModal();
+    get_payment_card_details({ payment_id: payment.payment_id })
+      .then((response) => {
+        console.log('Card details:', response.data.cardDetails);
+        setSelectedPayment({ ...payment, cardDetails: response.data.cardDetails });
+        toggleCardDetailsModal();
+      })
+      .catch((error) => {
+        console.error('Error fetching card details:', error);
+      });
   };
 
   return (
@@ -137,7 +143,7 @@ const history = useNavigate();
                         <td>{payment.church_name}</td>
                         <td>{payment.email}</td>
                         <td>{formatDateTime(payment.date)}</td>
-                        <td>{'$'+payment.amount}</td>
+                        <td>{'$' + payment.amount}</td>
                         <td>{payment.is_success ? 'Success' : 'Failed'}</td>
                         <td>
                           <Button color="primary" onClick={() => handlePaymentSelect(payment)}>Show Card Details</Button>
@@ -155,13 +161,13 @@ const history = useNavigate();
       <Modal isOpen={showCreatePaymentForm} toggle={toggleCreatePaymentForm}>
         <ModalHeader toggle={toggleCreatePaymentForm}>Update Payment Method</ModalHeader>
         <ModalBody>
-            <Form onSubmit={handleCreatePayment}>
-              <FormGroup>
-                <Label for="card_number">Card Details:</Label>
-                <CardElement id="card_number" options={{ style: { base: { fontSize: '16px' } } }} />
-              </FormGroup>
-              <Button type="submit" color="primary">Update Payment Method</Button>
-            </Form>
+          <Form onSubmit={handleCreatePayment}>
+            <FormGroup>
+              <Label for="card_number">Card Details:</Label>
+              <CardElement id="card_number" options={{ style: { base: { fontSize: '16px' } } }} />
+            </FormGroup>
+            <Button type="submit" color="primary">Update Payment Method</Button>
+          </Form>
         </ModalBody>
       </Modal>
 
@@ -171,15 +177,15 @@ const history = useNavigate();
           <Form>
             <FormGroup>
               <Label>Card Type</Label>
-              <Input type="text" value={selectedPayment ? selectedPayment.brand : ''} readOnly />
+              <Input type="text" value={selectedPayment ? selectedPayment.cardDetails.brand : ''} readOnly />
             </FormGroup>
             <FormGroup>
               <Label>Last 4 Digits</Label>
-              <Input type="text" value={selectedPayment ? "**** **** **** " + selectedPayment.last4 : ''} readOnly />
+              <Input type="text" value={selectedPayment ? "**** **** **** " + selectedPayment.cardDetails.last4 : ''} readOnly />
             </FormGroup>
             <FormGroup>
               <Label>Expiration Date</Label>
-              <Input type="text" value={selectedPayment ? `${selectedPayment.exp_month}/${selectedPayment.exp_year}` : ''} readOnly />
+              <Input type="text" value={selectedPayment ? `${selectedPayment.cardDetails.exp_month}/${selectedPayment.cardDetails.exp_year}` : ''} readOnly />
             </FormGroup>
           </Form>
         </ModalBody>

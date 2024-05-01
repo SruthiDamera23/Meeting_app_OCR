@@ -81,10 +81,11 @@ def charge_card(request):
         return JsonResponse({'error': 'Method not allowed'}, status=405)
     
 
-def fetch_card_details(payment_id):
+@csrf_exempt
+def fetch_card_details(request):
     try:
-      
-        payment_method = stripe.PaymentMethod.retrieve(payment_id)
+        data = json.loads(request.body)
+        payment_method = stripe.PaymentMethod.retrieve(data['payment_id'])
         if payment_method.card:
             card_details = {
                 "brand": payment_method.card.brand,
@@ -92,12 +93,12 @@ def fetch_card_details(payment_id):
                 "exp_month": payment_method.card.exp_month,
                 "exp_year": payment_method.card.exp_year
             }
-            return card_details
+            return JsonResponse({'cardDetails': card_details})
         else:
-            return None
+            return JsonResponse({'error': 'Card details not found'}, status=404)
     except stripe.error.StripeError as e:
         print(str(e))
-        return None
+        return JsonResponse({'error': 'Stripe error occurred'}, status=500)
 
 
 def get_all_payments(request):
@@ -115,9 +116,9 @@ def get_all_payments(request):
                 'amount': payment.amount,
                 'is_success': payment.success,
             }
-            card_details = fetch_card_details(payment.payment_id)
-            if card_details:
-                payment_details.update(card_details)
+            #card_details = fetch_card_details(payment.payment_id)
+            #if card_details:
+             #   payment_details.update(card_details)
             payment_list.append(payment_details)
         return JsonResponse({'payments': payment_list}, status=200)
     except Exception as e:
