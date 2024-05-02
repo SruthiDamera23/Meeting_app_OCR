@@ -1,4 +1,5 @@
 import json
+import traceback
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from church.models import Church
@@ -46,7 +47,7 @@ def charge_card(request):
 
             # Create a Payment object in your database
             Payment.objects.create(
-                transaction=transaction.stripe_id,
+                transaction_id=transaction.stripe_id,
                 payment_id=payment_method_id,
                 amount=amount,
                 email=email,
@@ -58,7 +59,7 @@ def charge_card(request):
         except stripe.error.CardError as e:
             Payment.objects.create(
                 payment_id=payment_method_id,
-                transaction=transaction.stripe_id,
+                transaction_id=transaction.stripe_id,
                 amount=amount,
                 email=email,
                 date=datetime.now(pytz.utc),
@@ -68,14 +69,15 @@ def charge_card(request):
         except stripe.error.StripeError as e:
             Payment.objects.create(
                 payment_id=payment_method_id,
-                transaction=transaction.stripe_id,
+                transaction_id=transaction.stripe_id,
                 amount=amount,
                 email=email,
                 date=datetime.now(pytz.utc),
                 success=False
             )
             return JsonResponse({'error': 'Stripe error occurred'}, status=500)
-        except Exception:
+        except Exception as e:
+            traceback.print_exc()
             return JsonResponse({'error': 'An unexpected error occurred'}, status=500)
     else:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
