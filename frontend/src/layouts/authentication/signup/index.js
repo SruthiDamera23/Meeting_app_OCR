@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardBody, Button, Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { signup, addChurch as create_church, get_subscriptions, chargeCard } from '../../../api';
+import { signup, addChurch as create_church, get_subscriptions, chargeCard, login } from '../../../api';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 
 const Signup = () => {
@@ -120,14 +120,20 @@ const Signup = () => {
                   subscription: formData.subscription,
                   user_type: formData.user_type,
               };
-  
               await signup(userData);
-              setIsSubmitted(true);
-              setSignupMessage(
-                  "Your request is being processed. You'll receive confirmation once approved"
-              );
-              history('/');
+
+              await login({ username: formData.email, password: formData.password }).then(response => {
+                console.log(response.data)
+                document.cookie="user="+response.data.user;
+                document.cookie="priv="+response.data.priv;
+                document.cookie="church="+response.data.church;
+               document.cookie="user-id="+response.data.user_id;
+                console.log(document.cookie,"cokkiesss");
+                console.log(response.data);
+                history('/dashboard');
+                })
       } catch (error) {
+          console.log(error);
           alert(error);
           setIsLoading(false);
           setShowPaymentModal(false);
