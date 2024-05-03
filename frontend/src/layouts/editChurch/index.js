@@ -29,6 +29,12 @@ const ChurchList = () => {
     };
 
     const handleSave = () => {
+        // Validation checks
+        if (!editedChurch.name || !editedChurch.address || !editedChurch.ph_no) {
+            alert('Name, address, and phone number are mandatory fields.');
+            return;
+        }
+    
         update_church_data(editedChurch.id, editedChurch)
             .then(response => {
                 console.log('Church data updated successfully:', response);
