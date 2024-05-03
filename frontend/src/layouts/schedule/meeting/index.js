@@ -893,7 +893,7 @@ const handleQuestions = (e) =>{
                     <Col>
                     <FormGroup>
                     {/* <FormGroup style={{width: "50%", position: "relative", left: "25%"}}> */}
-                      <Label className="form-label" for="actionSteps">Action steps*</Label>
+                      <Label className="form-label" for="actionSteps">Action steps</Label>
                       <Input className="form-input" type="textarea" name="actionSteps" id="actionSteps" value={actionSteps} onChange={handleActionSteps} />
                       <div id="actionError" class="error-message"></div>
                     </FormGroup>

@@ -9,7 +9,8 @@ import {
   ModalFooter,
   FormGroup,
   Label,
-  Input
+  Input,
+  FormFeedback
 } from 'reactstrap';
 import { delete_user, signup, update_user, get_church_data, getCookie, isSuperUser, subscription_view, get_users, edit_church, delete_church } from '../../../src/api';
 import AppSidebar from "../../components/appSidebar";
@@ -24,6 +25,7 @@ const Subscribers = () => {
   });
   const [approvalStatus, setApprovalStatus] = useState('');
   const [modal, setModal] = useState(false);
+  const [churchNameError, setChurchNameError] = useState('');
   const toggleModal = () => setModal(!modal);
 
   const toggleEditModal = () => setEditModal(!editModal);
@@ -36,7 +38,6 @@ const Subscribers = () => {
                 get_users(church.id)
             ])
             .then(([subscriptionRes, usersRes]) => {
-                // Check if usersRes.data has length greater than zero
                 if (usersRes.data.length > 0) {
                     return {
                         address: church.address,
@@ -53,13 +54,11 @@ const Subscribers = () => {
                         existin_user_count: usersRes.data.length
                     };
                 } else {
-                    // Return null if usersRes.data has zero length
                     return null;
                 }
             });
         }))
         .then(churches => {
-            // Filter out null values from the list
             churches = churches.filter(church => church !== null);
             console.log(churches)
             setChurchData(churches);
@@ -85,12 +84,14 @@ const Subscribers = () => {
     toggleEditModal();
   };
   const handleSaveEdit = () => {
-    edit_church(editedUser).then(() => {
-      toggleEditModal();
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
-    });
+    if (validateForm()) {
+      edit_church(editedUser).then(() => {
+        toggleEditModal();
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      });
+    }
   };
 
   const handleInputChange = (e) => {
@@ -129,8 +130,17 @@ const Subscribers = () => {
         console.error(`Error fetching users for church ${churchId}:`, error);
       });
   };
-  
 
+  const validateForm = () => {
+    let isValid = true;
+    if (!editedUser.name) {
+      setChurchNameError('Church name is required');
+      isValid = false;
+    } else {
+      setChurchNameError('');
+    }
+    return isValid;
+  };
 
   return (
     <div style={{ display: "flex" }}>
@@ -199,11 +209,12 @@ const Subscribers = () => {
           </ModalFooter>
         </Modal>
         <Modal isOpen={editModal} toggle={toggleEditModal}>
-          <ModalHeader toggle={toggleEditModal}>Edit User</ModalHeader>
+          <ModalHeader toggle={toggleEditModal}>Edit Church</ModalHeader>
           <ModalBody>
             <FormGroup>
-              <Label for="firstName">Church Name</Label>
-              <Input type="text" name="name" id="firstName" defaultValue={editedUser.church_name} onChange={handleInputChange} />
+              <Label for="churchName">Church Name</Label>
+              <Input type="text" name="name" id="churchName" defaultValue={editedUser.church_name} onChange={handleInputChange} invalid={churchNameError !== ''} />
+              <FormFeedback>{churchNameError}</FormFeedback>
             </FormGroup>
           </ModalBody>
           <ModalFooter>
@@ -218,7 +229,3 @@ const Subscribers = () => {
 };
 
 export default Subscribers;
-
-
-
-
