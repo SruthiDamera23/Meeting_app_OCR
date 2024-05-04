@@ -146,7 +146,7 @@ const Signup = () => {
                 <CardBody>
                     <Form onSubmit={handleSubmit}>
                         <FormGroup>
-                            <Label for="first_name">First name</Label>
+                            <Label for="first_name">First name*</Label>
                             <Input
                                 type="text"
                                 id="first_name"
@@ -157,7 +157,7 @@ const Signup = () => {
                             />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="last_name">Last name</Label>
+                            <Label for="last_name">Last name*</Label>
                             <Input
                                 type="text"
                                 id="last_name"
@@ -168,7 +168,7 @@ const Signup = () => {
                             />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="email">Email</Label>
+                            <Label for="email">Email*</Label>
                             <Input
                                 type="email"
                                 id="email"
@@ -179,7 +179,7 @@ const Signup = () => {
                             />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="password">Password</Label>
+                            <Label for="password">Password*</Label>
                             <Input
                                 type="password"
                                 id="password"
@@ -190,7 +190,7 @@ const Signup = () => {
                             />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="subscription">Subscription</Label>
+                            <Label for="subscription">Subscription*</Label>
                             <Input
                                 type="select"
                                 id="subscription"
@@ -208,7 +208,7 @@ const Signup = () => {
                             </Input>
                         </FormGroup>
                         <FormGroup>
-                            <Label for="churchName">Church Name</Label>
+                            <Label for="churchName">Church Name*</Label>
                             <Input
                                 type="text"
                                 id="churchName"
@@ -219,7 +219,7 @@ const Signup = () => {
                             />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="address">Address</Label>
+                            <Label for="address">Address*</Label>
                             <Input
                                 type="text"
                                 id="address"
@@ -230,7 +230,7 @@ const Signup = () => {
                             />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="ph_no">Phone Number</Label>
+                            <Label for="ph_no">Phone Number*</Label>
                             <Input
                                 type="text"
                                 id="ph_no"

@@ -10,7 +10,8 @@ import {
   FormGroup,
   Label,
   Input,
-  Form
+  Form,
+  FormFeedback
 } from 'reactstrap';
 import { get_subscriptions, add_subscription, update_subscription, delete_subscription } from '../../../src/api';
 import AppSidebar from '../../components/appSidebar';
@@ -23,10 +24,11 @@ const SubscriptionsPage = () => {
     id: '',
     name: '',
     price: '',
-    count: '' // Added count field to formData
+    count: ''
   });
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedSubscription, setSelectedSubscription] = useState(null);
+  const [validationErrors, setValidationErrors] = useState({});
 
   useEffect(() => {
     fetchSubscriptions();
@@ -35,10 +37,9 @@ const SubscriptionsPage = () => {
   const fetchSubscriptions = () => {
     get_subscriptions()
       .then((response) => {
-        // Modify response data to include count field
         const updatedSubscriptions = response.data.map(subscription => ({
           ...subscription,
-          count: subscription.count || 0  // Set count to 0 if it's not provided in the response
+          count: subscription.count || 0
         }));
         setSubscriptions(updatedSubscriptions);
         setIsLoading(false);
@@ -56,12 +57,12 @@ const SubscriptionsPage = () => {
         id: subscription.id,
         name: subscription.name,
         price: subscription.price.toString(),
-        count: subscription.count.toString() // Set count in formData
+        count: subscription.count.toString()
       });
       setIsEditMode(true);
     } else {
       setSelectedSubscription(null);
-      setFormData({ id: '', name: '', price: '', count: '' }); // Include count in initial state
+      setFormData({ id: '', name: '', price: '', count: '' });
       setIsEditMode(false);
     }
   };
@@ -74,29 +75,53 @@ const SubscriptionsPage = () => {
     }));
   };
 
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.name.trim()) {
+      errors.name = "Name is required";
+    }
+    if (!formData.price.trim()) {
+      errors.price = "Price is required";
+    } else if (isNaN(formData.price)) {
+      errors.price = "Price must be a number";
+    }
+    if (!formData.count.trim()) {
+      errors.count = "Count is required";
+    } else if (isNaN(formData.count)) {
+      errors.count = "Count must be a number";
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0; // Return true if there are no errors
+  };
+
   const handleAddSubscription = (e) => {
     e.preventDefault();
-    add_subscription(formData)
-      .then(() => {
-        toggleModal();
-        fetchSubscriptions();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (validateForm()) {
+      add_subscription(formData)
+        .then(() => {
+          toggleModal();
+          fetchSubscriptions();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   const handleUpdateSubscription = (e) => {
     e.preventDefault();
-    const { id, ...updatedData } = formData; // Extract subscription ID and remaining data
-    update_subscription(id, updatedData) // Pass ID and updated data to the update_subscription function
-      .then(() => {
-        toggleModal();
-        fetchSubscriptions();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (validateForm()) {
+      const { id, ...updatedData } = formData;
+      update_subscription(id, updatedData)
+        .then(() => {
+          toggleModal();
+          fetchSubscriptions();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   const handleDeleteSubscription = (id) => {
@@ -120,7 +145,7 @@ const SubscriptionsPage = () => {
             <tr>
               <th>Name</th>
               <th>Price</th>
-              <th>Count</th> {/* Add count column header */}
+              <th>Count</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -129,7 +154,7 @@ const SubscriptionsPage = () => {
               <tr key={subscription.id}>
                 <td>{subscription.name}</td>
                 <td>${subscription.price}</td>
-                <td>{subscription.count}</td> {/* Display count */}
+                <td>{subscription.count}</td>
                 <td>
                   <Button color="info" onClick={() => toggleModal(subscription)}>Edit</Button>
                   <Button color="danger" onClick={() => handleDeleteSubscription(subscription.id)}>Delete</Button>
@@ -145,15 +170,18 @@ const SubscriptionsPage = () => {
             <Form onSubmit={isEditMode ? handleUpdateSubscription : handleAddSubscription}>
               <FormGroup>
                 <Label for="name">Name</Label>
-                <Input type="text" name="name" id="name" value={formData.name} onChange={handleInputChange} />
+                <Input type="text" name="name" id="name" value={formData.name} onChange={handleInputChange} invalid={!!validationErrors.name} />
+                {validationErrors.name && <FormFeedback>{validationErrors.name}</FormFeedback>}
               </FormGroup>
               <FormGroup>
                 <Label for="price">Price</Label>
-                <Input type="text" name="price" id="price" value={formData.price} onChange={handleInputChange} />
+                <Input type="text" name="price" id="price" value={formData.price} onChange={handleInputChange} invalid={!!validationErrors.price} />
+                {validationErrors.price && <FormFeedback>{validationErrors.price}</FormFeedback>}
               </FormGroup>
               <FormGroup>
-                <Label for="count">Count</Label> {/* Add count input field */}
-                <Input type="number" name="count" id="count" value={formData.count} onChange={handleInputChange} />
+                <Label for="count">Count</Label>
+                <Input type="number" name="count" id="count" value={formData.count} onChange={handleInputChange} invalid={!!validationErrors.count} />
+                {validationErrors.count && <FormFeedback>{validationErrors.count}</FormFeedback>}
               </FormGroup>
               <Button color="primary" type="submit">{isEditMode ? 'Update' : 'Add'}</Button>{' '}
               <Button color="secondary" onClick={() => toggleModal()}>Cancel</Button>

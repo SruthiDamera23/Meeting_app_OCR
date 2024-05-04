@@ -9,7 +9,8 @@ import {
   ModalFooter,
   FormGroup,
   Label,
-  Input
+  Input,
+  FormFeedback
 } from 'reactstrap';
 import { get_users, delete_user, signup, update_user, get_church_data, getCookie, isSuperUser } from '../../../src/api';
 import AppSidebar from "../../components/appSidebar";
@@ -38,6 +39,10 @@ const Users = () => {
   });
   const [approvalStatus, setApprovalStatus] = useState('');
   const [churchData, setChurchData] = useState([]);
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   useEffect(() => {
     get_users(getCookie('church'))
@@ -67,6 +72,38 @@ const Users = () => {
     3: "Leader"
   };
 
+  const validateForm = (user) => {
+    let isValid = true;
+    if (!user.first_name) {
+      setFirstNameError('First name is required');
+      isValid = false;
+    } else {
+      setFirstNameError('');
+    }
+    if (!user.last_name) {
+      setLastNameError('Last name is required');
+      isValid = false;
+    } else {
+      setLastNameError('');
+    }
+    if (!user.email) {
+      setEmailError('Email is required');
+      isValid = false;
+    } else if (!/^\S+@\S+\.\S+$/.test(user.email)) {
+      setEmailError('Invalid email format');
+      isValid = false;
+    } else {
+      setEmailError('');
+    }
+    if (!user.password) {
+      setPasswordError('Password is required');
+      isValid = false;
+    } else {
+      setPasswordError('');
+    }
+    return isValid;
+  };
+
   const handleDeleteUser = (userId) => {
     delete_user(userId).then(() => {
       toggleModal();
@@ -83,12 +120,14 @@ const Users = () => {
   };
 
   const handleSaveEdit = () => {
-    update_user(editedUser).then(() => {
-      toggleEditModal();
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
-    });
+    if (validateForm(editedUser)) {
+      update_user(editedUser).then(() => {
+        toggleEditModal();
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      });
+    }
   };
 
   const handleInputChange = (e) => {
@@ -100,15 +139,17 @@ const Users = () => {
   };
 
   const handleAddUser = () => {
-    signup(newUser).then((response) => {
-      if (response.status === 226) {
-        alert(response.data.message);
-      }
-      toggleAddModal();
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
-    });
+    if (validateForm(newUser)) {
+      signup(newUser).then((response) => {
+        if (response.status === 226) {
+          alert(response.data.message);
+        }
+        toggleAddModal();
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      });
+    }
   };
 
   const handleAddInputChange = (e) => {
@@ -183,15 +224,18 @@ const Users = () => {
           <ModalBody>
             <FormGroup>
               <Label for="newFirstName">First Name</Label>
-              <Input type="text" name="first_name" id="newFirstName" value={newUser.first_name} onChange={handleAddInputChange} />
+              <Input type="text" name="first_name" id="newFirstName" value={newUser.first_name} onChange={handleAddInputChange} invalid={firstNameError !== ''} />
+              <FormFeedback>{firstNameError}</FormFeedback>
             </FormGroup>
             <FormGroup>
               <Label for="newLastName">Last Name</Label>
-              <Input type="text" name="last_name" id="newLastName" value={newUser.last_name} onChange={handleAddInputChange} />
+              <Input type="text" name="last_name" id="newLastName" value={newUser.last_name} onChange={handleAddInputChange} invalid={lastNameError !== ''} />
+              <FormFeedback>{lastNameError}</FormFeedback>
             </FormGroup>
             <FormGroup>
               <Label for="newEmail">Email</Label>
-              <Input type="email" name="email" id="newEmail" value={newUser.email} onChange={handleAddInputChange} />
+              <Input type="email" name="email" id="newEmail" value={newUser.email} onChange={handleAddInputChange} invalid={emailError !== ''} />
+              <FormFeedback>{emailError}</FormFeedback>
             </FormGroup>
             <FormGroup>
               <Label for="newUserType">Privilege</Label>
@@ -203,7 +247,8 @@ const Users = () => {
             </FormGroup>
             <FormGroup>
               <Label for="password">Password</Label>
-              <Input type="password" name="password" id="password" value={newUser.password} onChange={handleAddInputChange} />
+              <Input type="password" name="password" id="password" value={newUser.password} onChange={handleAddInputChange} invalid={passwordError !== ''} />
+              <FormFeedback>{passwordError}</FormFeedback>
             </FormGroup>
           </ModalBody>
           <ModalFooter>
@@ -217,15 +262,18 @@ const Users = () => {
           <ModalBody>
             <FormGroup>
               <Label for="firstName">First Name</Label>
-              <Input type="text" name="first_name" id="firstName" value={editedUser.first_name} onChange={handleInputChange} />
+              <Input type="text" name="first_name" id="firstName" value={editedUser.first_name} onChange={handleInputChange} invalid={firstNameError !== ''} />
+              <FormFeedback>{firstNameError}</FormFeedback>
             </FormGroup>
             <FormGroup>
               <Label for="lastName">Last Name</Label>
-              <Input type="text" name="last_name" id="lastName" value={editedUser.last_name} onChange={handleInputChange} />
+              <Input type="text" name="last_name" id="lastName" value={editedUser.last_name} onChange={handleInputChange} invalid={lastNameError !== ''} />
+              <FormFeedback>{lastNameError}</FormFeedback>
             </FormGroup>
             <FormGroup>
               <Label for="email">Email</Label>
-              <Input type="email" name="email" id="email" value={editedUser.email} onChange={handleInputChange} />
+              <Input type="email" name="email" id="email" value={editedUser.email} onChange={handleInputChange} invalid={emailError !== ''} />
+              <FormFeedback>{emailError}</FormFeedback>
             </FormGroup>
             <FormGroup>
               <Label for="userType">Privilege</Label>
