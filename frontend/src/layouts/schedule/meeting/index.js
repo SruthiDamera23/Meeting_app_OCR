@@ -414,8 +414,9 @@ const handleQuestions = (e) =>{
   }
 
   const fetchPeopleAndToggleModal = async () => {
+    const church=parseInt(getCookie("church"));
     const response =
-      await person_view()
+      await person_view(church)
       .then((res) => {
         setPeople(res.data);
       })
@@ -428,8 +429,9 @@ const handleQuestions = (e) =>{
   }
 
   const fetchPeople= async () => {
+    const church= parseInt(getCookie("church"));
     const response =
-      await person_view()
+      await person_view(church)
       .then((res) => {
         setPeople(res.data);
       })
