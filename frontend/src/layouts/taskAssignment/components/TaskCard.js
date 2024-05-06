@@ -3,14 +3,9 @@ import {
     useState
   } from "react";
   import {
-    Card,
-    CardHeader,
-    CardTitle,
-    CardText,
-    CardBody,
     Row
   } from "reactstrap";
-
+  import { Container, Title, Card, Button, NavLink, Text } from "@mantine/core";
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -101,13 +96,13 @@ const TaskCard = (props) => {
               toggle={toggleDeleteTaskModal}
               // setMustGetTasks={props.setMustGetTasks}
           />
-          <CardBody>
-            <Card className="outer-card meeting-card">
-              <CardHeader>
-                <CardTitle>
-                  <Row>
-                    <CardText>
-                    &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+          <Card.Section>
+            <Card className="outer-card meeting-card" style={{padding:"30px"}}>
+              <Card.Section Style={{padding:"30px",overflow:"auto"}}>
+                <Title>
+                  <Row style={{padding:"15px"}}>
+                    <Text>
+                    &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
                     {props.task.task_name}
 
                   <IconButton  style={{float:'right'}} size="small" onClick={onDeleteClick}>
@@ -117,22 +112,22 @@ const TaskCard = (props) => {
                     <EditIcon />
                   </IconButton>
 
-                    </CardText>
-                  </Row>
-                </CardTitle>
-              </CardHeader>
+                    </Text>
+                  </Row >
+                </Title>
+              </Card.Section>
 
-              <CardBody className="my-card-body">
-                <Row>
-                  <CardText>
+              <div className="my-card-body"  Style={{overflow:"auto"}}>
+                <Row style={{padding:"15px"}}>
+                  <Text>
                     <small>
                       {props.task.end_date}
                     </small>
-                  </CardText>
+                  </Text>
                 </Row>
-              </CardBody>
+              </div>
             </Card>
-          </CardBody>
+          </Card.Section>
         </Card>
       )
 }

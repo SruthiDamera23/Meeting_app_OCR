@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Container,
-  Card,
-  Button,
   Modal,
   ModalHeader,
   ModalBody,
@@ -10,7 +7,11 @@ import {
   FormGroup,
   Label,
   Input
+  
+  
 } from 'reactstrap';
+
+import { Container, Card, Title,NavLink, Text ,Button, TextInput } from "@mantine/core";
 import { get_users, delete_user, signup, update_user, get_church_data, getCookie, isSuperUser } from '../../../src/api';
 import AppSidebar from "../../components/appSidebar";
 
@@ -122,7 +123,7 @@ const Users = () => {
   return (
     <div style={{ display: "flex" }}>
       <AppSidebar />
-      <Container className="my-4">
+      <Container className="my-4" style={{width:"100%"}}>
         <Card className="my-card schedule-card">
           <div className="full-screen-calendar">
             <div style={{ textAlign: 'center' }}>
@@ -153,9 +154,9 @@ const Users = () => {
                         <td style={{ padding: '8px' }}>{priorityLabels[user.user_type]}</td>
                         <td style={{ padding: '8px' }}>{priorityLabels[user.user_type] === 'Super-user' ? '-' : churchData[user.church]}</td>
                         <td style={{ padding: '8px' }}>
-                          <Button onClick={() => handleEdit(index)} color="info" style={{ marginRight: '5px' }}>Edit</Button>
+                          <Button variant="filled" color="rgba(90, 211, 250, 1)" onClick={() => handleEdit(index)} style={{ marginRight: '5px' }}>Edit</Button>
                           {user.email !== getCookie('user') && (
-                            <Button onClick={() => handleDeleteUser(user.id)} color="danger" style={{ marginRight: '5px' }}>Delete</Button>
+                            <Button  variant="filled" color="rgba(214, 66, 66, 1)" onClick={() => handleDeleteUser(user.id)} style={{ marginRight: '5px' }}>Delete</Button>
                           )}
                         </td>
 
@@ -183,15 +184,15 @@ const Users = () => {
           <ModalBody>
             <FormGroup>
               <Label for="newFirstName">First Name</Label>
-              <Input type="text" name="first_name" id="newFirstName" value={newUser.first_name} onChange={handleAddInputChange} />
+              <TextInput type="text" name="first_name" id="newFirstName" value={newUser.first_name} onChange={handleAddInputChange} />
             </FormGroup>
             <FormGroup>
               <Label for="newLastName">Last Name</Label>
-              <Input type="text" name="last_name" id="newLastName" value={newUser.last_name} onChange={handleAddInputChange} />
+              <TextInput type="text" name="last_name" id="newLastName" value={newUser.last_name} onChange={handleAddInputChange} />
             </FormGroup>
             <FormGroup>
               <Label for="newEmail">Email</Label>
-              <Input type="email" name="email" id="newEmail" value={newUser.email} onChange={handleAddInputChange} />
+              <TextInput type="email" name="email" id="newEmail" value={newUser.email} onChange={handleAddInputChange} />
             </FormGroup>
             <FormGroup>
               <Label for="newUserType">Privilege</Label>
@@ -203,7 +204,7 @@ const Users = () => {
             </FormGroup>
             <FormGroup>
               <Label for="password">Password</Label>
-              <Input type="password" name="password" id="password" value={newUser.password} onChange={handleAddInputChange} />
+              <TextInput type="password" name="password" id="password" value={newUser.password} onChange={handleAddInputChange} />
             </FormGroup>
           </ModalBody>
           <ModalFooter>
@@ -217,15 +218,15 @@ const Users = () => {
           <ModalBody>
             <FormGroup>
               <Label for="firstName">First Name</Label>
-              <Input type="text" name="first_name" id="firstName" value={editedUser.first_name} onChange={handleInputChange} />
+              <TextInput type="text" name="first_name" id="firstName" value={editedUser.first_name} onChange={handleInputChange} />
             </FormGroup>
             <FormGroup>
               <Label for="lastName">Last Name</Label>
-              <Input type="text" name="last_name" id="lastName" value={editedUser.last_name} onChange={handleInputChange} />
+              <TextInput type="text" name="last_name" id="lastName" value={editedUser.last_name} onChange={handleInputChange} />
             </FormGroup>
             <FormGroup>
               <Label for="email">Email</Label>
-              <Input type="email" name="email" id="email" value={editedUser.email} onChange={handleInputChange} />
+              <TextInput type="email" name="email" id="email" value={editedUser.email} onChange={handleInputChange} />
             </FormGroup>
             <FormGroup>
               <Label for="userType">Privilege</Label>

@@ -4,15 +4,12 @@ import {
   useRef
 } from "react";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
   CardText,
-  CardBody,
-  Container,
   Row,
   Col
 } from "reactstrap";
+
+import { Container,Card, Title, Button, NavLink, Text } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
@@ -140,31 +137,31 @@ const MeetingCard = (props) => {
         isOpen={isDeleteMeetingModalOpen}
         toggle={toggleDeleteMeetingModal}
       />
-      <CardBody>
+      <div>
         <div ref={anchorRef} />
         <div style={{height: "23vh"}}>
-          <Card className="outer-card meeting-card">
-            <CardHeader style={{height: "7.5vh",  overflow: "hidden"}}>
-              <CardTitle>
-                <Row>
+          <Card className="outer-card meeting-card card-body">
+            <Card.Section style={{height: "7.5vh",  overflow: "auto"}}>
+              <Title style={{overflow:"auto"}}>
+                <Row style={{overflow:"auto"}}>
                   <Col>
-                    <CardText>
+                    <Text style={{padding:"20px"}}>
                       <small>
                         {formatDate()}
                         <br />
                         {formatTime()}
                       </small>
-                    </CardText>
+                    </Text>
                   </Col>
                   <Col>
-                    <CardText>
+                  <Text style={{padding:"20px"}}>
                       {props.meeting.name}
-                    </CardText>
+                    </Text>
                   </Col>
                 </Row>
-              </CardTitle>
-            </CardHeader>
-            <CardBody className="my-card-body" style={{height: "15vh",  overflow: "auto"}}>
+              </Title>
+            </Card.Section>
+            <Card.Section className="my-card-body" style={{height: "15vh",  overflow: "auto"}}>
               <div>
                 <Popper
                   open={isMeetingMenuOpen}
@@ -194,24 +191,24 @@ const MeetingCard = (props) => {
               </div>
               <Row>
                 <Col>
-                  <CardText>
+                <Text style={{padding:"20px"}}>
                     <small>
                       {props.meeting.agenda}
                     </small>
-                  </CardText>
+                  </Text>
                 </Col>
                 <Col>
-                  <CardText>
+                <Text style={{padding:"20px"}}>
                     <small>
                       Invited: {props.meeting.attendees.length}
                     </small>
-                  </CardText>
+                  </Text>
                 </Col>
               </Row>
-            </CardBody>
+            </Card.Section>
           </Card>
         </div>
-      </CardBody>
+      </div>
     </Card>
   )
 }

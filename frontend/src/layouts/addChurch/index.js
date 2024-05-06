@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Container, Card, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
+import { Form, FormGroup, Label,  Alert } from 'reactstrap';
 import { addChurch } from '../../../src/api';
 import AppSidebar from "../../components/appSidebar";
+import { Container, Card, Title,NavLink, Text ,Button, TextInput } from "@mantine/core";
 
 const AddChurchForm = () => {
   const [name, setName] = useState('');
@@ -41,32 +42,32 @@ const AddChurchForm = () => {
   return (
     <div style={{ display: "flex" }}>
       <AppSidebar />
-      <Container className="my-4">
+      <Container className="my-4" style={{width:"50%"}}>
         <Card className="my-card schedule-card">
-          <div className="full-screen-calendar" style={{ width: '40%', margin: '0 auto' }}>
+          <div className="full-screen-calendar" style={{  margin: '0 auto' }}>
             <h1 style={{ textAlign: 'center' }}>Add Church</h1>
             <Form onSubmit={handleSubmit}>
               <FormGroup>
                 <Label for="name" style={{ textAlign: 'left' }}>Name *</Label>
-                <Input type="text" name="name" id="name" value={name} onChange={e => setName(e.target.value)} />
+                <TextInput style={{width:'100%'}} type="text" name="name" id="name" value={name} onChange={e => setName(e.target.value)} />
               </FormGroup>
               <FormGroup>
                 <Label for="address" style={{ textAlign: 'left' }}>Address *</Label>
-                <Input type="text" name="address" id="address" value={address} onChange={e => setAddress(e.target.value)} />
+                <TextInput style={{width:'100%'}} type="text" name="address" id="address" value={address} onChange={e => setAddress(e.target.value)} />
               </FormGroup>
               <FormGroup>
                 <Label for="phNo" style={{ textAlign: 'left' }}>Phone Number *</Label>
-                <Input type="text" name="phNo" id="phNo" value={phNo} onChange={e => setPhNo(e.target.value)} />
+                <TextInput style={{width:'100%'}} type="text" name="phNo" id="phNo" value={phNo} onChange={e => setPhNo(e.target.value)} />
               </FormGroup>
               <FormGroup>
                 <Label for="email" style={{ textAlign: 'left' }}>Email</Label>
-                <Input type="email" name="email" id="email" value={email} onChange={e => setEmail(e.target.value)} />
+                <TextInput style={{width:'100%'}} type="email" name="email" id="email" value={email} onChange={e => setEmail(e.target.value)} />
               </FormGroup>
               <FormGroup>
                 <Label for="website" style={{ textAlign: 'left' }}>Website</Label>
-                <Input type="text" name="website" id="website" value={website} onChange={e => setWebsite(e.target.value)} />
+                <TextInput style={{width:'100%'}}type="text" name="website" id="website" value={website} onChange={e => setWebsite(e.target.value)} />
               </FormGroup>
-              <button type="submit" className="btn btn-primary">Submit</button>
+              <Button variant="filled" type="submit" >Submit</Button>
             </Form>
             {alert.message && (
               <Alert color={alert.color} style={{ marginTop: '10px' }}>

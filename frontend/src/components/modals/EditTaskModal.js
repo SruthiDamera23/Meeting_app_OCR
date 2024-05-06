@@ -8,11 +8,10 @@
 
 import React, { useState, useEffect } from "react";
 import {
-  Button,
+
   Form,
   FormGroup,
   Label,
-  Input,
   Modal,
   ModalHeader,
   ModalBody,
@@ -22,8 +21,8 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
+import { Container, Title, Card, Button, NavLink, Text, TextInput, Switch } from "@mantine/core";
 import { tasks_create, task_view, tasks_update } from "../../api";
-import Switch from "@mui/material/Switch";
 import { idID } from "@mui/material/locale";
 
 const EditTaskModal = ({ isOpen, toggle, id }) => {
@@ -173,7 +172,7 @@ const EditTaskModal = ({ isOpen, toggle, id }) => {
         <ModalBody>
           <FormGroup>
             <Label for="task_name">Task Name</Label>
-            <Input
+            <TextInput
               type="text"
               name="task_name"
               id="task_name"
@@ -184,7 +183,7 @@ const EditTaskModal = ({ isOpen, toggle, id }) => {
           </FormGroup>
           <FormGroup>
             <Label for="task_description">Task Description</Label>
-            <Input
+            <TextInput
               type="textarea"
               name="task_description"
               id="task_description"
@@ -196,7 +195,7 @@ const EditTaskModal = ({ isOpen, toggle, id }) => {
           </FormGroup>
           <FormGroup>
             <Label for="employee_name">Employee Name</Label>
-            <Input
+            <TextInput
               type="text"
               name="employee_name"
               id="employee_name"
@@ -207,7 +206,7 @@ const EditTaskModal = ({ isOpen, toggle, id }) => {
           </FormGroup>
           <FormGroup>
             <Label for="start_date">Start Date</Label>
-            <Input
+            <TextInput
               type="date"
               name="start_date"
               id="start_date"
@@ -218,7 +217,7 @@ const EditTaskModal = ({ isOpen, toggle, id }) => {
           </FormGroup>
           <FormGroup>
             <Label for="end_date">End Date</Label>
-            <Input
+            <TextInput
               type="date"
               name="end_date"
               id="end_date"
@@ -256,10 +255,10 @@ const EditTaskModal = ({ isOpen, toggle, id }) => {
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" type="submit">
+          <Button variant="filled" color="rgba(90, 211, 250, 1)" type="submit">
             Save Task
           </Button>{" "}
-          <Button color="secondary" onClick={toggle}>
+          <Button  variant="filled" color="rgba(214, 66, 66, 1)"onClick={toggle}>
             Cancel
           </Button>
         </ModalFooter>

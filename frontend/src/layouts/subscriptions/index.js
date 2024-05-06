@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
-  Container,
+
   Table,
-  Button,
   Modal,
   ModalHeader,
   ModalBody,
@@ -12,6 +11,7 @@ import {
   Input,
   Form
 } from 'reactstrap';
+import { Container, Card, Title,NavLink, Text ,Button, TextInput } from "@mantine/core";
 import { get_subscriptions, add_subscription, update_subscription, delete_subscription } from '../../../src/api';
 import AppSidebar from '../../components/appSidebar';
 
@@ -112,9 +112,9 @@ const SubscriptionsPage = () => {
   return (
     <div style={{ display: "flex" }}>
       <AppSidebar />
-      <Container>
+      <Container style={{width:"100%",marginTop:"30px"}}>
         <h1>Subscriptions</h1>
-        <Button color="primary" onClick={() => toggleModal()}>Add Subscription</Button>
+        <Button variant="filled" onClick={() => toggleModal()}>Add Subscription</Button>
         <Table>
           <thead>
             <tr>
@@ -131,8 +131,8 @@ const SubscriptionsPage = () => {
                 <td>${subscription.price}</td>
                 <td>{subscription.count}</td> {/* Display count */}
                 <td>
-                  <Button color="info" onClick={() => toggleModal(subscription)}>Edit</Button>
-                  <Button color="danger" onClick={() => handleDeleteSubscription(subscription.id)}>Delete</Button>
+                  <Button variant="filled" color="rgba(90, 211, 250, 1)" onClick={() => toggleModal(subscription)}>Edit</Button>
+                  <Button  style={{marginLeft:"5px"}} variant="filled" color="rgba(214, 66, 66, 1)" onClick={() => handleDeleteSubscription(subscription.id)}>Delete</Button>
                 </td>
               </tr>
             ))}

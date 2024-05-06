@@ -3,19 +3,18 @@
  * @params: {props}
  */
 import React, { useEffect, useState } from "react";
+import '@mantine/core/styles.css';
 import {
-  Container,
   Row,
   Col,
-  Card,
-  CardTitle,
-  CardText,
-  Nav,
-  NavLink,
+  Container
 } from "reactstrap";
+
+import { Title, Card, Button, NavLink, Text } from "@mantine/core";
+
+
 import CircularProgress from '@mui/material/CircularProgress';
 import { PieChart, pieChartDefaultProps } from "react-minimal-pie-chart";
-import { Button } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 import { logout, meeting_view, tasks_view } from "../../api";
@@ -162,6 +161,7 @@ const Dashboard = () => {
       {isLoading ? (<CircularProgress className="circular-progress" />) :
         (
           <div>
+
             <AppSidebar />
             <Container style={{position: "relative", left: "15%"}} className="my-4">
               <Card className="my-card schedule-card">
@@ -176,12 +176,12 @@ const Dashboard = () => {
               <Row className="fixed-height-dashboard-upper-cards">
                 <Col md={6}>
                   <Card className="my-card my-card-height">
-                    <CardTitle tag="h5" className="card-head p-3">
+                    <Title order={5} className="card-head p-3">
                       High Priority tasks
-                    </CardTitle>
-                    <CardText className="p-3 card-body">
+                    </Title>
+                    <Text className="p-3 card-body">
                       {isLoading ? <CircularProgress /> : <TaskTable rows={tasks} dashboard={true} />}
-                    </CardText>
+                    </Text>
                   </Card>
 
                 </Col>
@@ -208,22 +208,22 @@ const Dashboard = () => {
                   <Row className="fixed-height-dashboard-upper-cards">
                     <Col md={6}>
                       <Card className="my-card middle-order-card">
-                        <CardTitle tag="h5" className="p-3 card-head-small">
+                        <Title order={5} className="p-3 card-head-small">
                           Active Tasks
-                        </CardTitle>
+                        </Title>
                         {/* <CardText className="p-3 card-text-number card-body">{tasks.length}</CardText>*/}
-                        <CardText className="p-3 card-text-number card-body">{activeTasks}</CardText>
+                        <Text className="p-3 card-text-number card-body">{activeTasks}</Text>
                       </Card>
                     </Col>
 
                     <Col md={6}>
                       <Card className="my-card middle-order-card">
-                        <CardTitle tag="h5" className="p-3 card-head-small">
+                      <Title order={5} className="p-3 card-head-small">
                           Tasks due this week
-                        </CardTitle>
-                        <CardText className="p-3 card-text-number card-body">
+                        </Title>
+                        <Text className="p-3 card-text-number card-body">
                           {weekTasks}
-                        </CardText>
+                        </Text>
                       </Card>
                     </Col>
                   </Row>
@@ -232,9 +232,9 @@ const Dashboard = () => {
                     <Col md={12}>
 
                       <Card className="my-card">
-                        <CardText className="p-3 card-body">
+                        <Text className="p-3 card-body">
                           {isLoading2 ? <CircularProgress /> : <DateAndTodoList data={meetingProgress[0]} />}
-                        </CardText>
+                        </Text>
                       </Card>
                     </Col>
                   </Row>

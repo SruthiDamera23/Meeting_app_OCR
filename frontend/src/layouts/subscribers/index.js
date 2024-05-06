@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Container,
-  Card,
-  Button,
   Modal,
   ModalHeader,
   ModalBody,
@@ -11,6 +8,7 @@ import {
   Label,
   Input
 } from 'reactstrap';
+import { Container, Card, Title,NavLink, Text ,Button, TextInput } from "@mantine/core";
 import { delete_user, signup, update_user, get_church_data, getCookie, isSuperUser, subscription_view, get_users, edit_church, delete_church } from '../../../src/api';
 import AppSidebar from "../../components/appSidebar";
 
@@ -135,8 +133,10 @@ const Subscribers = () => {
   return (
     <div style={{ display: "flex" }}>
       <AppSidebar />
+
       <Container className="my-4">
         <Card className="my-card schedule-card">
+        <h1 style={{ textAlign: 'center', display: 'inline-block', marginBottom:"20px", marginTop:"10px" }}>Subscribers</h1>
           <div className="full-screen-calendar">
             <div style={{ textAlign: 'center' }}>
             </div>
@@ -175,9 +175,9 @@ const Subscribers = () => {
                         <td style={{ padding: '8px' }}>{church.subscription_name}</td>
                         <td style={{ padding: '8px' }}>{church.existin_user_count}</td>
                         <td style={{ padding: '8px' }}>{church.count}</td>
-                        <td style={{ padding: '8px' }}>
-                          <Button onClick={() => handleEdit(index)} color="info" style={{ marginRight: '5px' }}>Edit</Button>
-                          <Button color="danger" onClick={() => handleDeleteUser(church.church_id)} style={{ marginRight: '5px' }}>Delete</Button>
+                        <td style={{ padding: '8px', display :'flex' }} >
+                          <Button variant="filled" color="rgba(90, 211, 250, 1)" onClick={() => handleEdit(index)}  style={{ marginRight: '5px' }}>Edit</Button>
+                          <Button  variant="filled" color="rgba(214, 66, 66, 1)"  onClick={() => handleDeleteUser(church.church_id)} style={{ marginRight: '5px' }}>Delete</Button>
                         </td>
                       </tr>
                     ))}
@@ -203,12 +203,12 @@ const Subscribers = () => {
           <ModalBody>
             <FormGroup>
               <Label for="firstName">Church Name</Label>
-              <Input type="text" name="name" id="firstName" defaultValue={editedUser.church_name} onChange={handleInputChange} />
+              <TextInput type="text" name="name" id="firstName" defaultValue={editedUser.church_name} onChange={handleInputChange} />
             </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={handleSaveEdit}>Save</Button>{' '}
-            <Button color="secondary" onClick={toggleEditModal}>Cancel</Button>
+            <Button variant="filled" color="rgba(90, 211, 250, 1)" onClick={handleSaveEdit}>Save</Button>{' '}
+            <Button  variant="filled" color="rgba(214, 66, 66, 1)" onClick={toggleEditModal}>Cancel</Button>
           </ModalFooter>
         </Modal>
 

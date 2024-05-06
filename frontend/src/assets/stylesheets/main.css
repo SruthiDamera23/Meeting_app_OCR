@@ -315,6 +315,7 @@ body {
 }
 
 .outer-card {
+  background-color: rgba(180, 240, 180, 0.5);
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -476,7 +477,8 @@ body {
 }
 
 .schedule-card {
-  height: 90vh;
+  /* height: 90vh; */
+  width:100%;
 }
 
 .schedule-card-body {
@@ -488,6 +490,7 @@ body {
 }
 
 .meeting-card {
+  background-color: rgba(200, 250, 200, 0.4);
   text-align: center;
   cursor: pointer;
 }
@@ -510,14 +513,14 @@ body {
 }
 .custom-dropdown .Dropdown-control {
   border-color: rgb(10, 90, 10);
-  background-color: rgba(200, 250, 200, 0.4);
+  background-color: rgba(200, 250, 200,0.7);
   border-radius: 5px;
   color: rgb(10, 90, 10);
   padding: 5px;
 }
 
 .custom-dropdown .Dropdown-menu {
-  background-color: rgba(200, 250, 200, 0.4);
+  background-color: rgba(200, 250, 200,0.7);
   border-radius: 5px;
   color: rgb(10, 90, 10);
 }

@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {
-  Container,
-  Card,
-  CardTitle,
-  CardText,
   Row,
   Col,
-  Button
 } from "reactstrap";
+
+import { Container, Title, Card, Button, NavLink, Text } from "@mantine/core";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Dropdown from 'react-dropdown';
@@ -146,11 +144,11 @@ const Schedule = () => {
   }
 
   return (
-    <div style={{display: 'flex'}}>
+    <div style={{display: 'flex',height:"100vh"}}>
       <AppSidebar />
-      <Container className="my-4">
-        <Card className="my-card schedule-card">
-          <CardTitle tag="h5" className=" p-3 card-head" style={{ display: "flex", justifyContent: "space-between" }}>
+      <Container className="my-4" style={{ width: "100%", height:"90vh",overflow: "auto" }}>
+        <Card className="my-card my-card-height schedule-card">
+          <Title order={5} className=" p-3 card-head" style={{ display: "flex", justifyContent: "space-between" }}>
           {getCookie("priv")==="1" &&<Dropdown
                 className="custom-dropdown" 
                   options={churchDropdownOptions.map((x)=>x.name)} 
@@ -171,8 +169,8 @@ const Schedule = () => {
               </IconButton>
             </Row>
             <div></div>
-          </CardTitle>
-          <CardText className="p-3 schedule-card-body">
+          </Title>
+          <Text className="p-3 schedule-card-body">
             {
               isLoading ?
               <CircularProgress /> :
@@ -192,7 +190,7 @@ const Schedule = () => {
                 }
               </Row>
             }
-          </CardText>
+          </Text>
         </Card>
       </Container>
     </div>

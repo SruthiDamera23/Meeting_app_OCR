@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  Container,
-  Card
-} from 'reactstrap';
+
+import { Container, Title, Card, Button, NavLink, Text } from "@mantine/core";
 import ReactDOM from 'react-dom';
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
@@ -132,7 +130,7 @@ const tileContent = ({ date, view }) => {
   return (
       <div style={{display: "flex"}}>
         <AppSidebar />
-        <Container className="my-4">
+        <Container className="my-4" style={{width:"100%"}}>
           <Card className="my-card schedule-card">
             <div className="full-screen-calendar">
             <h1 style={{ textAlign: 'left', paddingLeft: '380px' }}>Task Calendar</h1>
