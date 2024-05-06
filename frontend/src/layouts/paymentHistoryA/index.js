@@ -112,7 +112,7 @@ const PaymentHistory = () => {
   return (
     <div style={{ display: "flex" }}>
       <AppSidebar />
-      <Container className="my-4">
+      <Container className="my-4" style={{marginLeft:"12%"}}>
         <Card className="my-card schedule-card">
           <div className="full-screen-calendar">
             {isLoading && <p>Loading...</p>}
