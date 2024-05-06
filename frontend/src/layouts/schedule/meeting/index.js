@@ -410,8 +410,9 @@ const handleQuestions = (e) =>{
   }
 
   const fetchPeopleAndToggleModal = async () => {
+    const church=parseInt(getCookie("church"));
     const response =
-      await person_view()
+      await person_view(church)
       .then((res) => {
         setPeople(res.data);
       })
@@ -424,7 +425,7 @@ const handleQuestions = (e) =>{
   }
 
   const fetchPeople= async () => {
-    const church=getCookie("church");
+    const church= parseInt(getCookie("church"));
     const response =
       await person_view(church)
       .then((res) => {
@@ -906,7 +907,8 @@ const handleQuestions = (e) =>{
                     {/* <FormGroup style={{width: "50%", position: "relative", left: "25%"}}> */}
                       <Label className="form-label" for="actionSteps">Action steps*</Label>
                       <TextInput className="form-input" type="textarea" name="actionSteps" id="actionSteps" value={actionSteps} onChange={handleActionSteps} />
-                      <div id="actionError" class="error-message"></div>
+                    <div id="actionError" class="error-message"></div>
+                      
                     </FormGroup>
                     </Col>
                     

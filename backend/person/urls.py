@@ -8,6 +8,6 @@ router = routers.DefaultRouter()
 urlpatterns = [
     path('person/', person, name='person'),
     path('get_person/<int:id>', get_person, name="get_person"),
-    path('person/<int:id>', delete_person, name='delete_person')
+    path('person/<int:pid>', delete_person, name='delete_person')
 ]
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardBody, Button, Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { signup, addChurch as create_church, get_subscriptions, chargeCard } from '../../../api';
+import { signup, addChurch as create_church, get_subscriptions, chargeCard, login } from '../../../api';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 
 const Signup = () => {
@@ -120,14 +120,20 @@ const Signup = () => {
                   subscription: formData.subscription,
                   user_type: formData.user_type,
               };
-  
               await signup(userData);
-              setIsSubmitted(true);
-              setSignupMessage(
-                  "Your request is being processed. You'll receive confirmation once approved"
-              );
-              history('/');
+
+              await login({ username: formData.email, password: formData.password }).then(response => {
+                console.log(response.data)
+                document.cookie="user="+response.data.user;
+                document.cookie="priv="+response.data.priv;
+                document.cookie="church="+response.data.church;
+               document.cookie="user-id="+response.data.user_id;
+                console.log(document.cookie,"cokkiesss");
+                console.log(response.data);
+                history('/dashboard');
+                })
       } catch (error) {
+          console.log(error);
           alert(error);
           setIsLoading(false);
           setShowPaymentModal(false);
@@ -140,7 +146,7 @@ const Signup = () => {
                 <CardBody>
                     <Form onSubmit={handleSubmit}>
                         <FormGroup>
-                            <Label for="first_name">First name</Label>
+                            <Label for="first_name">First name*</Label>
                             <Input
                                 type="text"
                                 id="first_name"
@@ -151,7 +157,7 @@ const Signup = () => {
                             />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="last_name">Last name</Label>
+                            <Label for="last_name">Last name*</Label>
                             <Input
                                 type="text"
                                 id="last_name"
@@ -162,7 +168,7 @@ const Signup = () => {
                             />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="email">Email</Label>
+                            <Label for="email">Email*</Label>
                             <Input
                                 type="email"
                                 id="email"
@@ -173,7 +179,7 @@ const Signup = () => {
                             />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="password">Password</Label>
+                            <Label for="password">Password*</Label>
                             <Input
                                 type="password"
                                 id="password"
@@ -184,7 +190,7 @@ const Signup = () => {
                             />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="subscription">Subscription</Label>
+                            <Label for="subscription">Subscription*</Label>
                             <Input
                                 type="select"
                                 id="subscription"
@@ -202,7 +208,7 @@ const Signup = () => {
                             </Input>
                         </FormGroup>
                         <FormGroup>
-                            <Label for="churchName">Church Name</Label>
+                            <Label for="churchName">Church Name*</Label>
                             <Input
                                 type="text"
                                 id="churchName"
@@ -213,7 +219,7 @@ const Signup = () => {
                             />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="address">Address</Label>
+                            <Label for="address">Address*</Label>
                             <Input
                                 type="text"
                                 id="address"
@@ -224,7 +230,7 @@ const Signup = () => {
                             />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="ph_no">Phone Number</Label>
+                            <Label for="ph_no">Phone Number*</Label>
                             <Input
                                 type="text"
                                 id="ph_no"
