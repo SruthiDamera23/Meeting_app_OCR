@@ -14,9 +14,7 @@ import {
   DropdownItem,
 } from "reactstrap";
 import { tasks_update } from "../../api";
-import Switch from "@mui/material/Switch";
 import { Container, Title, Card, Button, NavLink, Text, TextInput, Switch } from "@mantine/core";
-import { tasks_create, task_view, tasks_update } from "../../api";
 import { idID } from "@mui/material/locale";
 
 const EditTaskModal = ({ isOpen, toggle, id }) => {
