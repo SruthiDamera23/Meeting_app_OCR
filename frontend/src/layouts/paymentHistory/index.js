@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Container, Card } from 'reactstrap';
+
+import { Container, Title, Card, Button, NavLink, Text } from "@mantine/core";
 import { get_all_payments } from '../../../src/api';
 import AppSidebar from "../../components/appSidebar";
 
@@ -40,7 +41,7 @@ const PaymentHistory = () => {
   return (
     <div style={{ display: "flex" }}>
       <AppSidebar />
-      <Container className="my-4">
+      <Container style={{width:"100%" }}className="my-4">
         <Card className="my-card schedule-card">
           <div className="full-screen-calendar">
             {isLoading && <p>Loading...</p>}

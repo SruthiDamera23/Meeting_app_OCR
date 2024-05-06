@@ -9,20 +9,15 @@ import {
   useEffect
 } from 'react';
 import {
-  Container,
-  Card,
-  CardBody,
   Row,
   Col,
   Form,
   FormGroup,
-  FormText,
   Label,
-  Input,
-  Button,
-  ModalBody,
   Modal
 } from 'reactstrap';
+
+import {  Radio,Container,Title,Button, Card,  NavLink, Text,TextInput } from "@mantine/core";
 import { useNavigate, useLocation } from "react-router-dom";
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -126,6 +121,7 @@ const Meeting = (props) => {
   const imageRef = useRef(null);
 
   useEffect(() => {
+    
     fetchPeople();
     if (state.clearForm) {
       setId('');
@@ -617,21 +613,23 @@ const handleQuestions = (e) =>{
         invite={invitePerson}
         uninvite={uninvitePerson}
       />
-      <Container className="layout-container">
-        <Card className="outer-card">
-          <CardBody>
-            <Card style={{maxWidth: "70%", position: "relative", left: "15%"}} className="my-card">
-              <CardBody className="my-card-body">
+      <Container className="layout-container" style={{marginLeft:"15%", width:"100%"}}>
+        <Card className="outer-card" style={{padding:"50px"}}>
+          <Card.Section>
+            <Card style={{maxWidth: "70%", position: "relative", left: "15%", padding:"50px"}} className="my-card">
+              <Card.Section className="my-card-body">
                 <Row style={{width: "50%", position: "relative", left: "25%", textAlign: "center"}}>
                   <input type="file" hidden ref={imageRef} onChange={onImageChange} />
                   {
                     isInFirstScanState ?
                       <div>
                         <Card className="outer-card">
-                          <CardBody>
-                          <div style={{ marginBottom: '10px' }}>
+                          <Card.Section>
+                          <div style={{ marginBottom: '10px' ,padding:"10px"}}>
                             <Button
-                              color="success"
+                              variant="light"
+                              color="green"
+                            style={{color:"black"}}
                               onClick={handleScanFromPhotoClick}
                             >
                               Scan From Image
@@ -640,13 +638,13 @@ const handleQuestions = (e) =>{
                             <div>
                             {imageSrc && <img src={imageSrc}  alt="Uploaded" style={{ width: '20%', height: 'auto',cursor: "pointer"}} onClick={() => handleImageClick(imageSrc)}  />}
                             </div>
-                          </CardBody>
+                          </Card.Section>
                         </Card>
                       {/* Modal to display the enlarged image */}
                       <Modal isOpen={modalOpen} toggle={handleCloseModal}>
-                        <ModalBody>
+                        <Modal.Section>
                           <img src={uploadedImageUrl} alt="Uploaded" style={{ width: "100%", height: "auto" }} />
-                        </ModalBody>
+                        </Modal.Section>
                       </Modal>
                       </div>
                       :
@@ -657,64 +655,70 @@ const handleQuestions = (e) =>{
                           </ReactCrop>
                         )}
                         <Card className="outer-card">
-                          <CardBody>
+                          <Card.Section style={{padding:"10px"}}>
                             <Button
+                            variant="light"
                               className="my-button"
-                              color="success"
+                              color="green"
+                              style={{color:"black",minWidth: "200px",margin:"5px" }}
                               onClick={handleOCRRequest}
+                              
                             >
                               Process Image
                             </Button>{" "}
                             <Button
+                            variant="light"
                               className="my-button"
-                              color="success"
+                              color="green"
+                              style={{color:"black",minWidth: "200px", margin:"5px" }}
                               onClick={toggleScanState}
                             >
                               Cancel
                             </Button>
-                          </CardBody>
+                          </Card.Section>
                         </Card>
                       </div>
                   }
                 </Row>
-              </CardBody>
+              </Card.Section>
             </Card>
             <Form>
-              <Card className="my-card">
-                <CardBody className="my-card-body">
+              <Card className="my-card" style={{padding:"30px", margin:"5px"}}>
+                <Card.Section className="my-card-body">
                   <Row xs={1} sm={1} md={2} lg={2}>
                     <Col>
                       <FormGroup>
                         <Label className="form-label" for="name">Meeting Name*</Label>
-                        <Input className="form-input" type="text" name="name" id="name" value={name} onChange={handleNameChange} required />
+                        <TextInput className="form-input" type="text" name="name" id="name" value={name} onChange={handleNameChange} required />
                         <div id="nameError" class="error-message"></div>
                       </FormGroup>
                       <FormGroup>
                         <Label className="form-label" for="agenda">Agenda*</Label>
-                        <Input className="form-input" type="textarea" name="agenda" id="agenda" value={agenda} onChange={handleAgendaChange} required />
+                        <TextInput className="form-input" type="textarea" name="agenda" id="agenda" value={agenda} onChange={handleAgendaChange} required />
                         <div id="agendaError" class="error-message"></div>
                       </FormGroup>
                       <FormGroup>
                         <Label className="form-label" for="date">Date*</Label>
-                        <Input className="form-input" type="date" name="date" id="date" value={date} onChange={handleDateChange} required />
+                        <TextInput className="form-input" type="date" name="date" id="date" value={date} onChange={handleDateChange} required />
                         <div id="dateError" class="error-message"></div>
                       </FormGroup>
                       <FormGroup>
                         <Label className="form-label" for="time">Time*</Label>
-                        <Input className="form-input" type="time" name="time" id="time" value={time} onChange={handleTimeChange} required />
+                        <TextInput className="form-input" type="time" name="time" id="time" value={time} onChange={handleTimeChange} required />
                         <div id="timeError" class="error-message"></div>
                       </FormGroup>
                     </Col>
                     <Col>
                       <FormGroup>
                         <Label className="form-label" for="type">Meeting Type*</Label>
-                        <Card className="my-card my-border">
-                          <CardBody>
+                        <Card className="my-card my-border" style={{padding:"30px"}}>
+                          <Card.Section>
                             <Row>
                               <Col>
                                 <FormGroup check>
-                                  <Label check>
-                                    <Input
+                                  <Label check style={{ display: "flex",alignItems:"center"}}>
+                                    <Radio
+                                    style={{marginRight:"20px"}}
                                       className="my-border"
                                       type="radio"
                                       name="type"
@@ -722,13 +726,13 @@ const handleQuestions = (e) =>{
                                       value={0}
                                       checked={typeSync[0]}
                                       onChange={handleTypeChange}
-                                    />{' '}
-                                    1 on 1
+                                    />{' '}1 on 1
                                   </Label>
                                 </FormGroup>
                                 <FormGroup check>
-                                  <Label check>
-                                    <Input
+                                  <Label check style={{ display: "flex",alignItems:"center"}}>
+                                    <Radio
+                                    style={{marginRight:"20px"}}
                                       className="my-border"
                                       type="radio"
                                       name="type"
@@ -741,8 +745,9 @@ const handleQuestions = (e) =>{
                                   </Label>
                                 </FormGroup>
                                 <FormGroup check>
-                                  <Label check>
-                                    <Input
+                                  <Label check style={{ display: "flex",alignItems:"center"}}>
+                                    <Radio
+                                    style={{marginRight:"20px"}}
                                       className="my-border"
                                       type="radio"
                                       name="type"
@@ -755,8 +760,9 @@ const handleQuestions = (e) =>{
                                   </Label>
                                 </FormGroup>
                                 <FormGroup check>
-                                  <Label check>
-                                    <Input
+                                  <Label check style={{ display: "flex",alignItems:"center"}}>
+                                    <Radio
+                                    style={{marginRight:"20px"}}
                                       className="my-border"
                                       type="radio"
                                       name="type"
@@ -770,9 +776,10 @@ const handleQuestions = (e) =>{
                                 </FormGroup>
                               </Col>
                               <Col>
-                                <FormGroup check>
-                                  <Label check>
-                                    <Input
+                                <FormGroup check >
+                                  <Label check style={{ display: "flex",alignItems:"center"}}>
+                                    <Radio
+                                    style={{marginRight:"20px"}}
                                       className="my-border"
                                       type="radio"
                                       name="type"
@@ -785,8 +792,9 @@ const handleQuestions = (e) =>{
                                   </Label>
                                 </FormGroup>
                                 <FormGroup check>
-                                  <Label check>
-                                    <Input
+                                  <Label check style={{ display: "flex",alignItems:"center"}}>
+                                    <Radio
+                                    style={{marginRight:"20px"}}
                                       className="my-border"
                                       type="radio"
                                       name="type"
@@ -796,9 +804,10 @@ const handleQuestions = (e) =>{
                                     Goal Setting
                                   </Label>
                                 </FormGroup>
-                                <FormGroup check>
-                                  <Label check>
-                                    <Input
+                                <FormGroup check >
+                                  <Label check style={{ display: "flex",alignItems:"center"}}>
+                                    <Radio
+                                    style={{marginRight:"20px"}}
                                       className="my-border"
                                       type="radio"
                                       name="type"
@@ -811,8 +820,9 @@ const handleQuestions = (e) =>{
                                   </Label>
                                 </FormGroup>
                                 <FormGroup check>
-                                  <Label check>
-                                    <Input
+                                  <Label check style={{ display: "flex"}}>
+                                    <Radio
+                                    style={{marginRight:"20px"}}
                                       className="my-border"
                                       type="radio"
                                       name="type"
@@ -825,26 +835,26 @@ const handleQuestions = (e) =>{
                                 </FormGroup>
                               </Col>
                             </Row>
-                          </CardBody>
+                          </Card.Section>
                         </Card>
                         <div id="typeError" class="error-message"></div>
                       </FormGroup>
                       <FormGroup>
                         <Label className="form-label" for="objective">Objective</Label>
-                        <Input className="form-input" type="textarea" name="objective" id="objective" value={objective} onChange={handleObjective} required />
+                        <TextInput className="form-input" type="textarea" name="objective" id="objective" value={objective} onChange={handleObjective} required />
                         <div id="objectiveError" class="error-message"></div>
                       </FormGroup>
                       <FormGroup>
                         <Label className="form-label" for="questions">Questions</Label>
-                        <Input className="form-input" type="textarea" name="questions" id="questions" value={questions} onChange={handleQuestions} required />
+                        <TextInput className="form-input" type="textarea" name="questions" id="questions" value={questions} onChange={handleQuestions} required />
                         <div id="questionError" class="error-message"></div>
                       </FormGroup>
                     </Col>
                   </Row>
-                </CardBody>
+                </Card.Section>
               </Card>
-              <Card className="my-card">
-                <CardBody className="my-card-body">
+              <Card className="my-card" style={{padding:"30px", margin:"5px"}} >
+                <Card.Section className="my-card-body">
                   <Row>
                     <FormGroup>
                       <Label className="form-label" for="attendees">Invite People</Label>
@@ -876,36 +886,37 @@ const handleQuestions = (e) =>{
                       </Row>
                     </FormGroup>
                   </Row>
-                </CardBody>
+                </Card.Section>
               </Card>
-              <Card className="my-card">
-                <CardBody className="my-card-body">
+              <Card className="my-card"  style={{padding:"30px", margin:"5px"}}>
+                <Card.Section className="my-card-body">
                   <Row>
                   <Col>
                   <FormGroup>
                     {/* <FormGroup style={{width: "50%", position: "relative", left: "25%"}}> */}
                       <Label className="form-label" for="notes">Meeting Notes*</Label>
-                      <Input className="form-input" type="textarea" name="notes" id="notes" value={notes} onChange={handleNotesChange} />
+                      <TextInput className="form-input" type="textarea" name="notes" id="notes" value={notes} onChange={handleNotesChange} />
                       <div id="noteError" class="error-message"></div>
                       <Col>
-                      <Input className="form-input mt-1" type='file' />
+                      <TextInput className="form-input mt-1" type='file' />
                       </Col>
                     </FormGroup>
                     </Col>
                     <Col>
                     <FormGroup>
                     {/* <FormGroup style={{width: "50%", position: "relative", left: "25%"}}> */}
-                      <Label className="form-label" for="actionSteps">Action steps</Label>
-                      <Input className="form-input" type="textarea" name="actionSteps" id="actionSteps" value={actionSteps} onChange={handleActionSteps} />
-                      <div id="actionError" class="error-message"></div>
+                      <Label className="form-label" for="actionSteps">Action steps*</Label>
+                      <TextInput className="form-input" type="textarea" name="actionSteps" id="actionSteps" value={actionSteps} onChange={handleActionSteps} />
+                    <div id="actionError" class="error-message"></div>
+                      
                     </FormGroup>
                     </Col>
                     
                   </Row>
-                </CardBody>
+                </Card.Section>
               </Card>
-              <Card className="my-card">
-                <CardBody className="my-card-body">
+              <Card className="my-card"  style={{padding:"30px", margin:"5px"}}>
+                <Card.Section className="my-card-body">
                   <Row>
                     <FormGroup>
                       <Label className="form-label" for="tasks">Tasks</Label>
@@ -933,7 +944,7 @@ const handleQuestions = (e) =>{
                           (task) => (
                             <Row className="form-task-row">
                               <FormGroup>
-                                <Input
+                                <TextInput
                                   className="form-input"
                                   type="text"
                                   name="task_name"
@@ -955,7 +966,7 @@ const handleQuestions = (e) =>{
                             <Row className="form-task-row">
                               <FormGroup>
 
-                                <Input
+                                <TextInput
                                   className="form-input"
                                   type="date"
                                   name="end_date"
@@ -966,9 +977,9 @@ const handleQuestions = (e) =>{
                                 {
                                   meetingTasks.indexOf(task) === meetingTasks.length - 1 ?
                                     (
-                                      <FormText>
+                                      <Text>
                                         Due Date
-                                      </FormText>
+                                      </Text>
                                     ) :
                                     (
                                       <div />
@@ -986,7 +997,7 @@ const handleQuestions = (e) =>{
                           (task) => (
                             <Row className="form-task-row">
                               <FormGroup>
-                                <Input
+                                <TextInput
                                   className="form-input"
                                   type="text"
                                   name="employee_name"
@@ -1007,7 +1018,7 @@ const handleQuestions = (e) =>{
                           (task) => (
                             <Row className="form-task-row">
                               <FormGroup>
-                                <Input
+                                <TextInput
                                   className="form-input"
                                   type="text"
                                   name="priority"
@@ -1028,7 +1039,7 @@ const handleQuestions = (e) =>{
                           (task) => (
                             <Row className="form-task-row">
                               <FormGroup>
-                                <Input
+                                <TextInput
                                   className="form-input"
                                   type="text"
                                   name="task_description"
@@ -1051,37 +1062,42 @@ const handleQuestions = (e) =>{
                       </IconButton>
                     </div>
                   </Row>
-                </CardBody>
+                </Card.Section>
               </Card>
             </Form>
-            <Card style={{maxWidth: "70%", position: "relative", left: "15%"}} className="my-card">
-              <CardBody className="my-card-body">
-                <Row style={{width: "50%", position: "relative", left: "25%", textAlign: "center"}}>
+            <Card style={{maxWidth: "90%", position: "relative",padding:"30px",margin:"auto"}} className="my-card">
+              <Card.Section className="my-card-body">
+                <Row style={{width: "70%", position: "relative",  textAlign: "center",margin:"auto"}}>
                   <div>
                     <Card className="outer-card">
-                      <CardBody>
+                      <Card.Section style={{padding:"5px"}}>
                         <Button
+                          variant="light"
                           className="my-button"
-                          color="success"
+                          color="green"
+                          style={{color:"black", margin:"3px"}}
                           type="submit"
                           onClick={handleSubmit}
+                          
                         >
                           Save
                         </Button>{" "}
                         <Button
+                        variant="light"
                           className="my-button"
-                          color="success"
+                          color="green"
+                          style={{color:"black", margin:"3px"}}
                           onClick={handleClearForm}
                         >
                           Clear
                         </Button>
-                      </CardBody>
+                      </Card.Section>
                     </Card>
                   </div>
                 </Row>
-              </CardBody>
+              </Card.Section>
             </Card>
-          </CardBody>
+          </Card.Section>
         </Card>
       </Container>
     </div>

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  Container,
   Table,
-  Button,
   Modal,
   ModalHeader,
   ModalBody,
@@ -11,6 +9,9 @@ import {
   Label,
   Input
 } from 'reactstrap';
+
+import { Container, Card, Title,NavLink, Text ,Button, TextInput } from "@mantine/core";
+
 import { person_view, add_person, delete_person, getCookie } from '../../../src/api';
 import AppSidebar from '../../components/appSidebar';
 
@@ -123,9 +124,9 @@ const PersonPage = () => {
   return (
     <div style={{ display: "flex" }}>
       <AppSidebar />
-      <Container>
+      <Container style={{paddingTop:"20px", width:"100%"}}>
         <h1>Persons</h1>
-        <Button color="primary" onClick={toggleModal}>Add Person</Button>
+        <Button  variant="filled" onClick={toggleModal}>Add Person</Button>
         <Table>
           <thead>
             <tr>
@@ -140,7 +141,7 @@ const PersonPage = () => {
                 <td>{person.name}</td>
                 <td>{person.email}</td>
                 <td>
-                  <Button color="danger" onClick={() => toggleDeleteModal(person.id)}>Delete</Button>
+                  <Button variant="filled" color="rgba(214, 66, 66, 1)"   onClick={() => toggleDeleteModal(person.id)}>Delete</Button>
                 </td>
               </tr>
             ))}
@@ -162,8 +163,8 @@ const PersonPage = () => {
             </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={handleAddPerson}>Add</Button>{' '}
-            <Button color="secondary" onClick={toggleModal}>Cancel</Button>
+            <Button variant="filled" color="rgba(214, 66, 66, 1)" onClick={handleAddPerson}>Add</Button>{' '}
+            <Button variant="filled" color="rgba(90, 211, 250, 1)" onClick={toggleModal}>Cancel</Button>
           </ModalFooter>
         </Modal>
 
@@ -173,8 +174,8 @@ const PersonPage = () => {
             Are you sure you want to delete this person?
           </ModalBody>
           <ModalFooter>
-            <Button color="danger" onClick={handleDeletePerson}>Delete</Button>{' '}
-            <Button color="secondary" onClick={toggleDeleteModal}>Cancel</Button>
+            <Button  variant="filled" color="rgba(214, 66, 66, 1)"  onClick={handleDeletePerson}>Delete</Button>{' '}
+            <Button  variant="outline" color="rgba(214, 66, 66, 1)" onClick={toggleDeleteModal}>Cancel</Button>
           </ModalFooter>
         </Modal>
       </Container>

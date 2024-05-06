@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { get_church_data, update_church_data, delete_church_data } from '../../../src/api';
 import AppSidebar from "../../components/appSidebar";
-
+import { Container, Card, Title,NavLink, Text ,Button, TextInput } from "@mantine/core";
 const ChurchList = () => {
     const [churches, setChurches] = useState([]);
     const [editIndex, setEditIndex] = useState(-1);
@@ -98,7 +98,7 @@ const ChurchList = () => {
     return (
         <div style={{ display: 'flex' }}>
             <AppSidebar style={{ width: '20%' }} />
-            <div className="church-list" style={{ width: '80%', marginLeft: '15%' }}>
+            <Container className="church-list" style={{ width: '80%', marginLeft: '15%', marginTop:"30px" }}>
                 <h2>Church List</h2>
                 <table className="table" style={{ width: '100%' }}>
                     <thead>
@@ -119,16 +119,16 @@ const ChurchList = () => {
                                 <td>{editIndex === index ? <input type="text" value={editedChurch.ph_no} onChange={e => handleInputChange(e, 'ph_no')} /> : church.ph_no}</td>
                                 <td>{editIndex === index ? <input type="text" value={editedChurch.email} onChange={e => handleInputChange(e, 'email')} /> : church.email}</td>
                                 <td>{editIndex === index ? <input type="text" value={editedChurch.website} onChange={e => handleInputChange(e, 'website')} /> : church.website}</td>
-                                <td>
+                                <td >
                                     {editIndex === index ? (
-                                        <div>
-                                            <button style={{ marginRight: '5px', backgroundColor: 'green', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px' }} onClick={handleSave}>Update</button>
-                                            <button style={{ backgroundColor: 'red', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px' }} onClick={handleCancel}>Cancel</button>
+                                        <div style={{display:"flex"}}> 
+                                            <Button  variant="filled" color="rgba(90, 211, 250, 1)" style={{ marginRight: '5px',color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px' }} onClick={handleSave}>Update</Button>
+                                            <Button variant="filled" color="rgba(214, 66, 66, 1)" style={{    padding: '5px 10px', borderRadius: '5px' }} onClick={handleCancel}>Cancel</Button>
                                         </div>
                                     ) : (
-                                        <div>
-                                            <button style={{ backgroundColor: 'blue', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px' }} onClick={() => handleEdit(index, church)}>Edit</button>
-                                            <button style={{ backgroundColor: 'red', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px', marginLeft: '5px' }} onClick={() => handleDelete(church.id)}>Delete</button>
+                                        <div style={{display:"flex"}}>
+                                            <Button  variant="filled" color="rgba(90, 211, 250, 1)" style={{ color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px' }} onClick={() => handleEdit(index, church)}>Edit</Button>
+                                            <Button variant="filled" color="rgba(214, 66, 66, 1)" style={{ color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px', marginLeft: '5px' }} onClick={() => handleDelete(church.id)}>Delete</Button>
                                         </div>
                                     )}
                                     {Object.keys(errors).map(key => (
@@ -139,7 +139,7 @@ const ChurchList = () => {
                         ))}
                     </tbody>
                 </table>
-            </div>
+            </Container>
         </div>
     );
 };

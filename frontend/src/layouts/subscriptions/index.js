@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
-  Container,
+
   Table,
-  Button,
   Modal,
   ModalHeader,
   ModalBody,
@@ -13,6 +12,7 @@ import {
   Form,
   FormFeedback
 } from 'reactstrap';
+import { Container, Card, Title,NavLink, Text ,Button, TextInput } from "@mantine/core";
 import { get_subscriptions, add_subscription, update_subscription, delete_subscription } from '../../../src/api';
 import AppSidebar from '../../components/appSidebar';
 
@@ -137,9 +137,9 @@ const SubscriptionsPage = () => {
   return (
     <div style={{ display: "flex" }}>
       <AppSidebar />
-      <Container>
+      <Container style={{width:"100%",marginTop:"30px"}}>
         <h1>Subscriptions</h1>
-        <Button color="primary" onClick={() => toggleModal()}>Add Subscription</Button>
+        <Button variant="filled" onClick={() => toggleModal()}>Add Subscription</Button>
         <Table>
           <thead>
             <tr>
@@ -156,8 +156,8 @@ const SubscriptionsPage = () => {
                 <td>${subscription.price}</td>
                 <td>{subscription.count}</td>
                 <td>
-                  <Button color="info" onClick={() => toggleModal(subscription)}>Edit</Button>
-                  <Button color="danger" onClick={() => handleDeleteSubscription(subscription.id)}>Delete</Button>
+                  <Button variant="filled" color="rgba(90, 211, 250, 1)" onClick={() => toggleModal(subscription)}>Edit</Button>
+                  <Button  style={{marginLeft:"5px"}} variant="filled" color="rgba(214, 66, 66, 1)" onClick={() => handleDeleteSubscription(subscription.id)}>Delete</Button>
                 </td>
               </tr>
             ))}
@@ -183,8 +183,8 @@ const SubscriptionsPage = () => {
                 <Input type="number" name="count" id="count" value={formData.count} onChange={handleInputChange} invalid={!!validationErrors.count} />
                 {validationErrors.count && <FormFeedback>{validationErrors.count}</FormFeedback>}
               </FormGroup>
-              <Button color="primary" type="submit">{isEditMode ? 'Update' : 'Add'}</Button>{' '}
-              <Button color="secondary" onClick={() => toggleModal()}>Cancel</Button>
+              <Button variant="filled" color="rgba(90, 211, 250, 1)" type="submit">{isEditMode ? 'Update' : 'Add'}</Button>{' '}
+              <Button variant="filled" color="rgba(214, 66, 66, 1)" onClick={() => toggleModal()}>Cancel</Button>
             </Form>
           </ModalBody>
         </Modal>
