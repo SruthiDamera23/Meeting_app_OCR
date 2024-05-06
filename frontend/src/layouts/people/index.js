@@ -84,7 +84,7 @@ const PersonPage = () => {
       <AppSidebar />
       <Container style={{paddingTop:"20px", width:"100%"}}>
         <h1>Persons</h1>
-        <Button color="primary" onClick={toggleModal}>Add Person</Button>
+        <Button  variant="filled" onClick={toggleModal}>Add Person</Button>
         <Table>
           <thead>
             <tr>

@@ -183,8 +183,8 @@ const SubscriptionsPage = () => {
                 <Input type="number" name="count" id="count" value={formData.count} onChange={handleInputChange} invalid={!!validationErrors.count} />
                 {validationErrors.count && <FormFeedback>{validationErrors.count}</FormFeedback>}
               </FormGroup>
-              <Button color="primary" type="submit">{isEditMode ? 'Update' : 'Add'}</Button>{' '}
-              <Button color="secondary" onClick={() => toggleModal()}>Cancel</Button>
+              <Button variant="filled" color="rgba(90, 211, 250, 1)" type="submit">{isEditMode ? 'Update' : 'Add'}</Button>{' '}
+              <Button variant="filled" color="rgba(214, 66, 66, 1)" onClick={() => toggleModal()}>Cancel</Button>
             </Form>
           </ModalBody>
         </Modal>

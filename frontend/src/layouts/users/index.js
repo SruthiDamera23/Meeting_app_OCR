@@ -168,7 +168,7 @@ const Users = () => {
             <div style={{ textAlign: 'center' }}>
               <h1 style={{ textAlign: 'left', display: 'inline-block' }}>Existing Users</h1>
               {!isSuperUser() && (
-                <Button onClick={toggleAddModal} color="success" style={{ marginLeft: '20px' }}>Add New User</Button>
+                <Button variant="filled" onClick={toggleAddModal}  style={{ marginLeft: '20px' }}>Add New User</Button>
               )}
             </div>
             {isLoading ? (
@@ -214,7 +214,7 @@ const Users = () => {
             {approvalStatus === 'added' ? 'New user has been added.' : 'User has been deleted.'}
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={toggleModal}>OK</Button>{' '}
+            <Button variant="filled" color="primary" onClick={toggleModal}>OK</Button>{' '}
           </ModalFooter>
         </Modal>
 
@@ -251,8 +251,8 @@ const Users = () => {
             </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={handleAddUser}>Add User</Button>{' '}
-            <Button color="secondary" onClick={toggleAddModal}>Cancel</Button>
+            <Button variant="filled" color="rgba(90, 211, 250, 1)" onClick={handleAddUser}>Add User</Button>{' '}
+            <Button variant="filled" color="rgba(214, 66, 66, 1)" onClick={toggleAddModal}>Cancel</Button>
           </ModalFooter>
         </Modal>
 
@@ -284,8 +284,8 @@ const Users = () => {
             </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={handleSaveEdit}>Save</Button>{' '}
-            <Button color="secondary" onClick={toggleEditModal}>Cancel</Button>
+            <Button variant="filled" color="rgba(90, 211, 250, 1)" onClick={handleSaveEdit}>Save</Button>{' '}
+            <Button variant="filled" color="rgba(214, 66, 66, 1)" onClick={toggleEditModal}>Cancel</Button>
           </ModalFooter>
         </Modal>
       </Container>

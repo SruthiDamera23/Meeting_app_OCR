@@ -144,7 +144,7 @@ const Subscribers = () => {
     <div style={{ display: "flex" }}>
       <AppSidebar />
 
-      <Container className="my-4">
+      <Container className="my-4" style={{ width: '100%', marginLeft: '15%', marginTop:"30px" }}> 
         <Card className="my-card schedule-card">
         <h1 style={{ textAlign: 'center', display: 'inline-block', marginBottom:"20px", marginTop:"10px" }}>Subscribers</h1>
           <div className="full-screen-calendar">

@@ -112,7 +112,7 @@ const ChurchList = () => {
                                     )}
                                 </td>
                             </tr>
-                        ))}2
+                        ))}
                     </tbody>
                 </table>
             </Container>

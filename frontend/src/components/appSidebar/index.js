@@ -20,7 +20,7 @@ import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import ChurchIcon from '@mui/icons-material/Church';
 import GroupIcon from '@mui/icons-material/Group';
 import { useNavigate, Link } from "react-router-dom";
-import { logout, tasks_view, getCookie, updateCookie, isSuperUser, isAdmin } from "../../api";
+import { logout, tasks_view, getCookie, updateCookie, isSuperUser, isAdmin , isLeader} from "../../api";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Edit from "@mui/icons-material/Edit";
 import { People } from "@mui/icons-material";
@@ -120,32 +120,15 @@ const AppSidebar = () => {
                     Subscribers
                 </MenuItem>}
 
-                {isSuperUser() &&
-                    <SubMenu
-                        className="sidebar-menu-item"
-                        label={
-                            <div>
-                                <ChurchIcon className="sidebar-menu-item-icon" />
-                                <br />
-                                Church
-                            </div>
-                        }
-                    >
-                        {<MenuItem className="sidebar-menu-item" component={<Link to="/add-church" />}>
-                            <AddCircleOutlineOutlinedIcon />
+                
+
+                        { isSuperUser() &&<MenuItem className="sidebar-menu-item" component={<Link to="/edit-church" />}>
+                        <ChurchIcon className="sidebar-menu-item-icon"  />
                             <br />
-                            <div style={{ overflow: "visible" }}>Add</div>
+                            <div style={{ overflow: "visible" }}> Edit Church</div>
                         </MenuItem>}
 
-                        <MenuItem className="sidebar-menu-item" component={<Link to="/edit-church" />}>
-                            <Edit />
-                            <br />
-                            Edit
-                        </MenuItem>
-                    </SubMenu>
-                }
-
-                        {<MenuItem className="sidebar-menu-item" component={<Link to="/people" />}>
+                        {(isAdmin() || isLeader())&&<MenuItem className="sidebar-menu-item" component={<Link to="/people" />}>
                             <EmojiPeopleIcon/>
                             <br />
                             <div style={{ overflow: "visible" }}>People</div>

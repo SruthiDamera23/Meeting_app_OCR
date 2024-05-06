@@ -85,3 +85,7 @@ export const isSuperUser = () => {
 export const isAdmin = () => {
     return getCookie('priv') == 2 ;
 }
+
+export const isLeader = () => {
+    return getCookie('priv') == 3 ;
+}
