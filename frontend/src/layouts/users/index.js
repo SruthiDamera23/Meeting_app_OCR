@@ -7,10 +7,11 @@ import {
   FormGroup,
   Label,
   Input,
-  FormFeedback
+  FormFeedback,
+  Container
 } from 'reactstrap';
 
-import { Container, Card, Title,NavLink, Text ,Button, TextInput } from "@mantine/core";
+import {  Card, Title,NavLink, Text ,Button, TextInput } from "@mantine/core";
 import { get_users, delete_user, signup, update_user, get_church_data, getCookie, isSuperUser } from '../../../src/api';
 import AppSidebar from "../../components/appSidebar";
 
@@ -26,7 +27,7 @@ const Users = () => {
     last_name: '',
     email: '',
     user_type: '',
-    church: getCookie('church')
+    church: getCookie('church'),
   });
   const [newUser, setNewUser] = useState({
     first_name: '',
@@ -76,30 +77,37 @@ const Users = () => {
     if (!user.first_name) {
       setFirstNameError('First name is required');
       isValid = false;
+      console.log("first name fail");
     } else {
       setFirstNameError('');
     }
     if (!user.last_name) {
       setLastNameError('Last name is required');
       isValid = false;
+      console.log("Last name fail");
     } else {
       setLastNameError('');
     }
     if (!user.email) {
       setEmailError('Email is required');
       isValid = false;
+      console.log("email fail");
     } else if (!/^\S+@\S+\.\S+$/.test(user.email)) {
       setEmailError('Invalid email format');
+      console.log("email fail" );
       isValid = false;
     } else {
       setEmailError('');
     }
+    if(user.password!==undefined){
     if (!user.password) {
       setPasswordError('Password is required');
       isValid = false;
+      console.log("Password fail" + user.password);
     } else {
       setPasswordError('');
     }
+  }
     return isValid;
   };
 
@@ -161,8 +169,9 @@ const Users = () => {
 
   return (
     <div style={{ display: "flex" }}>
+      
       <AppSidebar />
-      <Container className="my-4" style={{width:"100%"}}>
+      <Container className="my-4" style={{width:"100%", marginLeft:"12%"}}>
         <Card className="my-card schedule-card">
           <div className="full-screen-calendar">
             <div style={{ textAlign: 'center' }}>

@@ -29,8 +29,11 @@ import { login, getCookie } from "../../api";
 const Dashboard = () => {
   const navigate = useNavigate();
   const [priv, setPriv] = useState(null); // State to store priv use
-  const [tasks, getTasks] = useState("");
-  const [meeting, getMeeting] = useState("");
+  const [tasks, setTasks] = useState("");
+  const [AllTasks, setAllTasks] = useState("");
+  const [allMeetings, setAllMeetings] = useState();
+  const [meeting, setMeetings] = useState("");
+
   const [activeTasks, setActiveTasks] = useState("");
   const [weekTasks, setWeekTasks] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -45,13 +48,120 @@ const Dashboard = () => {
     // Get priv user from cookies or wherever you're storing it
     const privUser = getCookie("priv");
     setPriv(privUser);
-    const viewAllTasks = async () => {
-      console.log("Yeah its here");
+    viewAllTasks();
+    viewAllMeeting(); 
+
+    const timeout = setTimeout(() => {
+      viewAllMeeting();
+      viewAllTasks();
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+
+  const viewAllMeeting = async () => {
+    const response =
+      await meeting_view()
+      .catch((error) => {
+        console.log(error)
+      });
+      setAllMeetings(response.data);
+    const privilege=getCookie("priv");
+    if(privilege ==1){
+      let wantedMeetingData=response.data;
+    setMeetings(wantedMeetingData)
+      
+  // }
+    } else if(privilege ==2){
+      const church =getCookie("church");
+      let wantedMeetingData=[];
+      let tempMeetingsData=response.data;
+      for (let i = 0; i < tempMeetingsData.length; i++) {
+        if (tempMeetingsData[i].church+"" === church) {
+            wantedMeetingData.push(tempMeetingsData[i]);
+        }
+    } 
+    setMeetings(wantedMeetingData)
+    }else if(privilege ==3){
+      const church =getCookie("church");
+      const id =getCookie("user-id");
+      let wantedMeetingData=[];
+      let tempMeetingsData=response.data;
+      for (let i = 0; i < tempMeetingsData.length; i++) {
+        if (tempMeetingsData[i].created_by+"" === id+"") {
+            wantedMeetingData.push(tempMeetingsData[i]);
+        }
+    } 
+    setMeetings(wantedMeetingData)
+    }
+
+    setIsLoading2(false);
+  }
+
+  const viewAllTasks = async () => {
+    const response =
       await tasks_view()
-        .then((req) => {
-          const task = req.data.results;
-          getTasks(task);
-          setActiveTasks(task.length);
+      .catch((error) => {
+        console.log(error)
+      });
+      
+      console.log(response.data.results);
+      setAllTasks(response.data.results);
+      
+    const privilege=getCookie("priv");
+    if(privilege ==1){
+     
+    
+      let wantedTaskData=response.data.results; 
+    setTasks(wantedTaskData)
+    setActiveTasks(wantedTaskData.length);
+      
+  // }
+    } else if(privilege ==2){
+      const church =getCookie("church");
+      let wantedTaskData=[];
+      let tempTasksData=response.data.results;
+      for (let i = 0; i < tempTasksData.length; i++) {
+        if (tempTasksData[i].church+"" === church) {
+          wantedTaskData.push(tempTasksData[i]);
+        }
+    } 
+    setTasks(wantedTaskData)
+    setActiveTasks(wantedTaskData.length);
+    }else if(privilege ==3){
+      const church =getCookie("church");
+      const id =getCookie("user-id");
+      let wantedTaskData=[];
+      let tempTasksData=response.data.results;
+      for (let i = 0; i < tempTasksData.length; i++) {
+        if (tempTasksData[i].created_by+"" === id+"") {
+          wantedTaskData.push(tempTasksData[i]);
+        }
+    } 
+    setTasks(wantedTaskData)
+    setActiveTasks(wantedTaskData.length);
+    }
+
+    
+          
+          setIsLoading(false);
+          for (var i = 0; i < tasks.length; i++) {
+            const today = new Date();
+            const date = today.getDate();
+            const taskDate = Number(tasks[i].end_date.substring(8));
+            const dateDiff = taskDate - date;
+            if (dateDiff >= 0 && dateDiff <= 7) {
+              setWeekTasks(weekTasks + 1);
+            }
+          }
+          for (var i = 0; i < tasks.length; i++) {
+            console.log(tasks[i].end_date);
+          }
+          console.log(tasks);
+          console.log(tasks.length);
+          setIsLoading(false);
+
           /*
            * This loop is hacky logic for calculating the number
            * of "Tasks due this week". In reality, it calculates
@@ -62,50 +172,21 @@ const Dashboard = () => {
            * two evils, to replace a hard-coded dummy value which
            * had been being rendered in its place.
            */
-          for (var i = 0; i < task.length; i++) {
+          for (var i = 0; i < tasks.length; i++) {
             const today = new Date();
             const date = today.getDate();
-            const taskDate = Number(task[i].end_date.substring(8));
+            const taskDate = Number(tasks[i].end_date.substring(8));
             const dateDiff = taskDate - date;
             if (dateDiff >= 0 && dateDiff <= 7) {
               setWeekTasks(weekTasks + 1);
             }
           }
-          for (var i = 0; i < task.length; i++) {
-            console.log(task[i].end_date);
+          for (var i = 0; i < tasks.length; i++) {
+            console.log(tasks[i].end_date);
           }
           console.log(tasks);
           console.log(tasks.length);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-    const viewAllMeeting = async () => {
-      console.log("Yeah its here");
-      await meeting_view()
-        .then((req) => {
-          const meeting = req.data.results;
-          getMeeting(meeting);
-          // setActiveTasks(meeting.length);
-          console.log(tasks);
-          console.log(tasks.length);
-          setIsLoading2(false);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-
-    const timeout = setTimeout(() => {
-      viewAllMeeting();
-      viewAllTasks();
-    }, 1000);
-
-    return () => clearTimeout(timeout);
-  }, []);
-
+  }
   var completed = Array.isArray(tasks) ? tasks.filter(function (el) {
     return el.is_completed === true;
   }) : [];

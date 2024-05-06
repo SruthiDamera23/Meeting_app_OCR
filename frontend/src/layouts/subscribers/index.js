@@ -7,9 +7,10 @@ import {
   FormGroup,
   Label,
   Input,
-  FormFeedback
+  FormFeedback,
+  Container
 } from 'reactstrap';
-import { Container, Card, Title,NavLink, Text ,Button, TextInput } from "@mantine/core";
+import {  Card, Title,NavLink, Text ,Button, TextInput } from "@mantine/core";
 import { delete_user, signup, update_user, get_church_data, getCookie, isSuperUser, subscription_view, get_users, edit_church, delete_church } from '../../../src/api';
 import AppSidebar from "../../components/appSidebar";
 
@@ -144,7 +145,7 @@ const Subscribers = () => {
     <div style={{ display: "flex" }}>
       <AppSidebar />
 
-      <Container className="my-4" style={{ width: '100%', marginLeft: '15%', marginTop:"30px" }}> 
+      <Container className="my-4" style={{ width: '100%', marginLeft: '12%', marginTop:"30px" }}> 
         <Card className="my-card schedule-card">
         <h1 style={{ textAlign: 'center', display: 'inline-block', marginBottom:"20px", marginTop:"10px" }}>Subscribers</h1>
           <div className="full-screen-calendar">

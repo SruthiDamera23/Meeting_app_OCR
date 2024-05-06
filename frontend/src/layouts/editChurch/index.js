@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { get_church_data, update_church_data, delete_church_data } from '../../../src/api';
 import AppSidebar from "../../components/appSidebar";
-import { Container, Card, Title,NavLink, Text ,Button, TextInput } from "@mantine/core";
+import {  Card, Title,NavLink, Text ,Button, TextInput } from "@mantine/core";
+import {
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    FormGroup,
+    Label,
+    Input,
+    FormFeedback,
+    Container
+  } from 'reactstrap';
 const ChurchList = () => {
     const [churches, setChurches] = useState([]);
     const [editIndex, setEditIndex] = useState(-1);
@@ -98,8 +109,8 @@ const ChurchList = () => {
     return (
         <div style={{ display: 'flex' }}>
             <AppSidebar style={{ width: '20%' }} />
-            <Container className="church-list" style={{ width: '80%', marginLeft: '15%', marginTop:"30px" }}>
-                <h2>Church List</h2>
+            <Container className="church-list" style={{ width: '80%', marginLeft: '12%', marginTop:"30px" }}>
+                <h2 style={{textAlign:"center"}}>Church List</h2>
                 <table className="table" style={{ width: '100%' }}>
                     <thead>
                         <tr>
