@@ -26,6 +26,8 @@ const PersonPage = () => {
     church: getCookie('church')
   });
   const [deleteId, setDeleteId] = useState(null);
+  const [nameError, setNameError] = useState('');
+  const [emailError, setEmailError] = useState('');
 
   useEffect(() => {
     fetchPersons();
@@ -42,7 +44,11 @@ const PersonPage = () => {
       });
   };
 
-  const toggleModal = () => setModal(!modal);
+  const toggleModal = () => {
+    setModal(!modal);
+    resetForm();
+  };
+
   const toggleDeleteModal = (id = null) => {
     setDeleteId(id);
     setDeleteModal(!deleteModal);
@@ -54,17 +60,43 @@ const PersonPage = () => {
       ...prevState,
       [name]: value
     }));
+    if (name === 'name') {
+      setNameError('');
+    } else if (name === 'email') {
+      setEmailError('');
+    }
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+    if (!formData.name.trim()) {
+      setNameError('Name is required.');
+      isValid = false;
+    }
+    if (!formData.email.trim()) {
+      setEmailError('Email is required.');
+      isValid = false;
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        setEmailError('Please enter a valid email address.');
+        isValid = false;
+      }
+    }
+    return isValid;
   };
 
   const handleAddPerson = () => {
-    add_person(formData)
-      .then(() => {
-        toggleModal();
-        fetchPersons();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (validateForm()) {
+      add_person(formData)
+        .then(() => {
+          toggleModal();
+          fetchPersons();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   const handleDeletePerson = () => {
@@ -77,6 +109,16 @@ const PersonPage = () => {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const resetForm = () => {
+    setFormData({
+      name: '',
+      email: '',
+      church: getCookie('church')
+    });
+    setNameError('');
+    setEmailError('');
   };
 
   return (
@@ -112,10 +154,12 @@ const PersonPage = () => {
             <FormGroup>
               <Label for="name">Name</Label>
               <Input type="text" name="name" id="name" value={formData.name} onChange={handleInputChange} />
+              {nameError && <span style={{ color: 'red' }}>{nameError}</span>}
             </FormGroup>
             <FormGroup>
               <Label for="email">Email</Label>
               <Input type="email" name="email" id="email" value={formData.email} onChange={handleInputChange} />
+              {emailError && <span style={{ color: 'red' }}>{emailError}</span>}
             </FormGroup>
           </ModalBody>
           <ModalFooter>

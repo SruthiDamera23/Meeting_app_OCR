@@ -7,6 +7,7 @@ const ChurchList = () => {
     const [editIndex, setEditIndex] = useState(-1);
     const [editedChurch, setEditedChurch] = useState({});
     const [initialChurchData, setInitialChurchData] = useState({});
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         fetchChurchData();
@@ -29,28 +30,44 @@ const ChurchList = () => {
     };
 
     const handleSave = () => {
-        // Validation checks
-        if (!editedChurch.name || !editedChurch.address || !editedChurch.ph_no) {
-            alert('Name, address, and phone number are mandatory fields.');
-            return;
+        const validationErrors = {};
+        if (!editedChurch.name) {
+            validationErrors.name = 'Name is required.';
         }
-    
-        update_church_data(editedChurch.id, editedChurch)
-            .then(response => {
-                console.log('Church data updated successfully:', response);
-                setEditIndex(-1);
-                setEditedChurch({});
-                alert('Church data updated successfully');
-                fetchChurchData();
-            })
-            .catch(error => {
-                console.error('Error updating church data:', error);
-            });
+        if (!editedChurch.address) {
+            validationErrors.address = 'Address is required.';
+        }
+        if (editedChurch.ph_no && !/^\d{10}$/.test(editedChurch.ph_no)) {
+            validationErrors.ph_no = 'Phone number must be 10 digits.';
+        }
+        if (editedChurch.email && !/^\S+@\S+\.\S+$/.test(editedChurch.email)) {
+            validationErrors.email = 'Please enter a valid email address.';
+        }
+        if (editedChurch.website && !/^https?:\/\/\S+$/.test(editedChurch.website)) {
+            validationErrors.website = 'Please enter a valid website URL.';
+        }
+
+        if (Object.keys(validationErrors).length === 0) {
+            update_church_data(editedChurch.id, editedChurch)
+                .then(response => {
+                    console.log('Church data updated successfully:', response);
+                    setEditIndex(-1);
+                    setEditedChurch({});
+                    setErrors({});
+                    fetchChurchData();
+                })
+                .catch(error => {
+                    console.error('Error updating church data:', error);
+                });
+        } else {
+            setErrors(validationErrors);
+        }
     };
 
     const handleCancel = () => {
         setEditIndex(-1);
         setEditedChurch({});
+        setErrors({});
     };
 
     const handleDelete = (churchId) => {
@@ -71,6 +88,10 @@ const ChurchList = () => {
         setEditedChurch(prevState => ({
             ...prevState,
             [key]: value
+        }));
+        setErrors(prevState => ({
+            ...prevState,
+            [key]: '' // Clear error message when input changes
         }));
     };
 
@@ -110,6 +131,9 @@ const ChurchList = () => {
                                             <Button variant="filled" color="rgba(214, 66, 66, 1)" style={{ color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px', marginLeft: '5px' }} onClick={() => handleDelete(church.id)}>Delete</Button>
                                         </div>
                                     )}
+                                    {Object.keys(errors).map(key => (
+                                        <div key={key} style={{ color: 'red', fontSize: '12px' }}>{errors[key]}</div>
+                                    ))}
                                 </td>
                             </tr>
                         ))}
