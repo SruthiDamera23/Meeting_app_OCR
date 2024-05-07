@@ -305,18 +305,17 @@ import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
-import { meeting_view } from '../../../api';
+import { meeting_view, getCookie } from '../../../api';
 
 const DateAndTodoList = () => {
   const [meetings, setMeetings] = useState([]);
+  const [allMeetings, setAllMeetings] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await meeting_view();
-        setMeetings(response.data);
-        setIsLoading(false);
+        viewAllMeeting();
       } catch (error) {
         console.error('Error fetching data:', error);
         setIsLoading(false);
@@ -325,6 +324,46 @@ const DateAndTodoList = () => {
 
     fetchData();
   }, []);
+
+
+  const viewAllMeeting = async () => {
+    const response =
+      await meeting_view()
+      .catch((error) => {
+        console.log(error)
+      });
+      setAllMeetings(response.data);
+    const privilege=getCookie("priv");
+    if(privilege ==1){
+      let wantedMeetingData=response.data;
+    setMeetings(wantedMeetingData)
+      
+
+    } else if(privilege ==2){
+      const church =getCookie("church");
+      let wantedMeetingData=[];
+      let tempMeetingsData=response.data;
+      for (let i = 0; i < tempMeetingsData.length; i++) {
+        if (tempMeetingsData[i].church+"" === church) {
+            wantedMeetingData.push(tempMeetingsData[i]);
+        }
+    } 
+    setMeetings(wantedMeetingData)
+    }else if(privilege ==3){
+      const church =getCookie("church");
+      const id =getCookie("user-id");
+      let wantedMeetingData=[];
+      let tempMeetingsData=response.data;
+      for (let i = 0; i < tempMeetingsData.length; i++) {
+        if (tempMeetingsData[i].created_by+"" === id+"") {
+            wantedMeetingData.push(tempMeetingsData[i]);
+        }
+    } 
+    setMeetings(wantedMeetingData)
+    }
+
+    setIsLoading(false);
+  }
 
   const localizer = momentLocalizer(moment);
 

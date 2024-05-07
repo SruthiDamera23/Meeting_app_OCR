@@ -23,6 +23,7 @@ import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import IconButton from "@mui/material/IconButton";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import CircularProgress from "@mui/material/IconButton";
 import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 import ExposureOutlinedIcon from "@mui/icons-material/ExposureOutlined";
 import {
@@ -69,6 +70,7 @@ const Meeting = (props) => {
   const [notes, setNotes] = useState("");
   const [actionSteps,setActionSteps] = useState("");
   const [meetingTasks, setMeetingTasks] = useState([]);
+  const [isLoading,setIsLoading]=useState(false);
   // imageSrc contains image data to be processed and sent
   // with meeting_ocr request.
   const [imageSrc, setImageSrc] = useState("");
@@ -309,6 +311,7 @@ const handleQuestions = (e) =>{
       meeting_tasks: []
     };
 
+    
     const submitMeeting = () => {
       
       let updatedMeeting=meeting;
@@ -332,6 +335,7 @@ const handleQuestions = (e) =>{
           })
       }
     }
+    
 
     let counter = meetingTasks.length;
 
@@ -345,7 +349,14 @@ const handleQuestions = (e) =>{
       submitMeeting();
     }
 
+    
     for (const meetingTask of meetingTasks) {
+      
+      let tempTask=meetingTask;
+      tempTask["created_by"]=getCookie("user-id");
+      tempTask["church"]=getCookie("church");
+      tempTask["meeting_id"]=null;
+      console.log(tempTask)
       tasks_create(meetingTask)
         .then((res) => {
           meeting.meeting_tasks.push(res.data.task_id);
@@ -491,15 +502,13 @@ const handleQuestions = (e) =>{
    * OCR api. Currently logs response text in console.
    */
   const handleOCRRequest = () => {
+    console.log("came to handleOCR");
     
     const imgElem = document.getElementById("img-elem")
     const croppedImageCanvas = document.createElement("canvas");
     croppedImageCanvas.width = 0.01 * crop.width * imgElem.naturalWidth;
     croppedImageCanvas.height = 0.01 * crop.height * imgElem.naturalHeight;
     const croppedImageContext = croppedImageCanvas.getContext("2d");
-
-
-
     croppedImageContext.drawImage(
       imgElem,
       0.01 * crop.x * imgElem.naturalWidth,
@@ -522,8 +531,9 @@ const handleQuestions = (e) =>{
     );
 
     const reader = new FileReader();
+    setIsLoading(true);
     reader.onload = async () => {
-      const response = await meeting_ocr({image_binary : new Uint8Array(reader.result)})
+      const response = await meeting_ocr({image_binary : new Uint8Array(reader.result)}).then(setIsLoading(false) )
         .catch((error) => {
           console.log(error);
         });
@@ -587,6 +597,7 @@ const handleQuestions = (e) =>{
     
     croppedImage.then(res => reader.readAsArrayBuffer(res));
     toggleScanState();
+    setIsLoading(false);
   }
 
 
@@ -626,6 +637,7 @@ const handleQuestions = (e) =>{
                         <Card className="outer-card">
                           <Card.Section>
                           <div style={{ marginBottom: '10px' ,padding:"10px"}}>
+                          {isLoading &&<CircularProgress className="circular-progress" />}
                             <Button
                               variant="light"
                               color="green"

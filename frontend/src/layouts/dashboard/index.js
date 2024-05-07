@@ -48,8 +48,7 @@ const Dashboard = () => {
     // Get priv user from cookies or wherever you're storing it
     const privUser = getCookie("priv");
     setPriv(privUser);
-    viewAllTasks();
-    viewAllMeeting(); 
+    
 
     const timeout = setTimeout(() => {
       viewAllMeeting();
@@ -72,7 +71,7 @@ const Dashboard = () => {
       let wantedMeetingData=response.data;
     setMeetings(wantedMeetingData)
       
-  // }
+
     } else if(privilege ==2){
       const church =getCookie("church");
       let wantedMeetingData=[];
@@ -117,7 +116,7 @@ const Dashboard = () => {
     setTasks(wantedTaskData)
     setActiveTasks(wantedTaskData.length);
       
-  // }
+  
     } else if(privilege ==2){
       const church =getCookie("church");
       let wantedTaskData=[];

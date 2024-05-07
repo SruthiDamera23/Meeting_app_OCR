@@ -29,7 +29,7 @@ const AppSidebar = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-
+        
         console.log(document.cookie);
         if (getCookie("user") == "" && getCookie("priv") == "") {
             navigate('/');

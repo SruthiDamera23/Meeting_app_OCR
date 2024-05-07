@@ -139,13 +139,13 @@ const MeetingCard = (props) => {
       />
       <div>
         <div ref={anchorRef} />
-        <div style={{height: "23vh"}}>
+        <div style={{minHeight: "32vh"}}>
           <Card className="outer-card meeting-card card-body">
-            <Card.Section style={{height: "7.5vh",  overflow: "auto"}}>
-              <Title style={{overflow:"auto"}}>
-                <Row style={{overflow:"auto"}}>
+            <Card.Section style={{  overflow: "auto"}}>
+              <Title>
+                <Row >
                   <Col>
-                    <Text style={{padding:"20px"}}>
+                    <Text style={{padding:"20px",margin:"5px"}}>
                       <small>
                         {formatDate()}
                         <br />
@@ -161,7 +161,7 @@ const MeetingCard = (props) => {
                 </Row>
               </Title>
             </Card.Section>
-            <Card.Section className="my-card-body" style={{height: "15vh",  overflow: "auto"}}>
+            <Card.Section className="my-card-body" style={{  overflow: "auto"}}>
               <div>
                 <Popper
                   open={isMeetingMenuOpen}
