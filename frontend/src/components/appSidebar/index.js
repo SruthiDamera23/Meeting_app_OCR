@@ -139,7 +139,7 @@ const AppSidebar = () => {
                             <div style={{ overflow: "visible" }}>People</div>
                         </MenuItem>}
 
-                        {(isSuperUser() || isAdmin()) && <MenuItem className="sidebar-menu-item" component={<Link to="/subscriptions" />}>
+                        {(isSuperUser()) && <MenuItem className="sidebar-menu-item" component={<Link to="/subscriptions" />}>
                             <AttachMoneyIcon/>
                             <br />
                             <div style={{ overflow: "visible" }}>Subscriptions</div>
