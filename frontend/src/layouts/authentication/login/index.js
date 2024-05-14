@@ -21,12 +21,17 @@ import {
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { FaUserAlt, FaLock } from "react-icons/fa";
-import { login, getCookie } from "../../../api";
+import { login, getCookie, updateCookie as setcookie } from "../../../api";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function Login(props) {
 
   useEffect(()=>{
+
+    if(getCookie("user")==null && getCookie("priv")==null) {
+      setcookie("user","");
+      setcookie("priv","");
+    }
     
     console.log(document.cookie);
     if(getCookie("user")!="" && getCookie("priv")!="") {
