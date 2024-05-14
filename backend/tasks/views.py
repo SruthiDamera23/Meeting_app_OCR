@@ -34,7 +34,7 @@ class EditTasks:
     @api_view(['PUT', 'DELETE'])
     def edit_or_delete_task(request, pk):
         try:
-            task = Task.objects.get(task_id=pk)
+            task = Task.objects.get(task_id=pk,deleted=False)
         except Task.DoesNotExist:
             return HttpResponse({'message': 'Task not found'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -47,5 +47,6 @@ class EditTasks:
             return HttpResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         elif request.method == 'DELETE':  # Handle DELETE request for deletion
-            task.delete()  # Delete the task
+            task.deleted=True
+            task.save()  # Delete the task
             return HttpResponse({'message': 'Task deleted.'}, status=status.HTTP_204_NO_CONTENT)  # Use 204 status for successful deletion

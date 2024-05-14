@@ -13,7 +13,7 @@ by adding a new church to the database.
 @api_view(['GET', 'POST', 'PUT'])
 def church(request):
     if request.method == 'GET':
-        queryset = Church.objects.all()
+        queryset = Church.objects.filter(deleted=False)
         serialized_queryset = [ChurchSerializer(church).data for church in queryset if not church.deleted]
         return Response(serialized_queryset, status=status.HTTP_200_OK)
     elif request.method == 'POST':

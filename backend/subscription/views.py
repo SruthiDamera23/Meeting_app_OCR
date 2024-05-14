@@ -9,7 +9,7 @@ from .serializers import SubscriptionSerializer
 def subscription(request, sid=None):
     if request.method == 'GET':
         # Handle GET request for listing subscriptions
-        queryset = Subscription.objects.all()
+        queryset = Subscription.objects.filter(deleted=False)
         serialized_queryset = SubscriptionSerializer(queryset, many=True).data
         return Response(serialized_queryset, status=status.HTTP_200_OK)
     elif request.method == 'POST':
@@ -34,10 +34,11 @@ def subscription(request, sid=None):
         # Handle DELETE request for deleting a subscription
         if sid is not None:
             try:
-                subscription = Subscription.objects.get(pk=sid)
+                subscription = Subscription.objects.get(pk=sid,deleted=False)
             except Subscription.DoesNotExist:
                 return Response({'message': 'Subscription not found'}, status=status.HTTP_404_NOT_FOUND)
-            subscription.delete()
+            subscription.deleted=True
+            subscription.save()
             return Response({'message': 'Subscription deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
         else:
             return Response({'error': 'Subscription ID is required for deletion.'}, status=status.HTTP_400_BAD_REQUEST)

@@ -71,9 +71,9 @@ def signup(request):
         data['church']=None
     serializer = UserSerializer(data=data)
     cid = data['church']
-    church = Church.objects.get(id=cid)
+    church = Church.objects.get(id=cid,deleted=False)
     subscription_id = church.subscription.id
-    church_user_count = User.objects.filter(church=cid).count()
+    church_user_count = User.objects.filter(church=cid,deleted=False).count()
     subscription_limit = Subscription.objects.filter(id=subscription_id).values_list('count', flat=True).first()
     if church_user_count >= subscription_limit :
         return Response({'message': 'User Limit Exceeded!!'}, status=status.HTTP_226_IM_USED)
@@ -88,9 +88,9 @@ def fetch_user_and_prev(user):
 @api_view(['GET'])
 def get_users(request,cid):
     if(cid>0):
-        users = User.objects.filter(church=cid)
+        users = User.objects.filter(church=cid,deleted=False)
     else:
-        users = User.objects.all()
+        users = User.objects.filter(deleted=False)
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
 
@@ -102,12 +102,14 @@ def delete_user(request, user_id):
         request.method = 'DELETE'
 
     try:
-        user = User.objects.get(id=user_id)
+        user = User.objects.get(id=user_id,deleted=False)
         church = user.church
         user_count = User.objects.filter(church=church).count()
-        user.delete()
+        user.deleted=True
+        user.save()
         if user_count == 1:
-            church.delete()
+            church.deleted=True
+            church.save()
         return Response({'message': 'User deleted successfully'}, status=status.HTTP_200_OK)
     except User.DoesNotExist:
         return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -125,7 +127,7 @@ def update_user(request):
             'user_type': request.data.get('user_type'),
             'church': request.data.get('church'),
         }
-        user = User.objects.get(id=user_id)
+        user = User.objects.get(id=user_id,deleted=False)
         serializer = UserSerializer(user, data=updated_data, partial=True)
         if serializer.is_valid():
             serializer.save()

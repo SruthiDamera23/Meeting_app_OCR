@@ -69,7 +69,7 @@ class User(AbstractBaseUser):
     church = models.ForeignKey(Church, on_delete=models.CASCADE,blank=True,null=True)
     password = models.CharField(max_length=200)
     objects = UserManager()
-
+    deleted = models.BooleanField(default=False)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
 

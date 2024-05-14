@@ -6,6 +6,7 @@ class Subscription(models.Model):
     name = models.CharField(max_length=100)
     price = models.FloatField()
     count = models.IntegerField(default=1)
+    deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

@@ -9,3 +9,4 @@ class Payment(models.Model):
     amount = models.IntegerField()
     success = models.BooleanField()
     email = models.EmailField()
+    deleted = models.BooleanField(default=False)

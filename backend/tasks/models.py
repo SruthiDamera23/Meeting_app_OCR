@@ -9,7 +9,7 @@ class Task(models.Model):
     employee_name = models.CharField(max_length=255)
     start_date = models.DateField()
     end_date = models.DateField()
-    is_delete = models.BooleanField(default=False)
+    deleted = models.BooleanField(default=False)
     is_completed = models.BooleanField(default=False)
     priority = models.CharField(max_length=255)
     task_description = models.CharField(max_length=500)

@@ -21,7 +21,8 @@ def person(request):
 def delete_person(request, pid):
     try:
         person = Person.objects.get(id=pid)
-        person.delete()
+        person.deleted=True
+        person.save()
         return Response({'message': 'Person deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
     except Person.DoesNotExist:
         return Response({'message': 'Person not found.'}, status=status.HTTP_404_NOT_FOUND)   
