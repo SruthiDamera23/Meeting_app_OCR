@@ -29,6 +29,11 @@ const AppSidebar = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+
+        if(getCookie("user")==null && getCookie("priv")==null) {
+            updateCookie("user","");
+            updateCookie("priv","");
+          }
         
         console.log(document.cookie);
         if (getCookie("user") == "" && getCookie("priv") == "") {

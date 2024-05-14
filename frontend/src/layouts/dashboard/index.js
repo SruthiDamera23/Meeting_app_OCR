@@ -22,7 +22,7 @@ import DateAndTodoList from "./components/DateAndTodoList";
 import TaskTable from "../taskAssignment/components/TaskTable";
 import AppSidebar from "../../components/appSidebar";
 import { ArrowDownward } from '@mui/icons-material';
-import { login, getCookie } from "../../api";
+import { login, getCookie, updateCookie } from "../../api";
 // import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 // import { Pie } from 'react-chartjs-2';
 
@@ -45,6 +45,16 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    if(getCookie("user")==null && getCookie("priv")==null) {
+      updateCookie("user","");
+      updateCookie("priv","");
+    }
+  
+  console.log(document.cookie);
+  if (getCookie("user") == "" && getCookie("priv") == "") {
+      navigate('/');
+  }
+
     // Get priv user from cookies or wherever you're storing it
     const privUser = getCookie("priv");
     setPriv(privUser);
