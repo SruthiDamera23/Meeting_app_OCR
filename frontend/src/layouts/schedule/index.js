@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { getCookie, meeting_view, get_church_data } from "../../api";
+import { getCookie, meeting_view, get_church_data, isSuperUser } from "../../api";
 import AppSidebar from "../../components/appSidebar";
 import MeetingCard from "./components/MeetingCard";
 
@@ -164,9 +164,9 @@ const Schedule = () => {
                    />}
             <Row>
             
-              <IconButton onClick={newMeeting}>
+              {!isSuperUser() && <IconButton onClick={newMeeting}>
                 <AddCircleOutlineOutlinedIcon />
-              </IconButton>
+              </IconButton>}
             </Row>
             <div></div>
           </Title>

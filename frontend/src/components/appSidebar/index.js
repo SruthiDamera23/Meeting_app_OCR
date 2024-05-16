@@ -79,11 +79,11 @@ const AppSidebar = () => {
                         </div>
                     }
                 >
-                    <MenuItem className="sidebar-menu-item" component={<Link to="/schedule/meeting" state={{ meeting: null, clearForm: true }} />}>
+                   { !isSuperUser() && <MenuItem className="sidebar-menu-item" component={<Link to="/schedule/meeting" state={{ meeting: null, clearForm: true }} />}>
                         <AddCircleOutlineOutlinedIcon />
                         <br />
                         New
-                    </MenuItem>
+                    </MenuItem> }
                     <MenuItem className="sidebar-menu-item" component={<Link to="/schedule" />}>
                         <GridViewOutlinedIcon />
                         <br />

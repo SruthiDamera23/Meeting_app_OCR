@@ -14,6 +14,7 @@ import moment from 'moment';
 import EditTaskModal from "../../../components/modals/EditTaskModal";
 import DeleteTaskModal from "../../../components/modals/DeleteTaskModal";
 import InformationModal from "../../../components/modals/InformationModal";
+import { isSuperUser } from "../../../api";
 
 const TaskCard = (props) => {
 
@@ -108,10 +109,10 @@ const TaskCard = (props) => {
                   <IconButton  style={{float:'right'}} size="small" onClick={onDeleteClick}>
                     <DeleteIcon/>
                   </IconButton>
-                  <IconButton style={{float:'right'}} size="small" onClick={onEditClick}>
+              { !isSuperUser() &&  <IconButton style={{float:'right'}} size="small" onClick={onEditClick}>
                     <EditIcon />
                   </IconButton>
-
+              }
                     </Text>
                   </Row >
                 </Title>
