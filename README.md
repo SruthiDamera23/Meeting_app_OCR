@@ -1,6 +1,18 @@
 # Fall 2024 CS682
 ## Meeting Web App V3
 ### By Praveendhra Rajkumar; Sruthi Damera; Hindu Medisetty
+
+Features Added in V3:
+1. Document AI integration for OCR.
+2. Stripe API integration for Payment processing.
+3. Church model to manage church.
+4. Subscriptions model to CRUD subscription packages.
+5. Payment model to create, read and update payment-related info and history.
+6. Updated user model to map the users to a church.
+7. Likewise for the Meeting model and Task model.
+8. Implemented Access and Authentication control for data.
+9. Automatic monthly subscription renewal.
+    
 ### V2 - Lucas Gustafson; Aravind Haridas; Vivek Kamisetty
 ### V1 - Nishanth Bandarupalli; Aryan Kilaru; Rishank Singh
 
@@ -30,19 +42,7 @@ To run (development):
     ```
 8. To log in, use user rounakb@umb.edu with password 123456 (from populate.sql) or create account.
 
-###Note: 
+Note: 
 
 For OCR, install gcloud, authenticate and replace keys in the backend.
 For Stripe, create a new account and use the developer API keys provided
-
-###Features Added in V3:
-
-1. Document AI integration for OCR.
-2. Stripe API integration for Payment processing.
-3. Church model to manage church.
-4. Subscriptions model to CRUD subscription packages.
-5. Payment model to create, read and update payment-related info and history.
-6. Updated user model to map the users to a church.
-7. Likewise for the Meeting model and Task model.
-8. Implemented Access and Authentication control for data.
-9. Automatic monthly subscription renewal.
