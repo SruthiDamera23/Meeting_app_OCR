@@ -30,12 +30,12 @@ To run (development):
     ```
 8. To log in, use user rounakb@umb.edu with password 123456 (from populate.sql) or create account.
 
-##Note: 
+###Note: 
 
 For OCR, install gcloud, authenticate and replace keys in the backend.
 For Stripe, create a new account and use the developer API keys provided
 
-##Features Added in V3:
+###Features Added in V3:
 
 1. Document AI integration for OCR.
 2. Stripe API integration for Payment processing.
