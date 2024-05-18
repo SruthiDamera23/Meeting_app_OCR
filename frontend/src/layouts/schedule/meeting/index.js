@@ -33,7 +33,8 @@ import {
   person_view,
   tasks_create,
   tasks_view,
-  getCookie
+  getCookie,
+  isSuperUser
 } from '../../../api';
 import AppSidebar from "../../../components/appSidebar";
 import InvitePeopleModal from "../../../components/modals/InvitePeopleModal.js";
@@ -1083,7 +1084,7 @@ const handleQuestions = (e) =>{
                   <div>
                     <Card className="outer-card">
                       <Card.Section style={{padding:"5px"}}>
-                        <Button
+                       { !isSuperUser() && <Button
                           variant="light"
                           className="my-button"
                           color="green"
@@ -1091,9 +1092,9 @@ const handleQuestions = (e) =>{
                           type="submit"
                           onClick={handleSubmit}
                           
-                        >
+                        > 
                           Save
-                        </Button>{" "}
+                        </Button>}
                         <Button
                         variant="light"
                           className="my-button"

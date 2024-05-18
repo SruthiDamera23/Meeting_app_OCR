@@ -8,6 +8,7 @@ import moment from 'moment';
 import EditTaskModal from "../../../components/modals/EditTaskModal";
 import DeleteTaskModal from "../../../components/modals/DeleteTaskModal";
 import InformationModal from "../../../components/modals/InformationModal";
+import { isSuperUser } from "../../../api";
 
 const TaskCard = (props) => {
   const [showIconButtons, setShowIconButtons] = useState(false);

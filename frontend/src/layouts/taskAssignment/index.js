@@ -16,7 +16,7 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import "bootstrap/dist/css/bootstrap.min.css";
 // import DataTable from "./components/DataTable";
 import { useNavigate } from "react-router-dom";
-import { logout, task_view } from "../../api";
+import { isSuperUser, logout, task_view } from "../../api";
 import { tasks_view ,  getCookie, get_church_data} from "../../api";
 import CreateTaskModal from "../../components/modals/CreateTaskModal";
 // import DateAndTodoList from "./components/DateAndTodoList";
@@ -187,9 +187,9 @@ return (
                    
                    />}
           <Row>
-            <IconButton onClick={toggleCreateTaskModal}>
+            {!isSuperUser() && <IconButton onClick={toggleCreateTaskModal}>
               <AddCircleOutlineOutlinedIcon />
-            </IconButton>
+            </IconButton>}
             <CreateTaskModal
             isOpen={isCreateTaskModalOpen}
             toggle={toggleCreateTaskModal}
