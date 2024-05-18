@@ -171,8 +171,8 @@ const Users = () => {
     <div style={{ display: "flex" }}>
       
       <AppSidebar />
-      <Container className="my-4" style={{width:"100%", marginLeft:"12%"}}>
-        <Card className="my-card schedule-card">
+      <div style={{position: "relative", left: "15%",width:"100%", height:"94vh"}} className="my-3">
+      <Card className="my-card  my-card-height schedule-card" style={{width:"80%"}}>
           <div className="full-screen-calendar">
             <div style={{ textAlign: 'center' }}>
               <h1 style={{ textAlign: 'left', display: 'inline-block' }}>Existing Users</h1>
@@ -297,7 +297,7 @@ const Users = () => {
             <Button variant="filled" color="rgba(214, 66, 66, 1)" onClick={toggleEditModal}>Cancel</Button>
           </ModalFooter>
         </Modal>
-      </Container>
+      </div>
     </div>
   );
 };

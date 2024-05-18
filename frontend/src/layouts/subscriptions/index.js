@@ -137,9 +137,10 @@ const SubscriptionsPage = () => {
   return (
     <div style={{ display: "flex" }}>
       <AppSidebar />
-      <Container style={{width:"100%",marginTop:"30px"}}>
-        <h1>Subscriptions</h1>
-        <Button variant="filled" onClick={() => toggleModal()}>Add Subscription</Button>
+      <div style={{position: "relative", left: "15%",width:"100%", height:"94vh"}} className="my-3">
+                <Card className="my-card  my-card-height schedule-card" style={{width:"80%"}}>
+        <h1 style={{textAlign:"center"}}>Subscriptions</h1>
+        <Button variant="filled" style={{width:"300px", marginBottom:"30px"}} onClick={() => toggleModal()}>Add Subscription</Button>
         <Table>
           <thead>
             <tr>
@@ -188,7 +189,8 @@ const SubscriptionsPage = () => {
             </Form>
           </ModalBody>
         </Modal>
-      </Container>
+        </Card>
+      </div>
     </div>
   );
 };

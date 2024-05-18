@@ -1,311 +1,10 @@
-// This is the original code of rishank:
-
-// import React, { useState } from 'react';
-// import CircularProgress from '@mui/material/CircularProgress';
-//
-// const DateAndTodoList = (props) => {
-//   const [todos, setTodos] = useState([]);
-//   const [isLoading, setIsLoading] = useState(true);
-//
-//   const meetingArray = props.data;
-//
-//   const handleAddTodo = (e) => {
-//     console.log(meetingArray[0].name);
-//   };
-//
-//   const handleDeleteTodo = (index) => {
-//     // console.log(meetingArray);
-//   };
-//
-//
-//
-//   const date = new Date();
-//   const month = date.toLocaleString('default', { month: 'long' });
-//   const day = date.getDate();
-//   const year = date.getFullYear();
-//
-//   return (
-//     <div className="date-and-todo-list">
-//       <div className="date">
-//         <h1>{month}</h1>
-//         <h2>{day}</h2>
-//         <h3>{year}</h3>
-//       </div>
-//       <div className="todo-list">
-//         <h4 onClick={handleAddTodo}>Upcoming Meeting</h4>
-//           <p>
-//             {/* {meetingArray[0].name} */}
-//             Meeting 1
-//         </p>
-//       </div>
-//     </div>
-//   );
-// };
-//
-// export default DateAndTodoList;
-
-
-// // NEW CODE : Written by- aravind This is working as expected but here it is upcoming meetings is not visible as a button:
-//
-// import CircularProgress from '@mui/material/CircularProgress';
-// import React, { useState, useEffect } from 'react';
-// import Dialog from '@mui/material/Dialog';
-// import Calendar from 'react-calendar';
-// import 'react-calendar/dist/Calendar.css';
-// import { meeting_view } from "../../../api";
-//
-// const DateAndTodoList = () => {
-//   const [meetings, setMeetings] = useState([]);
-//   const [isLoading, setIsLoading] = useState(true);
-//   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-//   const [selectedDate, setSelectedDate] = useState(new Date()); // Initialize with the current date
-//   const [currentMeetingsCount, setCurrentMeetingsCount] = useState(0); // State for the current meetings count
-//
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const response = await meeting_view();
-//         setMeetings(response.data);
-//         setIsLoading(false);
-//
-//         const currentMeetings = getMeetingsForDate(new Date(), response.data);
-//         setCurrentMeetingsCount(currentMeetings.length);
-//       } catch (error) {
-//         console.error(error);
-//       }
-//     };
-//
-//     fetchData();
-//   }, []);
-//
-//
-// useEffect(() => {
-//     const fetchMeetings = async () => {
-//       try {
-//         const response = await meeting_view();
-//         setMeetings(response.data);
-//         setIsLoading(false);
-//
-//         // Calculate and set the current meetings count
-//         const currentMeetings = getMeetingsForDate(new Date(), response.data);
-//         setCurrentMeetingsCount(currentMeetings.length);
-//       } catch (error) {
-//         console.error(error);
-//       }
-//     };
-//     fetchMeetings();
-//   }, []);
-//
-//
-//   const handleOpenCalendar = () => {
-//     setIsCalendarOpen(true);
-//   };
-//
-//   const handleCloseCalendar = () => {
-//     setIsCalendarOpen(false);
-//   };
-//
-//   const handleDateClick = (date) => {
-//     setSelectedDate(date);
-//   };
-//
-//
-//   const getMeetingsForDate = (date, meetings) => {
-//     // Filter the meetings array to get meetings for the specified date
-//     return meetings.filter((meeting) => {
-//       // Compare dates as strings in "YYYY-MM-DD" format
-//       return date && date.toISOString().split('T')[0] === meeting.date;
-//     });
-//   };
-//
-//   // Usage in your component:
-//   const currentMeetings = getMeetingsForDate(new Date(), meetings);
-//   const selectedMeetings = getMeetingsForDate(selectedDate, meetings);
-//
-//   const date = new Date();
-//   const month = date.toLocaleString('default', { month: 'long' });
-//   const day = date.getDate();
-//   const year = date.getFullYear();
-//
-//   return (
-//       <div className="date-and-todo-list">
-//         <div className="date">
-//           <h1>{month}</h1>
-//           <h2>{day}</h2>
-//           <h3>{year}</h3>
-//         </div>
-//         <div className="todo-list">
-//           <button onClick={handleOpenCalendar}>Upcoming Meetings</button>
-//           <p>Number of Meetings: {currentMeetings.length}</p>
-//         </div>
-//         <Dialog open={isCalendarOpen} onClose={handleCloseCalendar}>
-//           <Calendar value={selectedDate} onClickDay={handleDateClick} />
-//           {selectedDate && (
-//               <div>
-//                 <h4>Meetings for {selectedDate.toISOString().split('T')[0]}</h4>
-//                 <ul>
-//                   {selectedMeetings.map((meeting, index) => (
-//                       <li key={index}>
-//                         {meeting.name} - {meeting.time}
-//                       </li>
-//                   ))}
-//                 </ul>
-//               </div>
-//           )}
-//         </Dialog>
-//       </div>
-//   );
-// };
-// export default DateAndTodoList;
-//
-//
-
-
-
-// import CircularProgress from '@mui/material/CircularProgress';
-// import React, { useState, useEffect } from 'react';
-// import Dialog from '@mui/material/Dialog';
-// import Calendar from 'react-calendar';
-// import 'react-calendar/dist/Calendar.css';
-// import { meeting_view } from "../../../api";
-
-// const DateAndTodoList = () => {
-//   const [meetings, setMeetings] = useState([]);
-//   const [isLoading, setIsLoading] = useState(true);
-//   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-//   const [selectedDate, setSelectedDate] = useState(new Date()); // Initialize with the current date
-//   const [currentMeetingsCount, setCurrentMeetingsCount] = useState(0); // State for the current meetings count
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const response = await meeting_view();
-//         setMeetings(response.data);
-//         setIsLoading(false);
-
-//         const currentMeetings = getMeetingsForDate(new Date(), response.data);
-//         setCurrentMeetingsCount(currentMeetings.length);
-//       } catch (error) {
-//         console.error(error);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
-
-//   const handleOpenCalendar = () => {
-//     setIsCalendarOpen(true);
-//   };
-
-//   const handleCloseCalendar = () => {
-//     setIsCalendarOpen(false);
-//   };
-
-//   const handleDateClick = (date) => {
-//     setSelectedDate(date);
-//   };
-
-//   const getMeetingsForDate = (date, meetings) => {
-//     return meetings.filter((meeting) => {
-//       return date && date.toISOString().split('T')[0] === meeting.date;
-//     });
-//   };
-
-//   const selectedMeetings = getMeetingsForDate(selectedDate, meetings);
-
-//   const date = new Date();
-//   const month = date.toLocaleString('default', { month: 'long' });
-//   const day = date.getDate();
-//   const year = date.getFullYear();
-
-//   return (
-//       <div className="date-and-todo-list">
-//         <div className="date">
-//           <h1>{month}</h1>
-//           <h2>{day}</h2>
-//           <h3>{year}</h3>
-//         </div>
-//         <div className="todo-list">
-//           <button onClick={handleOpenCalendar}>Upcoming Meetings</button>
-//           <p>Number of Meetings: {currentMeetingsCount}</p>
-//         </div>
-//         <Dialog open={isCalendarOpen} onClose={handleCloseCalendar}>
-//           <Calendar value={selectedDate} onClickDay={handleDateClick} />
-//           {selectedDate && (
-//               <div>
-//                 <h4>Meetings for {selectedDate.toISOString().split('T')[0]}</h4>
-//                 <ul>
-//                   {selectedMeetings.map((meeting, index) => (
-//                       <li key={index}>
-//                         {meeting.name} - {meeting.time}
-//                       </li>
-//                   ))}
-//                 </ul>
-//               </div>
-//           )}
-//         </Dialog>
-//       </div>
-//   );
-// };
-
-// export default DateAndTodoList;
-
-
-
-// New Calendar Code Like Zoho
-
-// import React, { useEffect, useState } from 'react';
-// import { Calendar, momentLocalizer } from 'react-big-calendar';
-// import 'react-big-calendar/lib/css/react-big-calendar.css';
-// import moment from 'moment';
-// import { meeting_view } from '../../../api'; 
-
-// const DateAndTodoList = () => {
-//   const [meetings, setMeetings] = useState([]);
-//   const [isLoading, setIsLoading] = useState(true);
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const response = await meeting_view();
-//         console.log("Meetings: ", response.data);
-//         setMeetings(response.data);
-//         setIsLoading(false);
-//       } catch (error) {
-//         console.error('Error fetching data:', error);
-//         setIsLoading(false);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
-
-//   const localizer = momentLocalizer(moment);
-
-//   return (
-//     <div>
-//       {isLoading ? (
-//         <p>Loading...</p>
-//       ) : (
-//         <Calendar
-//           localizer={localizer}
-//           events={meetings}
-//           startAccessor="start"
-//           endAccessor="end"
-//           style={{ height: 500 }}
-//         />
-//       )}
-//     </div>
-//   );
-// };
-
-// export default DateAndTodoList;
-
 import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 import { meeting_view, getCookie } from '../../../api';
+import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
+import { Global, css } from '@emotion/react';
 
 const DateAndTodoList = () => {
   const [meetings, setMeetings] = useState([]);
@@ -325,74 +24,127 @@ const DateAndTodoList = () => {
     fetchData();
   }, []);
 
-
   const viewAllMeeting = async () => {
-    const response =
-      await meeting_view()
-      .catch((error) => {
-        console.log(error)
-      });
-      setAllMeetings(response.data);
-    const privilege=getCookie("priv");
-    if(privilege ==1){
-      let wantedMeetingData=response.data;
-    setMeetings(wantedMeetingData)
-      
-
-    } else if(privilege ==2){
-      const church =getCookie("church");
-      let wantedMeetingData=[];
-      let tempMeetingsData=response.data;
+    const response = await meeting_view().catch((error) => {
+      console.log(error);
+    });
+    setAllMeetings(response.data);
+    const privilege = getCookie("priv");
+    if (privilege == 1) {
+      let wantedMeetingData = response.data;
+      setMeetings(wantedMeetingData);
+    } else if (privilege == 2) {
+      const church = getCookie("church");
+      let wantedMeetingData = [];
+      let tempMeetingsData = response.data;
       for (let i = 0; i < tempMeetingsData.length; i++) {
-        if (tempMeetingsData[i].church+"" === church) {
-            wantedMeetingData.push(tempMeetingsData[i]);
+        if (tempMeetingsData[i].church + "" === church) {
+          wantedMeetingData.push(tempMeetingsData[i]);
         }
-    } 
-    setMeetings(wantedMeetingData)
-    }else if(privilege ==3){
-      const church =getCookie("church");
-      const id =getCookie("user-id");
-      let wantedMeetingData=[];
-      let tempMeetingsData=response.data;
+      }
+      setMeetings(wantedMeetingData);
+    } else if (privilege == 3) {
+      const church = getCookie("church");
+      const id = getCookie("user-id");
+      let wantedMeetingData = [];
+      let tempMeetingsData = response.data;
       for (let i = 0; i < tempMeetingsData.length; i++) {
-        if (tempMeetingsData[i].created_by+"" === id+"") {
-            wantedMeetingData.push(tempMeetingsData[i]);
+        if (tempMeetingsData[i].created_by + "" === id + "") {
+          wantedMeetingData.push(tempMeetingsData[i]);
         }
-    } 
-    setMeetings(wantedMeetingData)
+      }
+      setMeetings(wantedMeetingData);
     }
 
     setIsLoading(false);
-  }
+  };
 
   const localizer = momentLocalizer(moment);
 
   // Map your meeting data to match the expected format for react-big-calendar
-const events = meetings.map((meeting) => ({
-  title: meeting.name,
-  start: new Date(`${meeting.date}T${meeting.time}`), // Combine date and time
-  end: moment(`${meeting.date}T${meeting.time}`).add(meeting.duration, 'hours').toDate(), // Calculate end time
-  type: meeting.type, // Include the type property
-  // ... other properties
-}));
-
+  const events = meetings.map((meeting) => ({
+    title: meeting.name,
+    start: new Date(`${meeting.date}T${meeting.time}`), // Combine date and time
+    end: moment(`${meeting.date}T${meeting.time}`).add(meeting.duration, 'hours').toDate(), // Calculate end time
+    type: meeting.type, // Include the type property
+    // ... other properties
+  }));
 
   return (
     <div>
+      <CssBaseline /> {/* Ensures global styles are applied */}
+      <Global
+        styles={css`
+          .rbc-calendar {
+            background-color: #fffbe6;
+            border: 1px solid #ffd700;
+          }
+          .rbc-toolbar {
+            background-color: #fff5cc;
+            color: #000;
+            border-bottom: 1px solid #ffd700;
+          }
+          .rbc-toolbar button {
+            background-color: #ffd700;
+            color: #000;
+          }
+          .rbc-month-view,
+          .rbc-time-view {
+            background-color: #fffbe6;
+          }
+          .rbc-event {
+            background-color: #ffd700;
+            color: #000;
+            border: 1px solid #ffd700;
+          }
+          .rbc-day-bg,
+          .rbc-time-content {
+            background-color: #fffbe6;
+          }
+          .rbc-time-header {
+            background-color: #fff5cc;
+            border-bottom: 1px solid #ffd700;
+          }
+          .rbc-time-content > * + * > * {
+            border-left: 1px solid #ffd700;
+          }
+          .rbc-date-cell {
+            color: #000;
+          }
+          .rbc-header {
+            background-color: #fff5cc;
+            color: #000;
+            border-bottom: 1px solid #ffd700;
+          }
+          .rbc-today {
+            background-color: #fff8e1;
+          }
+          .rbc-off-range {
+            background-color: #fffbe6;
+            color: #aaa;
+          }
+          .rbc-selected {
+            background-color: #2e2e2e !important;
+            color: #fff !important;
+            border: 1px solid #ffd700 !important;
+          }
+        `}
+      />
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        <Calendar
-          localizer={localizer}
-          events={events}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: 500 }}
-        />
+        <div style={{ height: '450px', width: '100%' }}> {/* Parent container with defined height */}
+          <Calendar
+            localizer={localizer}
+            events={events}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ width: 'auto', height: '100%' }}
+          />
+        </div>
       )}
     </div>
   );
 };
 
 export default DateAndTodoList;
-

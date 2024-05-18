@@ -170,8 +170,8 @@ const OnChurchDropdownOptionChange=(selectedIndex)=>{
 return (
   <div style={{display: 'flex'}}>
     <AppSidebar />
-    <Container className="my-4" style={{ width: "100%", height:"90vh",overflow: "auto" }}>
-      <Card className="my-card  my-card-height schedule-card">
+    <div style={{position: "relative", left: "15%",width:"100%",height:"94vh"}} className="my-3">
+      <Card className="my-card  my-card-height schedule-card" style={{width:"80%"}}>
         <Title order={5} className="p-3 card-head" style={{ display: "flex", justifyContent: "space-between" }}>
         {getCookie("priv")==="1" &&<Dropdown
                 className="custom-dropdown" 
@@ -205,7 +205,7 @@ return (
               {
                 tasks.map(
                   (task) => (
-                    <Col key = {task.id} xs={12} md={6} lg={4} >
+                    <Col key = {task.id} xs={12} md={6} lg={4} style={{paddingBottom:"10px"}} >
                       <TaskCard task = {task} setMustGetTasks= {setMustGetTasks} mustGetTasks={mustGetTasks} />
                     </Col>
                   )
@@ -215,7 +215,7 @@ return (
           }
         </Text>
       </Card>
-    </Container>
+    </div>
   </div>
 );
 };

@@ -12,7 +12,6 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import PeopleIcon from '@mui/icons-material/People';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -20,26 +19,22 @@ import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import ChurchIcon from '@mui/icons-material/Church';
 import GroupIcon from '@mui/icons-material/Group';
 import { useNavigate, Link } from "react-router-dom";
-import { logout, tasks_view, getCookie, updateCookie, isSuperUser, isAdmin , isLeader} from "../../api";
+import { logout, getCookie, updateCookie, isSuperUser, isAdmin, isLeader } from "../../api";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Edit from "@mui/icons-material/Edit";
-import { People } from "@mui/icons-material";
 
 const AppSidebar = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        if (getCookie("user") == null && getCookie("priv") == null) {
+            updateCookie("user", "");
+            updateCookie("priv", "");
+        }
 
-        if(getCookie("user")==null && getCookie("priv")==null) {
-            updateCookie("user","");
-            updateCookie("priv","");
-          }
-        
-        console.log(document.cookie);
         if (getCookie("user") == "" && getCookie("priv") == "") {
             navigate('/');
         }
-    }, [])
+    }, []);
 
     const handleLogout = async () => {
         logout()
@@ -53,18 +48,15 @@ const AppSidebar = () => {
             });
     };
 
-   
-
-
     return (
         <Sidebar
             className="sidebar"
-            width="10%"
-            backgroundColor="rgba(200, 250, 200, 0.2)"
-            rootStyles={{ position: "fixed", borderRightColor: "rgb(160, 200, 160)" }}
+            width="12%"
+            backgroundColor="#2E2E2E"
+            rootStyles={{ position: "fixed", borderRightColor: "#2E2E2E",overflow:"auto" }}
         >
             <Menu>
-                <MenuItem className="sidebar-menu-item" component={<Link to="/dashboard" />}>
+                <MenuItem className="sidebar-menu-item" component={<Link className="custom-link" to="/dashboard" />}>
                     <SpeedOutlinedIcon className="sidebar-menu-item-icon" />
                     <br />
                     Dashboard
@@ -79,12 +71,12 @@ const AppSidebar = () => {
                         </div>
                     }
                 >
-                    <MenuItem className="sidebar-menu-item" component={<Link to="/schedule/meeting" state={{ meeting: null, clearForm: true }} />}>
+                    <MenuItem className="sidebar-menu-item" component={<Link className="custom-link" to="/schedule/meeting" state={{ meeting: null, clearForm: true }} />}>
                         <AddCircleOutlineOutlinedIcon />
                         <br />
                         New
                     </MenuItem>
-                    <MenuItem className="sidebar-menu-item" component={<Link to="/schedule" />}>
+                    <MenuItem className="sidebar-menu-item" component={<Link className="custom-link" to="/schedule" />}>
                         <GridViewOutlinedIcon />
                         <br />
                         List
@@ -100,69 +92,71 @@ const AppSidebar = () => {
                         </div>
                     }
                 >
-                    <MenuItem className="sidebar-menu-item" component={<Link to="/task-calendar" />}>
+                    <MenuItem className="sidebar-menu-item" component={<Link className="custom-link" to="/task-calendar" />}>
                         <CalendarMonthOutlinedIcon />
                         <br />
-                        <div style={{ overflow: "visible" }}>Dates</div>
+                        Dates
                     </MenuItem>
-
-                    <MenuItem className="sidebar-menu-item" component={<Link to="/tasks" />}>
+                    <MenuItem className="sidebar-menu-item" component={<Link className="custom-link" to="/tasks" />}>
                         <GridViewOutlinedIcon />
                         <br />
                         List
                     </MenuItem>
                 </SubMenu>
-                
-               { (isSuperUser() || isAdmin() ) && <MenuItem className="sidebar-menu-item" component={<Link to="/users" />}>
-                    <People className="sidebar-menu-item-icon" />
-                    <br />
-                    Users
-                </MenuItem>}
-
-                { (isSuperUser() ) && <MenuItem className="sidebar-menu-item" component={<Link to="/subscribers" />}>
-                    <GroupIcon className="sidebar-menu-item-icon" />
-                    <br />
-                    Subscribers
-                </MenuItem>}
-
-                
-
-                        { isSuperUser() &&<MenuItem className="sidebar-menu-item" component={<Link to="/edit-church" />}>
-                        <ChurchIcon className="sidebar-menu-item-icon"  />
-                            <br />
-                            <div style={{ overflow: "visible" }}> Edit Church</div>
-                        </MenuItem>}
-
-                        {(isAdmin() || isLeader())&&<MenuItem className="sidebar-menu-item" component={<Link to="/people" />}>
-                            <EmojiPeopleIcon/>
-                            <br />
-                            <div style={{ overflow: "visible" }}>People</div>
-                        </MenuItem>}
-
-                        {(isSuperUser() || isAdmin()) && <MenuItem className="sidebar-menu-item" component={<Link to="/subscriptions" />}>
-                            <AttachMoneyIcon/>
-                            <br />
-                            <div style={{ overflow: "visible" }}>Subscriptions</div>
-                        </MenuItem>}     
-
-                        {isSuperUser() && <MenuItem className="sidebar-menu-item" component={<Link to="/paymenthistory" />}>
-                            <ReceiptIcon/>
-                            <br />
-                            <div style={{ overflow: "visible" }}>Payments</div>
-                        </MenuItem>}
-
-                        {isAdmin() && <MenuItem className="sidebar-menu-item" component={<Link to="/paymenthistorya" />}>
-                            <ReceiptIcon/>
-                            <br />
-                            <div style={{ overflow: "visible" }}>Payments</div>
-                        </MenuItem>}
-
+                {(isSuperUser() || isAdmin()) && (
+                    <MenuItem className="sidebar-menu-item" component={<Link className="custom-link" to="/users" />}>
+                        <PeopleIcon className="sidebar-menu-item-icon" />
+                        <br />
+                        Users
+                    </MenuItem>
+                )}
+                {isSuperUser() && (
+                    <MenuItem className="sidebar-menu-item" component={<Link className="custom-link" to="/subscribers" />}>
+                        <GroupIcon className="sidebar-menu-item-icon" />
+                        <br />
+                        Subscribers
+                    </MenuItem>
+                )}
+                {isSuperUser() && (
+                    <MenuItem className="sidebar-menu-item" component={<Link className="custom-link" to="/edit-church" />}>
+                        <ChurchIcon className="sidebar-menu-item-icon" />
+                        <br />
+                        Edit Church
+                    </MenuItem>
+                )}
+                {(isAdmin() || isLeader()) && (
+                    <MenuItem className="sidebar-menu-item" component={<Link className="custom-link" to="/people" />}>
+                        <EmojiPeopleIcon  className="sidebar-menu-item-icon" />
+                        <br />
+                        People
+                    </MenuItem>
+                )}
+                {(isSuperUser() || isAdmin()) && (
+                    <MenuItem className="sidebar-menu-item" component={<Link className="custom-link"  to="/subscriptions" />}>
+                        <AttachMoneyIcon  className="sidebar-menu-item-icon" />
+                        <br />
+                        Subscriptions
+                    </MenuItem>
+                )}
+                {isSuperUser() && (
+                    <MenuItem className="sidebar-menu-item" component={<Link className="custom-link" to="/paymenthistory" />}>
+                        <ReceiptIcon />
+                        <br />
+                        Payments
+                    </MenuItem>
+                )}
+                {isAdmin() && (
+                    <MenuItem className="sidebar-menu-item" component={<Link className="custom-link" to="/paymenthistorya" />}>
+                        <ReceiptIcon  className="sidebar-menu-item-icon"/>
+                        <br />
+                        Payments
+                    </MenuItem>
+                )}
                 <MenuItem className="sidebar-menu-item" component={<div onClick={handleLogout} />}>
                     <LogoutOutlinedIcon className="sidebar-menu-item-icon" />
                     <br />
                     Logout
                 </MenuItem>
-
             </Menu>
         </Sidebar>
     );

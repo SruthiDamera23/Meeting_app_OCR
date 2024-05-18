@@ -1,15 +1,6 @@
-import {
-  React,
-  useState,
-  useRef
-} from "react";
-import {
-  CardText,
-  Row,
-  Col
-} from "reactstrap";
-
-import { Container,Card, Title, Button, NavLink, Text } from "@mantine/core";
+import React, { useEffect, useState, useRef } from "react";
+import { CardText, Row, Col } from "reactstrap";
+import { Container, Card, Title, Button, NavLink, Text } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
@@ -20,10 +11,6 @@ import MenuList from '@mui/material/MenuList';
 import { meeting_create } from '../../../api';
 import DeleteMeetingModal from '../../../components/modals/DeleteMeetingModal';
 
-/*
- * MeetingCard for displaying key details of a meeting -
- * "Schedule" page displays MeetingCards.
- */
 const MeetingCard = (props) => {
   const [isMeetingMenuOpen, setIsMeetingMenuOpen] = useState(false);
   const [isDeleteMeetingModalOpen, setIsDeleteMeetingModalOpen] = useState(false);
@@ -128,10 +115,7 @@ const MeetingCard = (props) => {
   }
 
   return (
-    <
-      Card className="outer-card card-margin"
-      onClick={toggleMeetingMenu}
-    >
+    <Card className="outer-card card-margin" onClick={toggleMeetingMenu} style={{ backgroundColor: '#fffbe6',  borderRadius: '10px', height:"100%"}}>
       <DeleteMeetingModal
         meeting={props.meeting}
         isOpen={isDeleteMeetingModalOpen}
@@ -139,13 +123,13 @@ const MeetingCard = (props) => {
       />
       <div>
         <div ref={anchorRef} />
-        <div style={{minHeight: "32vh"}}>
-          <Card className="outer-card meeting-card card-body">
-            <Card.Section style={{  overflow: "auto"}}>
+        <div >
+          <Card className="outer-card meeting-card card-body d-flex flex-column" style={{ backgroundColor: '#fffbe6', borderRadius: '10px' }}>
+            <Card.Section style={{ overflow: "auto" , backgroundColor:"#ffe658f1"}}>
               <Title>
-                <Row >
+                <Row>
                   <Col>
-                    <Text style={{padding:"20px",margin:"5px"}}>
+                    <Text style={{ padding: "20px", margin: "5px", color: '#2E2E2E' }}>
                       <small>
                         {formatDate()}
                         <br />
@@ -154,14 +138,14 @@ const MeetingCard = (props) => {
                     </Text>
                   </Col>
                   <Col>
-                  <Text style={{padding:"20px"}}>
+                    <Text style={{ padding: "20px", color: '#2E2E2E' }}>
                       {props.meeting.name}
                     </Text>
                   </Col>
                 </Row>
               </Title>
             </Card.Section>
-            <Card.Section className="my-card-body" style={{  overflow: "auto"}}>
+            <Card.Section className="my-card-body flex-grow-1 d-flex flex-column justify-content-between" style={{ overflow: "auto", backgroundColor: '#FFFFE0',flexGrow:1}}>
               <div>
                 <Popper
                   open={isMeetingMenuOpen}
@@ -174,13 +158,13 @@ const MeetingCard = (props) => {
                     <Grow
                       {...TransitionProps}
                     >
-                      <Paper>
+                      <Paper style={{ backgroundColor: '#FFF5CC', border: '1px solid #FFD700' }}>
                         <ClickAwayListener onClickAway={handleMeetingMenuClose}>
                           <Container>
                             <MenuList>
-                              <MenuItem onClick={viewMeeting}>View/Edit</MenuItem>
-                              <MenuItem onClick={duplicateMeeting}>Duplicate</MenuItem>
-                              <MenuItem onClick={toggleDeleteMeetingModal}>Delete</MenuItem>
+                              <MenuItem onClick={viewMeeting} style={{ color: '#2E2E2E' }}>View/Edit</MenuItem>
+                              <MenuItem onClick={duplicateMeeting} style={{ color: '#2E2E2E' }}>Duplicate</MenuItem>
+                              <MenuItem onClick={toggleDeleteMeetingModal} style={{ color: '#2E2E2E' }}>Delete</MenuItem>
                             </MenuList>
                           </Container>
                         </ClickAwayListener>
@@ -191,14 +175,14 @@ const MeetingCard = (props) => {
               </div>
               <Row>
                 <Col>
-                <Text style={{padding:"20px"}}>
+                  <Text style={{ padding: "20px", color: '#2E2E2E' }}>
                     <small>
                       {props.meeting.agenda}
                     </small>
                   </Text>
                 </Col>
                 <Col>
-                <Text style={{padding:"20px"}}>
+                  <Text style={{ padding: "20px", color: '#2E2E2E' }}>
                     <small>
                       Invited: {props.meeting.attendees.length}
                     </small>
@@ -214,4 +198,3 @@ const MeetingCard = (props) => {
 }
 
 export default MeetingCard;
-

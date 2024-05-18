@@ -145,8 +145,8 @@ const Subscribers = () => {
     <div style={{ display: "flex" }}>
       <AppSidebar />
 
-      <Container className="my-4" style={{ width: '100%', marginLeft: '12%', marginTop:"30px" }}> 
-        <Card className="my-card schedule-card">
+      <div style={{position: "relative", left: "15%",width:"100%", height:"94vh"}} className="my-3">
+      <Card className="my-card  my-card-height schedule-card" style={{width:"80%"}}>
         <h1 style={{ textAlign: 'center', display: 'inline-block', marginBottom:"20px", marginTop:"10px" }}>Subscribers</h1>
           <div className="full-screen-calendar">
             <div style={{ textAlign: 'center' }}>
@@ -224,7 +224,7 @@ const Subscribers = () => {
           </ModalFooter>
         </Modal>
 
-      </Container>
+      </div>
     </div>
   );
 };

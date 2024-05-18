@@ -144,10 +144,10 @@ const Schedule = () => {
   }
 
   return (
-    <div style={{display: 'flex',height:"100vh"}}>
+    <div style={{display: 'flex'}}>
       <AppSidebar />
-      <Container className="my-4" style={{ width: "100%", height:"90vh",overflow: "auto" }}>
-        <Card className="my-card my-card-height schedule-card">
+      <div style={{position: "relative", left: "15%",width:"100%", height:"94vh"}} className="my-3">
+        <Card className="my-card  my-card-height schedule-card" style={{width:"80%"}}>
           <Title order={5} className=" p-3 card-head" style={{ display: "flex", justifyContent: "space-between" }}>
           {getCookie("priv")==="1" &&<Dropdown
                 className="custom-dropdown" 
@@ -174,11 +174,11 @@ const Schedule = () => {
             {
               isLoading ?
               <CircularProgress /> :
-              <Row>
+              <Row className="equal-height">
                 {
                   meetings.map(
                     (meeting) => (
-                      <Col key={meeting.id} xs={12} md={6} lg={4}>
+                      <Col className="col d-flex"key={meeting.id} xs={12} md={6} lg={4}>
                         <MeetingCard
                           meeting={meeting}
                           mustGetMeetings={mustGetMeetings}
@@ -192,7 +192,7 @@ const Schedule = () => {
             }
           </Text>
         </Card>
-      </Container>
+      </div>
     </div>
   );
 };

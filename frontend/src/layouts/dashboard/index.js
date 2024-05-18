@@ -108,6 +108,13 @@ const Dashboard = () => {
     setIsLoading2(false);
   }
 
+
+  const customTheme = {
+    primary: "#FFFFFF", // Golden yellow
+    secondary:"#FFFBE6",
+    text: "#000", // Black text
+  };
+
   const viewAllTasks = async () => {
     const response =
       await tasks_view()
@@ -253,29 +260,29 @@ const Dashboard = () => {
           <div>
 
             <AppSidebar />
-            <Container style={{position: "relative", left: "15%"}} className="my-4">
-              <Card className="my-card schedule-card">
+            <div style={{position: "relative", left: "15%"}} className="my-3">
+              <Card className="my-card schedule-card" style={{width:"80%"}}>
               {showButton && (<Button className="scrollButton" color="primary" onClick={scrollToBottom}><ArrowDownward /></Button>)}
-              <div className="ml-auto p-2 card-head-small">
+              <div className="ml-auto p-2 card-head-small" >
               {priv && (
     <h1 style={{ fontSize: "20px" }}>
       {priv === "1" ? "Logged in as Superuser!!" : priv === "2" ? "Logged in as Admin!!" : priv === "3" ? "Logged in as Leader!!" : "Unknown Privilege"}
     </h1>
   )}
         </div>
-              <Row className="fixed-height-dashboard-upper-cards">
-                <Col md={6}>
+              <Row className="fixed-height-dashboard-upper-cards d-flex justify-content-around" >
+                <Col md={5}>
                   <Card className="my-card my-card-height">
-                    <Title order={5} className="card-head p-3">
+                    <Title order={4} className="card-head p-3">
                       High Priority tasks
                     </Title>
-                    <Text className="p-3 card-body">
-                      {isLoading ? <CircularProgress /> : <TaskTable rows={tasks} dashboard={true} />}
+                    <Text className="p-3 card-body" style={{backgroundColor: "#FFFBE6"}}>
+                      {isLoading ? <CircularProgress /> : <TaskTable  rows={tasks} dashboard={true} />}
                     </Text>
                   </Card>
 
                 </Col>
-                <Col md={6}>
+                <Col md={7}>
                   {/* <Card className="my-card pie-chart-progress">
                         <CardTitle tag="h5" className="p-3 card-head">
                           Progress Chart
@@ -295,34 +302,34 @@ const Dashboard = () => {
                           />
                         </CardText>
                       </Card> */}
-                  <Row className="fixed-height-dashboard-upper-cards">
+                   <Row className="fixed-height-dashboard-upper-cards">
                     <Col md={6}>
-                      <Card className="my-card middle-order-card">
-                        <Title order={5} className="p-3 card-head-small">
+                      <Card className="my-card middle-order-card" style={{ backgroundColor: customTheme.primary, color: customTheme.text, border: `1px solid ${customTheme.primary}` }}>
+                        <h5 className="card-head-small" style={{ color: customTheme.text }}>
                           Active Tasks
-                        </Title>
-                        {/* <CardText className="p-3 card-text-number card-body">{tasks.length}</CardText>*/}
-                        <Text className="p-3 card-text-number card-body">{activeTasks}</Text>
+                        </h5>
+                        <p className="card-text-number card-body" style={{ color: customTheme.text, backgroundColor:customTheme.secondary }}>
+                          {activeTasks}
+                        </p>
                       </Card>
                     </Col>
-
                     <Col md={6}>
-                      <Card className="my-card middle-order-card">
-                      <Title order={5} className="p-3 card-head-small">
+                      <Card className="my-card middle-order-card" style={{ backgroundColor: customTheme.primary, color: customTheme.text, border: `1px solid ${customTheme.primary}` }}>
+                        <h5 className="card-head-small" style={{ color: customTheme.text }}>
                           Tasks due this week
-                        </Title>
-                        <Text className="p-3 card-text-number card-body">
+                        </h5>
+                        <p className="card-text-number card-body" style={{ color: customTheme.text, backgroundColor:customTheme.secondary  }}>
                           {weekTasks}
-                        </Text>
+                        </p>
                       </Card>
                     </Col>
-                  </Row>
+      </Row>
 
                   <Row className="fixed-height-dashboard-upper-cards">
                     <Col md={12}>
 
                       <Card className="my-card">
-                        <Text className="p-3 card-body">
+                        <Text className="p-3 card-body"  style={{ backgroundColor: customTheme.primary}}>
                           {isLoading2 ? <CircularProgress /> : <DateAndTodoList data={meetingProgress[0]} />}
                         </Text>
                       </Card>
@@ -343,7 +350,7 @@ const Dashboard = () => {
                 </Col>
               </Row>
               </Card>
-            </Container>
+            </div>
           </div>
         )}
     </div>
@@ -356,256 +363,3 @@ export default Dashboard;
 
 
 
-//
-// import React, { useEffect, useState } from "react";
-// import { Container, Row, Col, Card, CardTitle, CardText, Button } from "reactstrap";
-// import CircularProgress from '@mui/material/CircularProgress';
-// import { PieChart, pieChartDefaultProps } from "react-minimal-pie-chart";
-// import { useNavigate } from "react-router-dom";
-// import { logout, meeting_view, tasks_view } from "../../api";
-// import DateAndTodoList from "./components/DateAndTodoList";
-// import TaskTable from "../taskAssignment/component/TaskTable";
-// import Header from "../../components/header";
-// import { ArrowDownward } from '@mui/icons-material';
-//
-// const Dashboard = () => {
-//     const navigate = useNavigate();
-//     const [tasks, getTasks] = useState("");
-//     const [meeting, getMeeting] = useState("");
-//     const [activeTasks, setActiveTasks] = useState("");
-//     const [isLoading, setIsLoading] = useState(true);
-//     const [isLoading2, setIsLoading2] = useState(true);
-//     const [showButton, setShowButton] = useState(true);
-//     const [tasksDueThisWeek, setTasksDueThisWeek] = useState(0); // Initialize with 0 for Task due this week.
-//
-//     const defaultLabelStyle = {
-//         fontSize: "5px",
-//         fontFamily: "sans-serif",
-//     };
-//
-//     useEffect(() => {
-//         const viewAllTasks = async () => {
-//             await tasks_view()
-//                 .then((req) => {
-//                     const allTasks = req.data.results;
-//                     //
-//                     // // Calculate the end date of the upcoming week
-//                     // const current_date = new Date();
-//                     // const endOfWeek = new Date();
-//                     // endOfWeek.setDate(current_date.getDate() + 7);
-//                     //
-//                     // // Filter out completed tasks based on the end date
-//                     // const activeTasks = allTasks.filter((task) => {
-//                     //     const task_date = new Date(task.end_date);
-//                     //     return task_date >= current_date && task_date <= endOfWeek;
-//                     // });
-//
-//                     getTasks(activeTasks);
-//                     setActiveTasks(activeTasks.length);
-//                     setTasksDueThisWeek(getTasksDueThisWeekCount(activeTasks));
-//                     setIsLoading(false);
-//                 })
-//                 .catch((error) => {
-//                     console.log(error);
-//                 });
-//
-//             function getTasksDueThisWeekCount(tasks) {
-//                 // Your implementation for calculating the count of tasks due this week
-//             }
-//             const tasksDueThisWeekCount = getTasksDueThisWeekCount(tasks);
-//
-//         };
-//
-//         const viewAllMeeting = async () => {
-//             await meeting_view()
-//                 .then((req) => {
-//                     const meeting = req.data.results;
-//                     getMeeting(meeting);
-//                     setIsLoading2(false);
-//                 })
-//                 .catch((error) => {
-//                     console.log(error);
-//                 });
-//         };
-//
-//         const timeout = setTimeout(() => {
-//             viewAllMeeting();
-//             viewAllTasks();
-//         }, 1000);
-//
-//         return () => clearTimeout(timeout);
-//     }, []);
-//
-//     var completed = Array.isArray(tasks)
-//         ? tasks.filter(function (el) {
-//             return el.is_completed === true;
-//         })
-//         : [];
-//
-//     var inProgress = Array.isArray(tasks)
-//         ? tasks.filter(function (el) {
-//             var current_date = new Date();
-//             var task_date = new Date(el.start_date);
-//             return task_date <= current_date;
-//         })
-//         : [];
-//
-//     var meetingProgress = Array.isArray(meeting)
-//         ? meeting.filter(function (el) {
-//             var current_date = new Date();
-//             var task_date = new Date(el.date);
-//             return task_date >= current_date;
-//         })
-//         : [];
-//
-//     var notYetStarted = Array.isArray(tasks)
-//         ? tasks.filter(function (el) {
-//             var current_date = new Date();
-//             var task_date = new Date(el.start_date);
-//             return task_date >= current_date;
-//         })
-//         : [];
-//
-//     var completed_length = completed === NaN ? 0 : completed.length;
-//
-//     var inProgress_length = inProgress === NaN ? 0 : inProgress.length;
-//
-//     var notYetStarted_length = notYetStarted === NaN ? 0 : notYetStarted.length;
-//
-//     const shiftSize = 7;
-//
-//     const handleLogout = async () => {
-//         logout()
-//             .then(() => {
-//                 navigate("/");
-//             })
-//             .catch((error) => {
-//                 console.log(error.response.data);
-//             });
-//     };
-//
-//     const scrollToBottom = () => {
-//         window.scrollTo({
-//             top: document.documentElement.scrollHeight,
-//             behavior: 'smooth',
-//         });
-//         setShowButton(false);
-//     };
-//
-//     // Calculate the end date of the upcoming week
-//     const current_date = new Date();
-//     const endOfWeek = new Date();
-//     endOfWeek.setDate(current_date.getDate() + 7);
-//
-//     // Filter meetings that fall within the upcoming week
-//     const upcomingMeetings = Array.isArray(meeting)
-//         ? meeting.filter(function (el) {
-//             const meeting_date = new Date(el.date);
-//             return meeting_date >= current_date && meeting_date <= endOfWeek;
-//         })
-//         : [];
-//
-//     // Set the upcoming meetings count
-//     const meetingProgress_length = upcomingMeetings.length;
-//
-//     return (
-//         <div className="bgImage">
-//             {isLoading ? (
-//                 <CircularProgress className="circular-progress" />
-//             ) : (
-//                 <main>
-//                     <Header />
-//                     {showButton && (
-//                         <Button
-//                             className="scrollButton"
-//                             color="primary"
-//                             onClick={scrollToBottom}
-//                         >
-//                             <ArrowDownward />
-//                         </Button>
-//                     )}
-//                     <Container className="my-4">
-//                         <Row className="fixed-height-dashboard-upper-cards">
-//                             <Col md={6}>
-//                                 <Card className="my-card my-card-height">
-//                                     <CardTitle tag="h5" className="card-head p-3">
-//                                         High Priority tasks
-//                                     </CardTitle>
-//                                     <CardText className="p-3 card-body">
-//                                         {isLoading ? (
-//                                             <CircularProgress />
-//                                         ) : (
-//                                             <TaskTable rows={tasks} dashboard={true} />
-//                                         )}
-//                                     </CardText>
-//                                 </Card>
-//                             </Col>
-//                             <Col md={4}>
-//                                 <Card className="my-card pie-chart-progress">
-//                                     <CardTitle tag="h5" className="p-3 card-head">
-//                                         Progress Chart
-//                                     </CardTitle>
-//                                     <CardText className="p-3 card-body">
-//                                         <PieChart
-//                                             data={[
-//                                                 { title: "Completed", value: completed_length, color: "#E38627" },
-//                                                 { title: "In Progress", value: inProgress_length, color: "#C13C37" },
-//                                                 { title: "Not yet Started", value: notYetStarted_length, color: "#6A2135" },
-//                                             ]}
-//                                             radius={pieChartDefaultProps.radius - shiftSize}
-//                                             segmentsShift={(index) => (index === 0 ? shiftSize : 0.5)}
-//                                             label={({ dataEntry }) => dataEntry.value}
-//                                             style={{ height: "200px" }}
-//                                             labelStyle={{ ...defaultLabelStyle }}
-//                                         />
-//                                     </CardText>
-//                                 </Card>
-//                                 <Card className="my-card">
-//                                     <CardText className="p-3 card-body">
-//                                         {isLoading2 ? <CircularProgress /> : <DateAndTodoList data={meetingProgress[0]} />}
-//                                     </CardText>
-//                                 </Card>
-//                             </Col>
-//                             <Col md={2}>
-//                                 <Card className="my-card middle-order-card">
-//                                     <CardTitle tag="h5" className="p-3 card-head-small">
-//                                         Active Tasks
-//                                     </CardTitle>
-//                                     <CardText className="p-3 card-text-number card-body">
-//                                         {tasks.length}
-//                                     </CardText>
-//                                 </Card>
-//                                 <Card className="my-card middle-order-card">
-//                                     <CardTitle tag="h5" className="p-3 card-head-small">
-//                                         Tasks due
-//                                     </CardTitle>
-//                                     <CardText className="p-3 card-text-number card-body">
-//                                         {tasksDueThisWeek}
-//                                     </CardText>
-//                                 </Card>
-//                                 <Card className="my-card middle-order-card">
-//                                     <CardTitle tag="h5" className="p-3 card-head-small">
-//                                         Upcoming Meetings
-//                                     </CardTitle>
-//                                     {isLoading2 ? (
-//                                         <CircularProgress />
-//                                     ) : (
-//                                         <CardText className="p-3 card-text-number card-body">
-//                                             {meetingProgress_length}
-//                                         </CardText>
-//                                     )}
-//                                 </Card>
-//                             </Col>
-//                         </Row>
-//                     </Container>
-//                     <footer className="bg-dark py-3">
-//                         <Container>
-//                             <p className="text-white text-center">Copyright © 2023</p>
-//                         </Container>
-//                     </footer>
-//                 </main>
-//             )}
-//         </div>
-//     );
-// };
-// export default Dashboard;

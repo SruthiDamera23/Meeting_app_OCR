@@ -41,8 +41,8 @@ const PaymentHistory = () => {
   return (
     <div style={{ display: "flex" }}>
       <AppSidebar />
-      <Container style={{width:"100%" , marginLeft:"12%"}}className="my-4">
-        <Card className="my-card schedule-card">
+      <div style={{position: "relative", left: "15%",width:"100%", height:"94vh"}} className="my-3">
+      <Card className="my-card  my-card-height schedule-card" style={{width:"80%"}}>
           <div className="full-screen-calendar">
             {isLoading && <p>Loading...</p>}
             {!isLoading && payments.length === 0 && <p>No payments found.</p>}
@@ -78,7 +78,7 @@ const PaymentHistory = () => {
 
           </div>
         </Card>
-      </Container>
+      </div>
     </div>
   );
 };
