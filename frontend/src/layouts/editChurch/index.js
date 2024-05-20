@@ -109,7 +109,7 @@ const ChurchList = () => {
     return (
         <div style={{ display: 'flex' }}>
             <AppSidebar style={{ width: '20%' }} />
-            <div style={{position: "relative", left: "15%",width:"100%", height:"94vh"}} className="my-3">
+            <div style={{position: "relative", left: "15%",width:"100%", height:"94vh", overflowX: "scroll", overflowY: "scroll"}} className="my-3">
                 <Card className="my-card  my-card-height schedule-card" style={{width:"80%"}}>
                 <h2 style={{textAlign:"center"}}>Church List</h2>
                 <table className="table" style={{ width: '100%' }}>

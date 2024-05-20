@@ -298,6 +298,8 @@ body {
     flex-grow: 1;
 }
 
+
+
 .outer-card {
   background-color: rgba(180, 240, 180, 0.5);
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
@@ -560,6 +562,7 @@ body {
 }
 
 .sidebar-menu-item {
+  background-color: #2E2E2E;
   text-decoration:none;
   text-align: center;
   color: #FFFFFF;
@@ -576,6 +579,7 @@ MenuItem:hover{
 
 .sidebar-menu-item:hover {
   color: #2E2E2E;
+  background-color: #FFFFFF;
 }
 
 

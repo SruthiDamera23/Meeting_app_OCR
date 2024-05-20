@@ -202,9 +202,9 @@ const Users = () => {
                         <td style={{ padding: '8px' }}>{priorityLabels[user.user_type]}</td>
                         <td style={{ padding: '8px' }}>{priorityLabels[user.user_type] === 'Super-user' ? '-' : churchData[user.church]}</td>
                         <td style={{ padding: '8px' }}>
-                          <Button variant="filled" color="rgba(90, 211, 250, 1)" onClick={() => handleEdit(index)} style={{ marginRight: '5px' }}>Edit</Button>
+                          <Button variant="filled" color="#FFD700" onClick={() => handleEdit(index)} style={{ marginRight: '5px',color:"#2E2E2E"}}>Edit</Button>
                           {user.email !== getCookie('user') && (
-                            <Button  variant="filled" color="rgba(214, 66, 66, 1)" onClick={() => handleDeleteUser(user.id)} style={{ marginRight: '5px' }}>Delete</Button>
+                            <Button  variant="outline" color="#2E2E2E" onClick={() => handleDeleteUser(user.id)} style={{ marginRight: '5px' }}>Delete</Button>
                           )}
                         </td>
 
