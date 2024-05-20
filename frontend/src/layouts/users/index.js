@@ -217,17 +217,17 @@ const Users = () => {
           </div>
         </Card>
 
-        <Modal isOpen={modal} toggle={toggleModal}>
+        <Modal style={{color:"black"}}  isOpen={modal} toggle={toggleModal}>
           <ModalHeader toggle={toggleModal}>{approvalStatus === 'added' ? 'User Added' : 'User Deleted'}</ModalHeader>
           <ModalBody>
             {approvalStatus === 'added' ? 'New user has been added.' : 'User has been deleted.'}
           </ModalBody>
           <ModalFooter>
-            <Button variant="filled" color="primary" onClick={toggleModal}>OK</Button>{' '}
+            <Button variant="filled"  onClick={toggleModal}>OK</Button>{' '}
           </ModalFooter>
         </Modal>
 
-        <Modal isOpen={addModal} toggle={toggleAddModal}>
+        <Modal style={{color:"black"}} isOpen={addModal} toggle={toggleAddModal}>
           <ModalHeader toggle={toggleAddModal}>Add New User</ModalHeader>
           <ModalBody>
             <FormGroup>
@@ -265,7 +265,7 @@ const Users = () => {
           </ModalFooter>
         </Modal>
 
-        <Modal isOpen={editModal} toggle={toggleEditModal}>
+        <Modal  style={{color:"black"}} isOpen={editModal} toggle={toggleEditModal}>
           <ModalHeader toggle={toggleEditModal}>Edit User</ModalHeader>
           <ModalBody>
             <FormGroup>

@@ -136,7 +136,7 @@ const EditTaskModal = ({ isOpen, toggle, id }) => {
         <ModalBody>
           <FormGroup>
             
-            <Label for="task_name">Task Name *</Label>
+            <Label style={{color:"black"}}for="task_name">Task Name *</Label>
             <TextInput
               type="text"
               name="task_name"

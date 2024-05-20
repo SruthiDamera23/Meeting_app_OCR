@@ -124,7 +124,7 @@ function Login(props) {
   };
 
   return (
-    <div className="center-fullscreen" style={{ backgroundColor: customTheme.secondary }}>
+    <div className="center-fullscreen" >
       <Container>
         <Row>
           <Col sm={{ size: 6, offset: 3 }}>

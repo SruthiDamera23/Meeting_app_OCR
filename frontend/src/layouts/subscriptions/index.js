@@ -165,7 +165,7 @@ const SubscriptionsPage = () => {
           </tbody>
         </Table>
 
-        <Modal isOpen={modal} toggle={toggleModal}>
+        <Modal style={{color:"black"}} isOpen={modal} toggle={toggleModal}>
           <ModalHeader toggle={() => toggleModal()}>{isEditMode ? 'Edit Subscription' : 'Add Subscription'}</ModalHeader>
           <ModalBody>
             <Form onSubmit={isEditMode ? handleUpdateSubscription : handleAddSubscription}>
