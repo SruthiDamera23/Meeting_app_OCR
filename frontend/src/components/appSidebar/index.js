@@ -71,21 +71,12 @@ const AppSidebar = () => {
                         </div>
                     }
                 >
-<<<<<<< HEAD
-                    <MenuItem className="sidebar-menu-item" component={<Link className="custom-link" to="/schedule/meeting" state={{ meeting: null, clearForm: true }} />}>
-                        <AddCircleOutlineOutlinedIcon />
-                        <br />
-                        New
-                    </MenuItem>
-                    <MenuItem className="sidebar-menu-item" component={<Link className="custom-link" to="/schedule" />}>
-=======
                    { !isSuperUser() && <MenuItem className="sidebar-menu-item" component={<Link to="/schedule/meeting" state={{ meeting: null, clearForm: true }} />}>
                         <AddCircleOutlineOutlinedIcon />
                         <br />
                         New
                     </MenuItem> }
                     <MenuItem className="sidebar-menu-item" component={<Link to="/schedule" />}>
->>>>>>> refs/remotes/origin/dev-a
                         <GridViewOutlinedIcon />
                         <br />
                         List
@@ -112,7 +103,6 @@ const AppSidebar = () => {
                         List
                     </MenuItem>
                 </SubMenu>
-<<<<<<< HEAD
                 {(isSuperUser() || isAdmin()) && (
                     <MenuItem className="sidebar-menu-item" component={<Link className="custom-link" to="/users" />}>
                         <PeopleIcon className="sidebar-menu-item-icon" />
@@ -162,53 +152,6 @@ const AppSidebar = () => {
                         Payments
                     </MenuItem>
                 )}
-=======
-                
-               { (isSuperUser() || isAdmin() ) && <MenuItem className="sidebar-menu-item" component={<Link to="/users" />}>
-                    <People className="sidebar-menu-item-icon" />
-                    <br />
-                    Users
-                </MenuItem>}
-
-                { (isSuperUser() ) && <MenuItem className="sidebar-menu-item" component={<Link to="/subscribers" />}>
-                    <GroupIcon className="sidebar-menu-item-icon" />
-                    <br />
-                    Subscribers
-                </MenuItem>}
-
-                
-
-                        { isSuperUser() &&<MenuItem className="sidebar-menu-item" component={<Link to="/edit-church" />}>
-                        <ChurchIcon className="sidebar-menu-item-icon"  />
-                            <br />
-                            <div style={{ overflow: "visible" }}> Edit Church</div>
-                        </MenuItem>}
-
-                        {(isAdmin() || isLeader())&&<MenuItem className="sidebar-menu-item" component={<Link to="/people" />}>
-                            <EmojiPeopleIcon/>
-                            <br />
-                            <div style={{ overflow: "visible" }}>People</div>
-                        </MenuItem>}
-
-                        {(isSuperUser()) && <MenuItem className="sidebar-menu-item" component={<Link to="/subscriptions" />}>
-                            <AttachMoneyIcon/>
-                            <br />
-                            <div style={{ overflow: "visible" }}>Subscriptions</div>
-                        </MenuItem>}     
-
-                        {isSuperUser() && <MenuItem className="sidebar-menu-item" component={<Link to="/paymenthistory" />}>
-                            <ReceiptIcon/>
-                            <br />
-                            <div style={{ overflow: "visible" }}>Payments</div>
-                        </MenuItem>}
-
-                        {isAdmin() && <MenuItem className="sidebar-menu-item" component={<Link to="/paymenthistorya" />}>
-                            <ReceiptIcon/>
-                            <br />
-                            <div style={{ overflow: "visible" }}>Payments</div>
-                        </MenuItem>}
-
->>>>>>> refs/remotes/origin/dev-a
                 <MenuItem className="sidebar-menu-item" component={<div onClick={handleLogout} />}>
                     <LogoutOutlinedIcon className="sidebar-menu-item-icon" />
                     <br />
