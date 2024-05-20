@@ -134,13 +134,13 @@ const ChurchList = () => {
                                 <td >
                                     {editIndex === index ? (
                                         <div style={{display:"flex"}}> 
-                                            <Button  variant="filled" color="rgba(90, 211, 250, 1)" style={{ marginRight: '5px',color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px' }} onClick={handleSave}>Update</Button>
-                                            <Button variant="filled" color="rgba(214, 66, 66, 1)" style={{    padding: '5px 10px', borderRadius: '5px' }} onClick={handleCancel}>Cancel</Button>
+                                            <Button  variant="filled" color="#FFD700" style={{ marginRight: '5px',color:"#2E2E2E", border: 'none', padding: '5px 10px', borderRadius: '5px' }} onClick={handleSave}>Update</Button>
+                                            <Button variant="outline" color="#2E2E2E" style={{    padding: '5px 10px', borderRadius: '5px' }} onClick={handleCancel}>Cancel</Button>
                                         </div>
                                     ) : (
                                         <div style={{display:"flex"}}>
-                                            <Button  variant="filled" color="rgba(90, 211, 250, 1)" style={{ color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px' }} onClick={() => handleEdit(index, church)}>Edit</Button>
-                                            <Button variant="filled" color="rgba(214, 66, 66, 1)" style={{ color: 'white', border: 'none', padding: '5px 10px', borderRadius: '5px', marginLeft: '5px' }} onClick={() => handleDelete(church.id)}>Delete</Button>
+                                            <Button  variant="filled" color="#FFD700" style={{ color: "#2E2E2E", padding: '5px 10px', borderRadius: '5px' }} onClick={() => handleEdit(index, church)}>Edit</Button>
+                                            <Button variant="outline" color="#2E2E2E" style={{ padding: '5px 10px', borderRadius: '5px', marginLeft: '5px' }} onClick={() => handleDelete(church.id)}>Delete</Button>
                                         </div>
                                     )}
                                     {Object.keys(errors).map(key => (

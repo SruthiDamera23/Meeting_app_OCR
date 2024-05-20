@@ -177,7 +177,7 @@ const Users = () => {
             <div style={{ textAlign: 'center' }}>
               <h1 style={{ textAlign: 'left', display: 'inline-block' }}>Existing Users</h1>
               {!isSuperUser() && (
-                <Button variant="filled" onClick={toggleAddModal}  style={{ marginLeft: '20px' }}>Add New User</Button>
+                <Button variant="filled" color="#FFD700" onClick={toggleAddModal}  style={{ color:"#2E2E2E", marginLeft: '20px' }}>Add New User</Button>
               )}
             </div>
             {isLoading ? (
@@ -260,8 +260,8 @@ const Users = () => {
             </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button variant="filled" color="rgba(90, 211, 250, 1)" onClick={handleAddUser}>Add User</Button>{' '}
-            <Button variant="filled" color="rgba(214, 66, 66, 1)" onClick={toggleAddModal}>Cancel</Button>
+            <Button variant="filled" color="#FFD700" style={{color:"#2E2E2E"}} onClick={handleAddUser}>Add User</Button>{' '}
+            <Button variant="outline" color="#2E2E2E" onClick={toggleAddModal}>Cancel</Button>
           </ModalFooter>
         </Modal>
 
@@ -293,8 +293,8 @@ const Users = () => {
             </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button variant="filled" color="rgba(90, 211, 250, 1)" onClick={handleSaveEdit}>Save</Button>{' '}
-            <Button variant="filled" color="rgba(214, 66, 66, 1)" onClick={toggleEditModal}>Cancel</Button>
+            <Button variant="filled" color="#FFD700" style={{color:"#2E2E2E"}} onClick={handleSaveEdit}>Save</Button>{' '}
+            <Button variant="outline" color="#2E2E2E" onClick={toggleEditModal}>Cancel</Button>
           </ModalFooter>
         </Modal>
       </div>

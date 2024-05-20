@@ -140,7 +140,7 @@ const SubscriptionsPage = () => {
       <div style={{position: "relative", left: "15%",width:"100%", height:"94vh"}} className="my-3">
                 <Card className="my-card  my-card-height schedule-card" style={{width:"80%"}}>
         <h1 style={{textAlign:"center"}}>Subscriptions</h1>
-        <Button variant="filled" style={{width:"300px", marginBottom:"30px"}} onClick={() => toggleModal()}>Add Subscription</Button>
+        <Button variant="filled" color="#FFD700" style={{width:"300px", marginBottom:"30px", color:"#2E2E2E"}} onClick={() => toggleModal()}>Add Subscription</Button>
         <Table>
           <thead>
             <tr>
@@ -157,8 +157,8 @@ const SubscriptionsPage = () => {
                 <td>${subscription.price}</td>
                 <td>{subscription.count}</td>
                 <td>
-                  <Button variant="filled" color="rgba(90, 211, 250, 1)" onClick={() => toggleModal(subscription)}>Edit</Button>
-                  <Button  style={{marginLeft:"5px"}} variant="filled" color="rgba(214, 66, 66, 1)" onClick={() => handleDeleteSubscription(subscription.id)}>Delete</Button>
+                  <Button variant="filled" color="#FFD700" style={{color:"#2E2E2E"}} onClick={() => toggleModal(subscription)}>Edit</Button>
+                  <Button  style={{marginLeft:"5px"}} variant="outline" color="#2E2E2E" onClick={() => handleDeleteSubscription(subscription.id)}>Delete</Button>
                 </td>
               </tr>
             ))}
@@ -184,8 +184,8 @@ const SubscriptionsPage = () => {
                 <Input type="number" name="count" id="count" value={formData.count} onChange={handleInputChange} invalid={!!validationErrors.count} />
                 {validationErrors.count && <FormFeedback>{validationErrors.count}</FormFeedback>}
               </FormGroup>
-              <Button variant="filled" color="rgba(90, 211, 250, 1)" type="submit">{isEditMode ? 'Update' : 'Add'}</Button>{' '}
-              <Button variant="filled" color="rgba(214, 66, 66, 1)" onClick={() => toggleModal()}>Cancel</Button>
+              <Button variant="filled" color="#FFD700" style={{ color:"#2E2E2E"}}type="submit">{isEditMode ? 'Update' : 'Add'}</Button>{' '}
+              <Button variant="outline" color="#2E2E2E" onClick={() => toggleModal()}>Cancel</Button>
             </Form>
           </ModalBody>
         </Modal>

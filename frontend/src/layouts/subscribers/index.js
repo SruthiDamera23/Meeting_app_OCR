@@ -187,8 +187,8 @@ const Subscribers = () => {
                         <td style={{ padding: '8px' }}>{church.existin_user_count}</td>
                         <td style={{ padding: '8px' }}>{church.count}</td>
                         <td style={{ padding: '8px', display :'flex' }} >
-                          <Button variant="filled" color="rgba(90, 211, 250, 1)" onClick={() => handleEdit(index)}  style={{ marginRight: '5px' }}>Edit</Button>
-                          <Button  variant="filled" color="rgba(214, 66, 66, 1)"  onClick={() => handleDeleteUser(church.church_id)} style={{ marginRight: '5px' }}>Delete</Button>
+                          <Button variant="filled" color="#FFD700" onClick={() => handleEdit(index)}  style={{ marginRight: '5px', color:"#2E2E2E" }}>Edit</Button>
+                          <Button  variant="outline" color="#2E2E2E"  onClick={() => handleDeleteUser(church.church_id)} style={{ marginRight: '5px' }}>Delete</Button>
                         </td>
                       </tr>
                     ))}
@@ -219,8 +219,8 @@ const Subscribers = () => {
             </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button variant="filled" color="rgba(90, 211, 250, 1)" onClick={handleSaveEdit}>Save</Button>{' '}
-            <Button  variant="filled" color="rgba(214, 66, 66, 1)" onClick={toggleEditModal}>Cancel</Button>
+            <Button variant="filled" color="#FFD700" style={{color:"#2E2E2E"}}onClick={handleSaveEdit}>Save</Button>{' '}
+            <Button  variant="outline" color="#2E2E2E" onClick={toggleEditModal}>Cancel</Button>
           </ModalFooter>
         </Modal>
 

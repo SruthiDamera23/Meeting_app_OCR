@@ -55,6 +55,13 @@ const Meeting = (props) => {
     setModalOpen(false);
   };
   
+  const customTheme = {
+    bgcolor: "FFFBE6",
+    primary: "#FFE658F1",
+    secondary: "#2E2E2E",
+    text: "#000",
+  };
+
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [agenda, setAgenda] = useState("");
@@ -625,8 +632,8 @@ const handleQuestions = (e) =>{
         invite={invitePerson}
         uninvite={uninvitePerson}
       />
-      <Container className="layout-container" style={{marginLeft:"15%", width:"100%"}}>
-        <Card className="outer-card" style={{padding:"50px"}}>
+      <Container className="layout-container" style={{backgroundColor: customTheme.secondary, marginLeft:"15%", width:"100%"}}>
+        <Card className="outer-card" style={{backgroundColor: customTheme.secondary, padding:"50px"}}>
           <Card.Section>
             <Card style={{maxWidth: "70%", position: "relative", left: "15%", padding:"50px"}} className="my-card">
               <Card.Section className="my-card-body">
@@ -635,13 +642,13 @@ const handleQuestions = (e) =>{
                   {
                     isInFirstScanState ?
                       <div>
-                        <Card className="outer-card">
+                        <Card className="outer-card" style={{ color: customTheme.text, backgroundColor:customTheme.primary }}>
                           <Card.Section>
-                          <div style={{ marginBottom: '10px' ,padding:"10px"}}>
+                          <div style={{ backgroundColor: customTheme.primary, marginBottom: '10px' ,padding:"10px"}}>
                           {isLoading &&<CircularProgress className="circular-progress" />}
                             <Button
-                              variant="light"
-                              color="green"
+                              variant="outline"
+                              color="black"
                             style={{color:"black"}}
                               onClick={handleScanFromPhotoClick}
                             >
@@ -667,12 +674,12 @@ const handleQuestions = (e) =>{
                             <img id="img-elem" src={imageSrc} alt="Crop me." />
                           </ReactCrop>
                         )}
-                        <Card className="outer-card">
+                        <Card className="outer-card" style={{ color: customTheme.text, backgroundColor:customTheme.primary }}>
                           <Card.Section style={{padding:"10px"}}>
                             <Button
-                            variant="light"
+                            variant="outline"
                               className="my-button"
-                              color="green"
+                              color="black"
                               style={{color:"black",minWidth: "200px",margin:"5px" }}
                               onClick={handleOCRRequest}
                               
@@ -680,9 +687,9 @@ const handleQuestions = (e) =>{
                               Process Image
                             </Button>{" "}
                             <Button
-                            variant="light"
+                            variant="outline"
                               className="my-button"
-                              color="green"
+                              color="black"
                               style={{color:"black",minWidth: "200px", margin:"5px" }}
                               onClick={toggleScanState}
                             >
@@ -1080,14 +1087,14 @@ const handleQuestions = (e) =>{
             </Form>
             <Card style={{maxWidth: "90%", position: "relative",padding:"30px",margin:"auto"}} className="my-card">
               <Card.Section className="my-card-body">
-                <Row style={{width: "70%", position: "relative",  textAlign: "center",margin:"auto"}}>
+                <Row style={{backgroundColor: customTheme.primary, width: "70%", position: "relative",  textAlign: "center",margin:"auto"}}>
                   <div>
-                    <Card className="outer-card">
+                    <Card className="outer-card" style={{ color: customTheme.text, backgroundColor:customTheme.primary  }}>
                       <Card.Section style={{padding:"5px"}}>
                        { !isSuperUser() && <Button
-                          variant="light"
+                          variant="outline"
                           className="my-button"
-                          color="green"
+                          color="black"
                           style={{color:"black", margin:"3px"}}
                           type="submit"
                           onClick={handleSubmit}
@@ -1096,9 +1103,9 @@ const handleQuestions = (e) =>{
                           Save
                         </Button>}
                         <Button
-                        variant="light"
+                        variant="outline"
                           className="my-button"
-                          color="green"
+                          color="black"
                           style={{color:"black", margin:"3px"}}
                           onClick={handleClearForm}
                         >
