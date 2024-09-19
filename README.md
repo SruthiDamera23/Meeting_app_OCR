@@ -1,7 +1,7 @@
-# Fall 2023 CS682
+
 ## Meeting Web App
-### Lucas Gustafson; Aravind Haridas; Vivek Kamisetty
-### built on the previous work of Nishanth Bandarupalli; Aryan Kilaru; Rishank Singh
+### Sruthi Damera, Praveendhra, Hindu Medisetti
+
 
 Django backend (see backend/docs.txt)
 React frontend (see frontend/docs.txt)
@@ -27,7 +27,6 @@ To run (development):
     ```
     python manage.py runserver
     ```
-8. To log in, use user rounakb@umb.edu with password 123456 (from populate.sql) or create account.
 
 Note: OCR for meeting creation requires a Google Cloud account and installation/configuration of Google Cloud CLI.
 
